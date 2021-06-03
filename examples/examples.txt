@@ -1,0 +1,3 @@
+Examples of power analysis using the RICLPM
+
+- https://osf.io/968rm/

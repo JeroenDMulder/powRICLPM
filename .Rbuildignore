@@ -1,0 +1,8 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^notes$
+^README\.rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^TO DO$

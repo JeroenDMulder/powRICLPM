@@ -1,0 +1,61 @@
+TITLE:      
+    Power analysis bivariate RI-CLPM (3 waves)
+    Data generated using powRICLPM-package
+
+DATA:   
+    FILE = nameReps.dat;
+    TYPE = MONTECARLO;
+
+VARIABLE:
+    NAMES = A1-A3 B1-B3;
+    MISSING = ALL(-999);
+
+ANALYSIS:   
+    MODEL = NOCOV; ! Sets all default covariances to zero
+
+MODEL:
+    ! Create between-unit components (random intercepts)
+    RI_A BY A1@1 A2@1 A3@1;
+    RI_B BY B1@1 B2@1 B3@1;
+    
+    ! Estimate between-unit component variance
+    RI_A*1 RI_B*1;
+
+    ! Estimate covariance between the random intercepts
+    RI_A WITH RI_B*.3;
+
+    ! Create within-person centered variables
+    wA1 BY A1@1; 
+    wA2 BY A2@1;
+    wA3 BY A3@1;
+
+    wB1 BY B1@1;
+    wB2 BY B2@1;
+    wB3 BY B3@1;    
+     
+    ! Constrain the measurement error variances to zero
+    A1-B3@0;
+    
+    ! Estimate lagged effects between the within-unit centered variables
+    wA2 ON wA1*.5 wB1*.1;  
+    wB2 ON wA1*.4 wB1*.5; 
+    
+    wA3 ON wA2*.5 wB2*.1;  
+    wB3 ON wA2*.4 wB2*.5; 
+    
+    ! Estimate covariance between within-unit components at wave 1
+    wA1 WITH wB1*.3;
+
+    ! Estimate variance of within-unit component at wave 1
+    wA1*1 wB1*1;
+                
+    ! Estimate covariances between residuals of within-unit components
+    wA2 WITH wB2*-.037;
+    wA3 WITH wB3*-.037;
+
+    ! Set (residual) variances
+    wA2*.710 wB2*.470;
+    wA3*.710 wB3*.470;
+
+OUTPUT:     
+    TECH1 SAMPSTAT;        

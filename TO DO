@@ -1,0 +1,8 @@
+To do
+
+X Mplus set population values using *.
+X Print warning messages.
+X Check for precision of SE estimation in Mplus and lavaan. Because the SEAvg (and I believe subsequently the cover95 and sig) column differ slightly between the Mplus and lavaan results.
+- Write tests for testthat.
+- Extend the documentation on the powRICLPM package
+- Read chapter 6 of Hadley's R Packages book

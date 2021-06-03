@@ -1,0 +1,37 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# powRICLPM <a href='https://github.com/jeroendmulder/powRICLPM'>
+
+
+
+The package `powRICLPM` is developed as a tool for easy power analyses for the random intercept cross-lagged panel model. Its main function is `powerRICLPM()` which, based on the arguments, generates data and estimates the RICLPM using the R package `lavaan`, and reports relevant power indices such as the bias, mean square error, and proportion of significant results. Optionally, it can perform power analyses for multiple scenarios simultaneously (i.e., for multiple sample sizes or number of repeated measures), save the generated datasets, or generate syntax for power analysis in Mplus.
+
+These functions are still in beta phase and additional functionality is still added. 
+
+## Installation
+
+You can install the beta version of `powRICLPM` from [GitHub](https://CRAN.R-project.org) with:
+
+``` r
+devtools::install_github("jeroendmulder/powRICLPM")
+```
+
+## Documentation
+Every user-facing function in the package is documented. Documentation can be accessed by `?function_name` in the R console, e.g., `?powerRICLPM`. Furthermore, there are three main vignettes, describing the main and two useful options of the `powRICLPM` package: 
+
+- A vignette about performing a power analysis for a single scenario, as well as multiple scenarios simultaneously 
+- A vignette about generating syntax for power analyses in Mplus
+- A vignette about save the generated datasets

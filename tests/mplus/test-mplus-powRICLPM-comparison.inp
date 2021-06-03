@@ -1,0 +1,88 @@
+TITLE:      
+    Power analysis trivariate RI-CLPM (4 waves)
+    Data generated using powRICLPM-package
+
+DATA:   
+    FILE = repList.dat;
+    TYPE = MONTECARLO;
+
+VARIABLE:
+    NAMES = A1-A4 B1-B4 C1-C4;
+
+ANALYSIS:   
+    MODEL = NOCOV; ! Sets all default covariances to zero
+
+MODEL:
+    ! Create between-unit components (random intercepts)
+    RI_A BY A1@1 A2@1 A3@1 A4@1;
+    RI_B BY B1@1 B2@1 B3@1 B4@1;
+    RI_C BY C1@1 C2@1 C3@1 C4@1;
+    
+    ! Estimate between-unit component variance
+    RI_A RI_B RI_C; 
+
+    ! Estimate covariance between the random intercepts
+    RI_A WITH RI_B;
+    RI_A WITH RI_C;
+    RI_B WITH RI_C;
+
+    ! Create within-person centered variables
+    wA1 BY A1@1; 
+    wA2 BY A2@1;
+    wA3 BY A3@1;
+    wA4 BY A4@1; 
+
+    wB1 BY B1@1;
+    wB2 BY B2@1;
+    wB3 BY B3@1;    
+    wB4 BY B4@1;
+
+    wC1 BY C1@1; 
+    wC2 BY C2@1;
+    wC3 BY C3@1; 
+    wC4 BY C4@1;
+     
+    ! Constrain the measurement error variances to zero
+    A1-C4@0;
+    
+    ! Estimate lagged effects between the within-unit centered variables
+    wA2 ON wA1*.4 wB1*0 wC1*0;  
+    wB2 ON wA1*.2 wB1*.5 wC2*0; 
+    wC2 ON wA1*.3 wB1*.2 wC1*.6;
+    
+    wA3 ON wA2*.4 wB2*0 wC2*0;  
+    wB3 ON wA2*.2 wB2*.5 wC2*0; 
+    wC3 ON wA2*.3 wB2*.2 wC2*.6;
+
+    wA4 ON wA3*.4 wB3*0 wC3*0;  
+    wB4 ON wA3*.2 wB3*.5 wC3*0; 
+    wC4 ON wA3*.3 wB3*.2 wC3*.6;
+    
+    ! Estimate covariance between within-unit components at wave 1
+    wA1 WITH wB1;
+    wA1 WITH wC1;
+    wB1 WITH wC1;
+
+    ! Estimate variance of within-unit component at wave 1
+    wA1 wB1 wC1;
+                
+    ! Estimate covariances between residuals of within-unit components
+    wA2 WITH wB2;
+    wA2 WITH wC2;
+    wB2 WITH wC2; 
+
+    wA3 WITH wB3;
+    wA3 WITH wC3;
+    wB3 WITH wC3;
+    
+    wA4 WITH wB4;
+    wA4 WITH wC4;
+    wB4 WITH wC4;
+
+    ! Set (residual) variances
+    wA2 wB2 wC2;
+    wA3 wB3 wC3;
+    wA4 wB4 wC4;
+
+OUTPUT:     
+    TECH1 SAMPSTAT;        

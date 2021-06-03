@@ -1,0 +1,798 @@
+Mplus VERSION 8.6
+MUTHEN & MUTHEN
+06/03/2021  11:17 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+      Power analysis bivariate RI-CLPM (3 waves)
+      Data generated using powRICLPM-package
+
+  DATA:
+      FILE = nameReps.dat;
+      TYPE = MONTECARLO;
+
+  VARIABLE:
+      NAMES = A1-A3 B1-B3;
+      MISSING = ALL(-999);
+
+  ANALYSIS:
+      MODEL = NOCOV; ! Sets all default covariances to zero
+
+  MODEL:
+      ! Create between-unit components (random intercepts)
+      RI_A BY A1@1 A2@1 A3@1;
+      RI_B BY B1@1 B2@1 B3@1;
+
+      ! Estimate between-unit component variance
+      RI_A*1 RI_B*1;
+
+      ! Estimate covariance between the random intercepts
+      RI_A WITH RI_B*.3;
+
+      ! Create within-person centered variables
+      wA1 BY A1@1;
+      wA2 BY A2@1;
+      wA3 BY A3@1;
+
+      wB1 BY B1@1;
+      wB2 BY B2@1;
+      wB3 BY B3@1;
+
+      ! Constrain the measurement error variances to zero
+      A1-B3@0;
+
+      ! Estimate lagged effects between the within-unit centered variables
+      wA2 ON wA1*.5 wB1*.1;
+      wB2 ON wA1*.4 wB1*.5;
+
+      wA3 ON wA2*.5 wB2*.1;
+      wB3 ON wA2*.4 wB2*.5;
+
+      ! Estimate covariance between within-unit components at wave 1
+      wA1 WITH wB1*.3;
+
+      ! Estimate variance of within-unit component at wave 1
+      wA1*1 wB1*1;
+
+      ! Estimate covariances between residuals of within-unit components
+      wA2 WITH wB2*-.037;
+      wA3 WITH wB3*-.037;
+
+      ! Set (residual) variances
+      wA2*.710 wB2*.470;
+      wA3*.710 wB3*.470;
+
+  OUTPUT:
+      TECH1 SAMPSTAT;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+
+Power analysis bivariate RI-CLPM (3 waves)
+Data generated using powRICLPM-package
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Average number of observations                                 500
+
+Number of replications
+    Requested                                                   96
+    Completed                                                   96
+
+Number of dependent variables                                    6
+Number of independent variables                                  0
+Number of continuous latent variables                            8
+
+Observed dependent variables
+
+  Continuous
+   A1          A2          A3          B1          B2          B3
+
+Continuous latent variables
+   RI_A        RI_B        WA1         WA2         WA3         WB1
+   WB2         WB3
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Multiple data files from
+    nameReps.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA FOR THE FIRST REPLICATION
+
+     Number of missing data patterns             1
+
+
+SUMMARY OF MISSING DATA PATTERNS FOR THE FIRST REPLICATION
+
+
+     MISSING DATA PATTERNS (x = not missing)
+
+           1
+ A1        x
+ A2        x
+ A3        x
+ B1        x
+ B2        x
+ B3        x
+
+
+     MISSING DATA PATTERN FREQUENCIES
+
+    Pattern   Frequency
+          1         500
+
+
+COVARIANCE COVERAGE OF DATA FOR THE FIRST REPLICATION
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+ A1             1.000
+ A2             1.000         1.000
+ A3             1.000         1.000         1.000
+ B1             1.000         1.000         1.000         1.000
+ B2             1.000         1.000         1.000         1.000         1.000
+ B3             1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              B3
+              ________
+ B3             1.000
+
+
+SAMPLE STATISTICS
+
+NOTE:  These are average results over 96 data sets.
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+               -0.013        -0.016        -0.017        -0.011        -0.008
+
+
+           Means
+              B3
+              ________
+               -0.008
+
+
+           Covariances
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+ A1             2.000
+ A2             1.532         2.010
+ A3             1.320         1.538         2.003
+ B1             0.600         0.557         0.497         2.002
+ B2             0.856         0.613         0.563         1.628         2.012
+ B3             0.790         0.861         0.613         1.416         1.627
+
+
+           Covariances
+              B3
+              ________
+ B3             2.002
+
+
+           Correlations
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+ A1             1.000
+ A2             0.764         1.000
+ A3             0.660         0.767         1.000
+ B1             0.300         0.278         0.248         1.000
+ B2             0.427         0.305         0.281         0.811         1.000
+ B3             0.395         0.429         0.306         0.707         0.810
+
+
+           Correlations
+              B3
+              ________
+ B3             1.000
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       26
+
+Loglikelihood
+
+    H0 Value
+
+        Mean                             -4197.002
+        Std Dev                             37.660
+        Number of successful computations       96
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.979        -4284.611      -4303.842
+           0.980       0.979        -4274.345      -4303.842
+           0.950       0.958        -4258.950      -4265.067
+           0.900       0.885        -4245.268      -4248.952
+           0.800       0.771        -4228.697      -4232.501
+           0.700       0.708        -4216.751      -4218.553
+           0.500       0.521        -4197.002      -4194.846
+           0.300       0.312        -4177.253      -4176.981
+           0.200       0.229        -4165.308      -4164.509
+           0.100       0.073        -4148.737      -4152.463
+           0.050       0.052        -4135.055      -4141.683
+           0.020       0.010        -4119.660      -4124.900
+           0.010       0.000        -4109.394      -4121.244
+
+    H1 Value
+
+        Mean                             -4196.482
+        Std Dev                             37.763
+        Number of successful computations       96
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.979        -4284.329      -4303.316
+           0.980       0.979        -4274.035      -4303.316
+           0.950       0.958        -4258.598      -4264.864
+           0.900       0.885        -4244.878      -4248.946
+           0.800       0.771        -4228.263      -4231.992
+           0.700       0.708        -4216.284      -4218.314
+           0.500       0.521        -4196.482      -4194.172
+           0.300       0.302        -4176.679      -4176.978
+           0.200       0.229        -4164.700      -4164.020
+           0.100       0.073        -4148.085      -4152.282
+           0.050       0.052        -4134.365      -4141.595
+           0.020       0.010        -4118.928      -4124.653
+           0.010       0.000        -4108.634      -4120.808
+
+Information Criteria
+
+    Akaike (AIC)
+
+        Mean                              8446.005
+        Std Dev                             75.320
+        Number of successful computations       96
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000         8270.787       8287.555
+           0.980       0.990         8291.320       8287.555
+           0.950       0.948         8322.110       8309.831
+           0.900       0.927         8349.474       8353.489
+           0.800       0.771         8382.615       8377.312
+           0.700       0.688         8406.507       8390.357
+           0.500       0.479         8446.005       8441.417
+           0.300       0.292         8485.503       8482.357
+           0.200       0.229         8509.394       8515.205
+           0.100       0.115         8542.535       8542.732
+           0.050       0.042         8569.899       8565.038
+           0.020       0.021         8600.690       8587.937
+           0.010       0.021         8621.222       8622.723
+
+    Bayesian (BIC)
+
+        Mean                              8555.585
+        Std Dev                             75.320
+        Number of successful computations       96
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000         8380.367       8397.134
+           0.980       0.990         8400.899       8397.134
+           0.950       0.948         8431.690       8419.410
+           0.900       0.927         8459.054       8463.068
+           0.800       0.771         8492.195       8486.892
+           0.700       0.688         8516.087       8499.937
+           0.500       0.479         8555.585       8550.997
+           0.300       0.292         8595.082       8591.937
+           0.200       0.229         8618.974       8624.785
+           0.100       0.115         8652.115       8652.312
+           0.050       0.042         8679.479       8674.618
+           0.020       0.021         8710.270       8697.517
+           0.010       0.021         8730.802       8732.303
+
+    Sample-Size Adjusted BIC (n* = (n + 2) / 24)
+
+        Mean                              8473.059
+        Std Dev                             75.320
+        Number of successful computations       96
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000         8297.841       8314.609
+           0.980       0.990         8318.374       8314.609
+           0.950       0.948         8349.165       8336.885
+           0.900       0.927         8376.528       8380.543
+           0.800       0.771         8409.669       8404.366
+           0.700       0.688         8433.561       8417.411
+           0.500       0.479         8473.059       8468.471
+           0.300       0.292         8512.557       8509.411
+           0.200       0.229         8536.448       8542.259
+           0.100       0.115         8569.589       8569.786
+           0.050       0.042         8596.953       8592.093
+           0.020       0.021         8627.744       8614.991
+           0.010       0.021         8648.276       8649.777
+
+Chi-Square Test of Model Fit
+
+        Degrees of freedom                       1
+
+        Mean                                 1.042
+        Std Dev                              1.256
+        Number of successful computations       96
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       0.990            0.000          0.000
+           0.980       0.969            0.001          0.000
+           0.950       0.958            0.004          0.003
+           0.900       0.917            0.016          0.018
+           0.800       0.844            0.064          0.113
+           0.700       0.740            0.148          0.176
+           0.500       0.552            0.455          0.497
+           0.300       0.323            1.074          1.093
+           0.200       0.229            1.642          1.723
+           0.100       0.125            2.706          2.874
+           0.050       0.062            3.841          3.905
+           0.020       0.000            5.412          4.313
+           0.010       0.000            6.635          4.612
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+        Mean                                 0.016
+        Std Dev                              0.027
+        Number of successful computations       96
+
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       1.000
+           0.700       1.000
+           0.500       1.000
+           0.300       1.000
+           0.200       1.000
+           0.100       1.000
+           0.050       0.833
+           0.020       0.729
+           0.010       0.656
+
+CFI/TLI
+
+    CFI
+
+        Mean                                 1.000
+        Std Dev                              0.000
+        Number of successful computations       96
+
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       0.000
+           0.980       0.000
+           0.950       0.000
+           0.900       0.000
+           0.800       0.000
+           0.700       0.000
+           0.500       0.000
+           0.300       0.000
+           0.200       0.000
+           0.100       0.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
+
+    TLI
+
+        Mean                                 1.000
+        Std Dev                              0.009
+        Number of successful computations       96
+
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       0.156
+           0.980       0.073
+           0.950       0.000
+           0.900       0.000
+           0.800       0.000
+           0.700       0.000
+           0.500       0.000
+           0.300       0.000
+           0.200       0.000
+           0.100       0.000
+           0.050       0.000
+           0.020       0.000
+           0.010       0.000
+
+SRMR (Standardized Root Mean Square Residual)
+
+        Mean                                 0.004
+        Std Dev                              0.003
+        Number of successful computations       96
+
+        Cumulative Distribution Function
+           Value    Function Value
+           0.990       1.000
+           0.980       1.000
+           0.950       1.000
+           0.900       1.000
+           0.800       1.000
+           0.700       1.000
+           0.500       1.000
+           0.300       1.000
+           0.200       1.000
+           0.100       1.000
+           0.050       1.000
+           0.020       1.000
+           0.010       0.917
+
+
+MODEL RESULTS
+
+                              ESTIMATES              S. E.     M. S. E.  95%  % Sig
+                 Population   Average   Std. Dev.   Average             Cover Coeff
+
+ RI_A     BY
+  A1                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+  A2                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+  A3                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ RI_B     BY
+  B1                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+  B2                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+  B3                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WA1      BY
+  A1                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WA2      BY
+  A2                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WA3      BY
+  A3                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WB1      BY
+  B1                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WB2      BY
+  B2                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WB3      BY
+  B3                  1.000     1.0000     0.0000     0.0000     0.0000 1.000 0.000
+
+ WA2      ON
+  WA1                 0.500     0.4984     0.0913     0.1066     0.0082 0.969 0.979
+  WB1                 0.100     0.0970     0.0877     0.0937     0.0076 0.969 0.271
+
+ WB2      ON
+  WA1                 0.400     0.3960     0.0656     0.0668     0.0043 0.958 1.000
+  WB1                 0.500     0.4961     0.0863     0.0885     0.0074 0.948 1.000
+
+ WA3      ON
+  WA2                 0.500     0.5005     0.0745     0.0875     0.0055 0.969 1.000
+  WB2                 0.100     0.0981     0.0849     0.0861     0.0071 0.969 0.250
+
+ WB3      ON
+  WA2                 0.400     0.3965     0.0682     0.0677     0.0046 0.938 1.000
+  WB2                 0.500     0.4827     0.0781     0.0832     0.0063 0.958 1.000
+
+ RI_A     WITH
+  RI_B                0.300     0.2686     0.2305     0.2547     0.0536 0.958 0.406
+
+ WA1      WITH
+  WB1                 0.300     0.3317     0.2293     0.2504     0.0530 0.927 0.042
+
+ WA2      WITH
+  WB2                -0.037    -0.0359     0.0446     0.0466     0.0020 0.979 0.115
+
+ WA3      WITH
+  WB3                -0.037    -0.0362     0.0372     0.0367     0.0014 0.938 0.167
+
+ Intercepts
+  A1                 -0.024    -0.0134     0.0661     0.0632     0.0044 0.948 0.062
+  A2                 -0.002    -0.0165     0.0670     0.0634     0.0046 0.917 0.073
+  A3                 -0.054    -0.0168     0.0643     0.0633     0.0055 0.938 0.083
+  B1                 -0.069    -0.0112     0.0623     0.0633     0.0071 0.844 0.042
+  B2                 -0.053    -0.0080     0.0609     0.0634     0.0057 0.885 0.031
+  B3                 -0.055    -0.0076     0.0613     0.0633     0.0059 0.885 0.042
+
+ Variances
+  RI_A                1.000     0.9475     0.2415     0.2729     0.0605 0.958 0.823
+  RI_B                1.000     0.9588     0.2829     0.3160     0.0809 0.969 0.750
+  WA1                 1.000     1.0529     0.2488     0.2730     0.0641 0.948 0.990
+  WB1                 1.000     1.0436     0.2812     0.3039     0.0802 0.958 0.979
+
+ Residual Variances
+  A1                  0.000     0.0000     0.0000     0.0000     0.0000 1.000 0.000
+  A2                  0.000     0.0000     0.0000     0.0000     0.0000 1.000 0.000
+  A3                  0.000     0.0000     0.0000     0.0000     0.0000 1.000 0.000
+  B1                  0.000     0.0000     0.0000     0.0000     0.0000 1.000 0.000
+  B2                  0.000     0.0000     0.0000     0.0000     0.0000 1.000 0.000
+  B3                  0.000     0.0000     0.0000     0.0000     0.0000 1.000 0.000
+  WA2                 0.710     0.7099     0.0686     0.0760     0.0047 0.958 1.000
+  WA3                 0.710     0.7033     0.0603     0.0606     0.0036 0.917 1.000
+  WB2                 0.470     0.4644     0.0567     0.0551     0.0032 0.958 1.000
+  WB3                 0.470     0.4622     0.0455     0.0440     0.0021 0.969 1.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Average Condition Number for the Information Matrix      0.359E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              B3
+              ________
+                  6
+
+
+           LAMBDA
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+ A1                 0             0             0             0             0
+ A2                 0             0             0             0             0
+ A3                 0             0             0             0             0
+ B1                 0             0             0             0             0
+ B2                 0             0             0             0             0
+ B3                 0             0             0             0             0
+
+
+           LAMBDA
+              WB1           WB2           WB3
+              ________      ________      ________
+ A1                 0             0             0
+ A2                 0             0             0
+ A3                 0             0             0
+ B1                 0             0             0
+ B2                 0             0             0
+ B3                 0             0             0
+
+
+           THETA
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+ A1                 0
+ A2                 0             0
+ A3                 0             0             0
+ B1                 0             0             0             0
+ B2                 0             0             0             0             0
+ B3                 0             0             0             0             0
+
+
+           THETA
+              B3
+              ________
+ B3                 0
+
+
+           ALPHA
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           ALPHA
+              WB1           WB2           WB3
+              ________      ________      ________
+                  0             0             0
+
+
+           BETA
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+ RI_A               0             0             0             0             0
+ RI_B               0             0             0             0             0
+ WA1                0             0             0             0             0
+ WA2                0             0             7             0             0
+ WA3                0             0             0             9             0
+ WB1                0             0             0             0             0
+ WB2                0             0            11             0             0
+ WB3                0             0             0            13             0
+
+
+           BETA
+              WB1           WB2           WB3
+              ________      ________      ________
+ RI_A               0             0             0
+ RI_B               0             0             0
+ WA1                0             0             0
+ WA2                8             0             0
+ WA3                0            10             0
+ WB1                0             0             0
+ WB2               12             0             0
+ WB3                0            14             0
+
+
+           PSI
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+ RI_A              15
+ RI_B              16            17
+ WA1                0             0            18
+ WA2                0             0             0            19
+ WA3                0             0             0             0            20
+ WB1                0             0            21             0             0
+ WB2                0             0             0            23             0
+ WB3                0             0             0             0            25
+
+
+           PSI
+              WB1           WB2           WB3
+              ________      ________      ________
+ WB1               22
+ WB2                0            24
+ WB3                0             0            26
+
+
+     STARTING VALUES
+
+
+           NU
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+               -0.024        -0.002        -0.054        -0.069        -0.053
+
+
+           NU
+              B3
+              ________
+               -0.055
+
+
+           LAMBDA
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+ A1             1.000         0.000         1.000         0.000         0.000
+ A2             1.000         0.000         0.000         1.000         0.000
+ A3             1.000         0.000         0.000         0.000         1.000
+ B1             0.000         1.000         0.000         0.000         0.000
+ B2             0.000         1.000         0.000         0.000         0.000
+ B3             0.000         1.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              WB1           WB2           WB3
+              ________      ________      ________
+ A1             0.000         0.000         0.000
+ A2             0.000         0.000         0.000
+ A3             0.000         0.000         0.000
+ B1             1.000         0.000         0.000
+ B2             0.000         1.000         0.000
+ B3             0.000         0.000         1.000
+
+
+           THETA
+              A1            A2            A3            B1            B2
+              ________      ________      ________      ________      ________
+ A1             0.000
+ A2             0.000         0.000
+ A3             0.000         0.000         0.000
+ B1             0.000         0.000         0.000         0.000
+ B2             0.000         0.000         0.000         0.000         0.000
+ B3             0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              B3
+              ________
+ B3             0.000
+
+
+           ALPHA
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              WB1           WB2           WB3
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           BETA
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+ RI_A           0.000         0.000         0.000         0.000         0.000
+ RI_B           0.000         0.000         0.000         0.000         0.000
+ WA1            0.000         0.000         0.000         0.000         0.000
+ WA2            0.000         0.000         0.500         0.000         0.000
+ WA3            0.000         0.000         0.000         0.500         0.000
+ WB1            0.000         0.000         0.000         0.000         0.000
+ WB2            0.000         0.000         0.400         0.000         0.000
+ WB3            0.000         0.000         0.000         0.400         0.000
+
+
+           BETA
+              WB1           WB2           WB3
+              ________      ________      ________
+ RI_A           0.000         0.000         0.000
+ RI_B           0.000         0.000         0.000
+ WA1            0.000         0.000         0.000
+ WA2            0.100         0.000         0.000
+ WA3            0.000         0.100         0.000
+ WB1            0.000         0.000         0.000
+ WB2            0.500         0.000         0.000
+ WB3            0.000         0.500         0.000
+
+
+           PSI
+              RI_A          RI_B          WA1           WA2           WA3
+              ________      ________      ________      ________      ________
+ RI_A           1.000
+ RI_B           0.300         1.000
+ WA1            0.000         0.000         1.000
+ WA2            0.000         0.000         0.000         0.710
+ WA3            0.000         0.000         0.000         0.000         0.710
+ WB1            0.000         0.000         0.300         0.000         0.000
+ WB2            0.000         0.000         0.000        -0.037         0.000
+ WB3            0.000         0.000         0.000         0.000        -0.037
+
+
+           PSI
+              WB1           WB2           WB3
+              ________      ________      ________
+ WB1            1.000
+ WB2            0.000         0.470
+ WB3            0.000         0.000         0.470
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for Monte Carlo analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  11:17:37
+        Ending Time:  11:17:40
+       Elapsed Time:  00:00:03
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2021 Muthen & Muthen
