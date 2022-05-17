@@ -1,0 +1,87 @@
+---
+title: "Extensions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extensions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The basic power analysis as described in the Vignette [Getting started](https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html) can be extended to using bounded estimation, and estimation with constraints over time. These extensions are described below.
+
+## Bounded estimation with `lavaan`
+To prevent non-convergence for small sample sizes (say, less than 100), bounds can be imposed on the parameter space during estimation of the model [(De Jonckere & Rosseel, 2022)](https://doi.org/10.1080/10705511.2021.1982716). This can aid the optimization algorithm to find unique solutions and prevents it from searching in the completely wrong direction for one, or multiple parameters. Sensible lower bounds involve those on the (residual) variances of latent variables (e.g., the random intercept variances), as negative variances are theoretically not possible. Upper bound for variances are determined based on the observed variances for variable. In the context of the RI-CLPM, the factor loadings are (usually) fixed, and hence these parameters are not estimated. The lagged effects are theoretically infinite, and hence there are no sensible bounds we can place à priori on these parameters. 
+
+Below I demonstrate the use of bounds for the RI-CLPM independently from the `powRICLPM` package first. I start with the generation of a small dataset ($n = 30$) that leads to non-convergence when estimated. Next, I impose the automatic wide bounds as recommended by [(De Jonckere & Rosseel, 2022)](https://doi.org/10.1080/10705511.2021.1982716) and test the convergence again. 
+
+```{r bounded-estimation, eval = F}
+# Population parameter values
+Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = T) 
+wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = T)
+ICC <- 0.5
+RI_cor <- 0.3
+
+# Compute other population parameter values
+RI_var <- powRICLPM::compute_RI_var(ICC = ICC)
+RI_cov <- powRICLPM::compute_RI_cov(RI_cor = RI_cor, RI_var = RI_var)
+Psi <- powRICLPM::compute_Psi(Phi, wSigma)
+
+# Get lavaan model syntax
+model_est <- create_lavaan(time_points = 3,
+                           RI_var = RI_var,
+                           RI_cov = RI_cov,
+                           Phi = Phi,
+                           wSigma = wSigma,
+                           Psi = Psi,
+                           syntax = TRUE,
+                           estimation = TRUE, 
+                           constraints = "none")
+
+model_data <- create_lavaan(time_points = 3,
+                            RI_var = RI_var,
+                            RI_cov = RI_cov,
+                            Phi = Phi,
+                            wSigma = wSigma,
+                            Psi = Psi,
+                            syntax = TRUE,
+                            estimation = FALSE,
+                            constraints = "none")
+
+# Generate data
+set.seed(1) 
+df <- lavaan::simulateData(model = model_data, sample.nobs = 30)
+
+# Estimate model
+fit <- lavaan::lavaan(model = model_est, data = df) 
+inspect(fit, what = "converged")
+coef(fit) # (co)variances of random intercepts completely out of bounds
+
+# Estimate model with wide automatic bounds
+fit_bounds_wide <- lavaan::lavaan(model = model_est,
+                                  data = df,
+                                  optim.bounds = list(lower = c("lv.var"),
+                                                      upper = c("lv.var"),
+                                                      lower.factor = c(1.05),
+                                                      upper.factor = c(1.30)))
+lavaan::parTable(fit_bounds_wide)[, c("lhs", "op", "rhs", "free", "lower", "upper", "est")]
+
+```
+
+These results show that with this small sample size, and without bounds imposed during estimation, `lavaan` fails to find a solution. Upon inspection of the coefficients, we find that the large negative variances of the random intercept factors are causing the problems. However, once the automatic wide bounds are imposed, `lavaan` does converge on the same small data set. Still, the random intercept variances are negative showing that there is too little information in the data to reliable estimate the random intercept variances. 
+
+In the context of `powRICLPM`, it can be useful to impose bounds on the estimation model when simulating the power on small sample sizes. It aids in the prevention of non-convergence, and speeds up the analysis as well. Bounded estimation can be easily done by stating `bounds = TRUE` as an argument in the `powRICLPM()` function. 
+
+## Constraints over time
+`powRICLPM` offers users the option to impose various constraints over time on the estimation model through the `constraints` argument. This has statistical advantages as constraints over time reduce model complexity, thereby potentially reducing convergence issues and increasing power. Moreover, some researchers are interested in so called 'stationarity' constraints for theoretical reasons. Disadvantages of such constraints are that they assume certain parameters over time do not change. This might not be an assumption researchers are willing to make, especially in developmental contexts where you expect lagged effects might change over time (e.g., the variable `wA` gets more important in driving `wB` as one gets older). Therefore, by default `constraints = "none"`, implying that all lagged effects, and within-components (residual) variances and covariances are freely estimated over time. 
+
+You have the option to specify:
+
+- `constraints = "lagged"`: All autoregressive and cross-lagged effects are constrained to be equal over time. 
+- `constraints = "residuals`: The within-unit residual variances and covariance (from wave 2 onwards) are constrained to be equal over time.
+- `constraints = "within"`: Both lagged effects and residual variances and covariances are constrained to be equal over time.
+- `constraints = "stationary"`: Constraints are imposed on the variances of the within-components at the first wave, and residual variances at wave 2 and further, such that the variances of the within-components themselves are all 1. This implies that the variances at the first wave are fixed to 1, and that the residual variances are a function of the lagged effects, and correlation between within-components at the same wave. These constraints are deduced in Mulder (under review).
+
+
+
+
+

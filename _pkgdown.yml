@@ -1,0 +1,43 @@
+destination: docs
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#383838"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+
+home:
+  title: Power analysis for the RI-CLPM
+  links:
+  - text: Learn more
+    href: https://doi.org/10.1080/10705511.2020.1784738
+
+authors:
+  Jeroen D. Mulder:
+  href: https://orcid.org/0000-0002-5553-0856
+
+development:
+  mode: auto
+
+navbar:
+  type: default
+  left:
+  - text: Getting started
+    href: articles/start.html
+  - text: Vignettes
+    menu:
+    - text: Getting started
+      href: articles/start.html
+    - text: Extensions
+      href: articles/extensions.html
+    - text: Using Mplus
+      href: articles/mplus.html
+    - text: Example
+      href: articles/Mulder2022.html
+  - text: News
+    href: news/index.html
+  - text: Reference
+    href: reference/index.html
+  - text: FAQ
+    href: articles/FAQ.html
