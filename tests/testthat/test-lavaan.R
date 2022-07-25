@@ -1,75 +1,33 @@
 test_that("lavaan model syntax creation works", {
   # Create valid create_lavaan() input
+  cond <- data.frame(
+    sample_size = 200,
+    time_points = 3,
+    ICC = 0.3,
+    RI_cor = 0.3,
+    reliability = 1,
+    RI_var = 0.4285714,
+    RI_cov = 0.1285714,
+    ME_var = 0
+  )
   Phi <- matrix(c(.5, .1, .4, .5), ncol = 2, byrow = TRUE)
   wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = TRUE)
   Psi <- matrix(c(0.71, -0.037, -0.037, 0.47), ncol = 2, byrow = TRUE)
-  ICC <- 0.5
-  RI_cor <- 0.3
-  RI_var <- compute_RI_var(ICC)
-  RI_cov <- compute_RI_cov(RI_cor = RI_cor, RI_var = RI_var)
-  constraints <- "stationarity"
+  constraints <- "none"
+  est_ME <- FALSE
+  skewness <- 0
+  kurtosis <- 0
+  alpha <- 0.05
 
   # Generate lavaan parameter table
-  pop_tab <- create_lavaan(
-    time_points = 3,
-    RI_var = RI_var,
-    RI_cov = RI_cov,
-    Phi = Phi,
-    wSigma = wSigma,
-    Psi = Psi,
-    estimation = FALSE,
-    constraints = constraints
-  )
+  lav_out <- powRICLPM:::create_lavaan(cond, Phi, wSigma, Psi, constraints, est_ME, skewness, kurtosis, alpha)
 
-  # Generate lavaan model syntax
-  pop_synt <- create_lavaan(
-    time_points = 3,
-    RI_var = RI_var,
-    RI_cov = RI_cov,
-    Phi = Phi,
-    wSigma = wSigma,
-    Psi = Psi,
-    syntax = TRUE,
-    estimation = FALSE,
-    constraints = constraints
-  )
+  # Test
+  expect_type(lav_out, "list")
+  expect_equal(length(lav_out), 18)
+  expect_equal(names(lav_out), c("sample_size", "time_points", "ICC", "RI_var", "RI_cov", "pop_synt", "pop_tab",
+                                 "est_synt", "est_tab", "est_ME", "skewness", "kurtosis", "alpha", "estimates", "uncertainty",
+                                 "errors", "not_converged", "inadmissible"))
 
-  # Create lavaan syntax for estimating a model
-  est_synt <- create_lavaan(
-    time_points = 3,
-    RI_var = RI_var,
-    RI_cov = RI_cov,
-    Phi = Phi,
-    wSigma = wSigma,
-    Psi = Psi,
-    syntax = TRUE,
-    estimation = TRUE,
-    constraints = constraints
-  )
 
-  # Create lavaan parameter table for estimating model
-  est_tab <- create_lavaan(
-    time_points = 3,
-    RI_var = RI_var,
-    RI_cov = RI_cov,
-    Phi = Phi,
-    wSigma = wSigma,
-    Psi = Psi,
-    estimation = TRUE,
-    constraints = constraints
-  )
-
-  # Test parameter tables
-  expect_type(pop_tab, "list")
-  expect_type(est_tab, "list")
-
-  expect_equal(dim(pop_tab), c(38, 6))
-  expect_equal(dim(est_tab), c(44, 6))
-
-  # Test syntax
-  expect_type(pop_synt, "character")
-  expect_equal(length(pop_synt), 1)
-
-  expect_type(est_synt, "character")
-  expect_equal(length(est_synt), 1)
 })

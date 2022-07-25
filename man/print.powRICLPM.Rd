@@ -2,15 +2,15 @@
 % Please edit documentation in R/print.R
 \name{print.powRICLPM}
 \alias{print.powRICLPM}
-\title{Print `powRICLPM` object}
+\title{Print \code{powRICLPM} object}
 \usage{
 \method{print}{powRICLPM}(x, ...)
 }
 \arguments{
-\item{x}{A `powRICLPM` object.}
+\item{x}{A \code{powRICLPM} object.}
 
 \item{...}{Argument not in use.}
 }
 \description{
-\code{print.powRICLPM} prints a textual summary of the power analysis \emph{design} used to create the `powRICLPM` object. Specifically, it prints the number of Monte Carlo replications that were run, the range of sample sizes, number of repeated measures, and proportions of between-unit variance, and if bounded estimation, constraints over time, or informative hypotheses were used.
+\code{print.powRICLPM} prints a textual summary of the setup of the power analysis within the \code{powRICLPM} object. Specifically, it prints the characteristics of the different experimental conditions, as well as session info (information that applies to every condition).
 }

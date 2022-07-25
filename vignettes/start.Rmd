@@ -7,15 +7,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette details how you can set up and execute a basic power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the `powRICLPM` package. Throughout, an illustrating example will be used in which we wish to detect a small cross-lagged effect $\beta_{2}$ (defined here as the effect of $a_{1}^{*}$ to $b_{2}^{*}$, where $a_{1}^{*}$ and $b_{2}^{*}$ denote the latent within-unit components of $a_{1}$ and $b_{2}$, respectively) of 0.2 (standardized). For the design of our power analysis we follow the strategy as described in Mulder and Hamaker (under review). The basic power analysis described here can be extended to using bounded estimation, and estimation with constraints over time. These extensions are described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
+This vignette details how you can set up and execute a basic power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the `powRICLPM` package. Throughout, an illustrating example will be used in which we wish to detect a small cross-lagged effect $\beta_{2}$ (defined here as the effect of $a_{1}^{*}$ to $b_{2}^{*}$, where $a_{1}^{*}$ and $b_{2}^{*}$ denote the latent within-unit components of $a_{1}$ and $b_{2}$, respectively) of 0.2 (standardized). For the design of our power analysis we follow the strategy as described in Mulder (under review). The basic power analysis described here can be extended with various options, as described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
 
 ## Steps 1: Experimental conditions
 Before performing the power analysis, you must first determine the *experimental conditions* of interest. Experimental conditions (or: simulation conditions) are defined by characteristics of the study design that can impact statistical power. This includes characteristics like the *sample size* and the *number of repeated measures*. You must decide on the number of repeated measures that will be used in the simulations, as well as the range of sample sizes over which you want to simulate the power. 
 
-For this example, we take a sample size range from 100 to 1000 first, increasing with steps of 100. We let the numbers of repeated measures ranging from 3 to 5. If these experimental conditions do not lead to the targeted amount of power for detecting the small cross-lagged effect, the ranges can be extended. 
+For this example, we take a sample size range from 100 to 1000 first, increasing with steps of 100. We let the numbers of repeated measures range from 3 to 5. If these experimental conditions do not lead to the desired amount of power for detecting the small cross-lagged effect, the ranges can be extended. 
 
 ## Steps 2: Choosing population parameter values
-Next, you must determine population parameter values for generating data from the RI-CLPM. Following the strategy as proposed by Mulder and Hamaker (under review), this requires the specification of:
+Next, you must determine population parameter values for generating data from the RI-CLPM. This requires the specification of:
 
 - `Phi`: Standardized autoregressive and cross-lagged effects for the within-unit components of the model. These values are collected in a matrix with columns representing predictors and rows representing outcomes.
 - `wSigma`: A correlation matrix for the within-unit components.
@@ -31,8 +31,8 @@ ICC <- 0.5
 RI_cor <- 0.3
 ```
 
-## Steps 3-6: Performing the power analysis
-Steps 3 to 6 are automated by the `powRICLPM` function. As input, you must provide:
+## Steps 3-5: Performing the power analysis
+Steps 3 to 5 are automated by the `powRICLPM` function. As input, you must provide:
 
 - the desired power level using the `target_power` argument, 
 - the range of sample sizes to simulate the power for using the `search_lower`, `search_upper`, and `search_step` arguments (alternatively, you can specify this directly by providing a vector of sample sizes to the `sample_size` argument), 
@@ -42,13 +42,12 @@ Steps 3 to 6 are automated by the `powRICLPM` function. As input, you must provi
 
 Optionally, you can specify:
 
-- `skewness` and `kurtosis`: An integer (vector) that determines the skewness and kurtosis for the observed variables, respectively. Suppose we have reason to believe the $B$ variables are positively skewed, and that the distribution of $A$ has heavy tails (i.e., a higher kurtosis). To generate data with such skewness and kurtosis, we can include the arguments `skewness = c(0, 0, 0, 1, 1, 1)` and `kurtosis = c(0.5, 0.5, 0.5, 0, 0, 0)`. The first three elements represent the skewness and kurtosis values of observed $A$ variables, and the last three elements represent the skewness and kurtosis values of observed $B$ variables. By default, both arguments are set to 0. 
-- `alpha`: A numeric value denoting the significance criterion. It defaults to 0.05.
+- `skewness` and `kurtosis`: An integer (vector) that determines the skewness and kurtosis for the simulated observed variables, respectively. Suppose we have reason to believe the $A$ and $B$ variables are positively skewed, and have heavy tails (i.e., a higher kurtosis) we can include the arguments `skewness = 1` and `kurtosis = 0.5` (defaults: 0).
+- `alpha`: A numeric value denoting the significance criterion (default: 0.05).
 - `seed`: An integer to control the starting point of the random number generator. This is important to use if you want to replicate the results.
-- `save_path`: A directory to which any (data) files will be written. 
-- `parameter`: A character string denoting the parameter of primary interest. In our example, this is $\beta_{2}$, or `wB2~wA` as the parameter is internally named. For more information on the naming conventions of parameters in the `powRICLPM` package, see "Details" of the `powRICLPM` function documentation via `?powRICLPM` or [https://jeroendmulder.github.io/powRICLPM/reference/powRICLPM.html#details](https://jeroendmulder.github.io/powRICLPM/reference/powRICLPM.html#details). 
+- `reliability`: A numeric value representing the reliability of the indicators (i.e., the proportion of true score variance) (default: 1)
 
-The `constraints`, and `bounds` arguments can be set as well to extend the basic power analysis setup, as described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
+The `constraints`, `bounds`, and `est_ME` arguments can be set as well to extend the basic power analysis setup, as described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
 
 For our example, we can perform the power analysis by running:
 
@@ -62,22 +61,21 @@ output <- powRICLPM(target_power = 0.8,
                     RI_cor = RI_cor, 
                     Phi = Phi,
                     wSigma = wSigma,
-                    reps = 1000,
-                    parameter = `wB2~wA1`)
+                    reps = 1000)
 ```
 
 ### Parallel processing using `furrr`
-Note, however, that performing a Monte Carlo power analysis with a large number of replications, and across multiple simulation conditions (in our illustrative example, we have 57 experimental conditions), can take a lot of time. To speed up the process, it is recommended to perform the power analysis *across simulation conditions* in parallel (i.e., on multiple cores). The `powRICLPM()` function has implemented `future`’s parallel processing capabilities using the `furrr` package. 
+Performing a Monte Carlo power analysis with a large number of replications, and across multiple simulation conditions (in our illustrative example, we have 57 experimental conditions) can take a lot of time. To speed up the process, it is recommended to perform the power analysis *across simulation conditions* in parallel (i.e., on multiple cores). The `powRICLPM()` function has implemented `future`’s parallel processing capabilities using the `furrr` package. 
 
-Use the `plan()` function from the `furrr` package to change the power analysis execution from *sequential* (i.e., single-core, the default), to *multisession* (i.e., multicore). Use the `workers` argument in `plan()` to specify how many cores you want to use. Next, run the `powRICLPM` analysis, and the power analysis will run on the specified number of cores. This can result in a significant reduction of computing time. For more information on other parallel execution strategies, see `?furrr::plan()`. 
+Load the `furrr` package, and use its `plan()` function to change the power analysis execution from *sequential* (i.e., single-core, the default), to *multisession* (i.e., multicore). Use the `workers` argument in `plan()` to specify how many cores you want to use. Next, run the `powRICLPM` analysis, and the power analysis will run on the specified number of cores. This can result in a significant reduction of computing time. For more information on other parallel execution strategies, see `?furrr::plan()`. 
 
 ### Progress bar using `progressr`
-Finally, it can be useful to get an approximation of the progress of the powRICLPM analysis while running the code, especially when running the analysis in parallel. `powRICLPM()` has implemented progress notifications using the `progressr` package. Simply put, there are two options through which you can get progress notification: 
+It can be useful to get an approximation of the progress of the `powRICLPM` analysis while running the code, especially when running the analysis in parallel. `powRICLPM()` has implemented progress notifications using the `progressr` package. Simply put, there are two options through which you can get progress notifications: 
 
-- You can subscribe to progress updates from a specific expression by wrapping this expression with `with_progress({...})`. 
+- You can subscribe to progress updates from a specific expression by wrapping this expression with `with_progress({...})`.
 - You can subscribe to progress updates from everywhere by running `handlers(global = T)`.
 
-The second option is not fully developed yet for the `furrr` package, so instead I focus on the first. Implementing the `with_progress({...})` option, as well as parallel execution of the powRICLPM analysis, results in the below code:
+The second option is not fully developed yet for the `furrr` package, so instead I focus on the first. Implementing the `with_progress({...})` option, as well as parallel execution of the `powRICLPM` analysis, results in the below code:
 
 ```{r furrr-setup, eval = F}
 # Load the furrr package
@@ -110,12 +108,12 @@ plan(sequential)
 
 For more information about progress notification options using `progressr` for end-users, including auditory and email updates, see [https://progressr.futureverse.org](https://progressr.futureverse.org). 
 
-## Step 7: Summarize results
-The `powRICLPM()` function creates a `powRICLPM` object: A list with results, upon which we can call `print()`, `summary()`, `coef()`, and `plot()` functions to extract, summarize, and optionally visualize the results from the analysis. 
+## Step 6: Summarize results
+The `powRICLPM()` function creates a `powRICLPM` object: A list with results, upon which we can call `print()`, `summary()`, `give()`, and `plot()` functions to print, summarize, extract results, and optionally visualize the results from the analysis, respectively.
 
 `print()` outputs a textual summary of the power analysis design contained within the object it was called upon. It does not output any performance metrics computed by the power analysis. 
 
-`summary()` can be used in one of four ways. First, summary can be used simply like `print()` to get general information about the design of the power analysis, as well as recommendations about how to further explore the results. Second, by specifying the `parameter` argument in `summary()`, or if the `parameter` argument was specified as part of the `powRICLM(..., parameter = ...)` function, the function will print additional results and recommendations specifically for that parameter. Third, if you specify both the parameter of interest and a experimental condition of interest (by specifying a sample size, number of time points and ICC using the `sample_size`, `time_points`, and `ICC` arguments in `summary()`), the function displays performance measures specifically for that parameter in that experimental condition. Fourth, to get an overview of the parameter names contained in the object, use `names = TRUE`. 
+`summary()` can be used in one of four ways. First, summary can be used simply like `print()` to get information about the design of the power analysis (the different experimental conditions), as well as the number of problems the occured per condition (e.g., non-convergence, fatal estimation errors, or inadmissible results). Second, by specifying the `parameter = "..."` argument in `summary()`, the function will print the results specifically for that parameter across all experimental conditions. Third, if you specify a specific experimental condition (by specifying a sample size, number of time points and ICC using the `sample_size`, `time_points`, and `ICC` arguments), the function displays performance measures for all parameters in that experimental condition. 
 
 ```{r summary, eval = F}
 # 1. General results
@@ -125,27 +123,36 @@ summary(output)
 summary(output, parameter = "wB2~wA1")
 
 # 3. Display parameter-specific and condition-specific performance metrics
-summary(output, parameter = "wB2~wA1", sample_size = 400, time_points = 4, ICC = 0.5)
+summary(output, sample_size = 400, time_points = 4, ICC = 0.5)
 
-# 4. Get names contains in `output`
-summary(output, names = TRUE)
 ```
 
-`coef()` extracts performance measures across experimental conditions from an `powRICLPM` object for a specific parameter. By specifying the `parameter` argument in `coef()`, or if the `parameter` argument was specified in the `powRICLM()` function, `coef()` creates a data frame with experimental conditions represented by rows, and the performance measures in the columns. If you specify the parameter of interest and the experimental condition of interest (by specifying a sample size, number of time points and ICC using the `sample_size`, `time_points`, and `ICC` arguments in `coef()`), the function displays all performance measures specifically for that parameter in that experimental condition. For a list of performance measures that are computed for each experimental condition, see "Details" of the `powRICLPM()` function documentation via `?powRICLPM`. 
+`give()` extracts various bits of information from an `powRICLPM` object. The exact information to be extracted is given by the `what = "..."` argument: 
 
-```{r coef, eval = F}
-# Extract parameter-specific performance metrics
-coef(output, parameter = "wB2~wA1")
+1. `what = "conditions"` gives the different experimental conditions per row, where each condition is defined by a unique combination of sample size, number of time points and ICC.
+2. `what = "estimation_problems"` gives the proportion of fatal errors, inadmissible values, or non-converged estimations (columns) per experimental conditions (row). 
+3. `what = "results"` gives the average estimate `Avg`, minimum estimate `Min`, standard deviation of parameter estimates `stdDev`, the average standard error `SEavg`, the mean square error `MSE`, the average width of the confidence interval `Acc`, the coverage rate `Cov`, and the proportion of times the *p*-value was lower than the significance criterion `Pow`. It requires setting the `parameter = "..."` argument.
+4. `what = "names"` gives the parameter names contained within the `powRICLPM` object.
 
-# Extract parameter- and condition-specific performance metrics
-coef(output, parameter = "wB2~wA1", sample_size = 400, time_points = 4, ICC = 0.5)
+```{r give, eval = F}
+# 1. Extract experimental conditions
+give(output, what = "conditions")
+
+# 2. Extract estimation problems
+give(output, what = "estimation_problems")
+
+# 3. Extract results for cross-lagged effect "wB2~wA1" 
+give(output, what = "results", parameter = "wB2~wA1")
+
+# 4. Extract parameter names
+give(output, what = "names")
 ```
 
-Finally, `plot()` creates a `ggplot2`-plot with sample size on the x-axis, the simulated power on the y-axis, lines grouped by number of time-points, and plots wrapped by proportion of between-unit variance. `plot()` returns a `ggplot2` object that can be fully customized using `ggplot2` functionality. For example, you can change the scales, add titles, change geoms, etc. More information about options in the `ggplot2` framework can be found at [https://ggplot2-book.org/index.html](https://ggplot2-book.org/index.html). In the below example, I add a title and change the labels on the x-axis: 
+Finally, `plot()` creates a `ggplot2`-plot for a specific parameter (specified using the `parameter = "..."` argument) with sample size on the x-axis, the simulated power on the y-axis, lines grouped by number of time-points, and plots wrapped by proportion of between-unit variance. `plot()` returns a `ggplot2` object that can be fully customized using `ggplot2` functionality. For example, you can change the scales, add titles, change geoms, etc. More information about options in the `ggplot2` framework can be found at [https://ggplot2-book.org/index.html](https://ggplot2-book.org/index.html). In the below example, I add a title and change the labels on the x-axis: 
 
 ```{r plot, eval = FALSE}
 # Create basic plot of powRICLPM object
-p <- plot(output)
+p <- plot(output, parameter = "wB2~wA1")
 p
 
 # Adjust plot aesthetics

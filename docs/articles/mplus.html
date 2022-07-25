@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,12 +89,34 @@
 
     
     
-<p>This vignette details how you can automatically create Mplus model syntax for performing a power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the Mplus software package. This might be preferred by some researchers as Monte Carlo simulations are much faster in Mplus than in R, or for reasons of convention. A disadvantage of using Mplus is that power analysis cannot be performed across multiple experimental conditions simultaneously, it requires additional effort to understand all of the output one gets, and that it is a paid option.</p>
-<p>Using <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code>, you can create Mplus model syntax for multiple experimental conditions simultaneously (although you would then still need run each script separately in Mplus itself). The function works similarly to <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> in that it implements the procedure for computing population parameter values as proposed by Mulder and Hamaker (under review). As such, let’s use the same illustrating example as explained in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html" class="external-link">Getting started</a>.</p>
+<p>This vignette details how you can automatically create Mplus model
+syntax for performing a power analysis for a bivariate random intercept
+cross-lagged panel model (RI-CLPM) using the Mplus software package.
+This might be preferred by some researchers as Monte Carlo simulations
+are much faster in Mplus than in R, or for reasons of convention. A
+disadvantage of using Mplus is that power analysis cannot be performed
+across multiple experimental conditions simultaneously, it requires
+additional effort to understand all of the output one gets, and that it
+is a paid option.</p>
+<p>Using <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code>, you can create Mplus model
+syntax for multiple experimental conditions simultaneously (although you
+would then still need run each script separately in Mplus itself). The
+function works similarly to <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> in that it
+implements the procedure for computing population parameter values as
+proposed by Mulder and Hamaker (under review). As such, let’s use the
+same illustrating example as explained in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html" class="external-link">Getting
+started</a>.</p>
 <div class="section level2">
-<h2 id="steps-1-and-2-experimental-conditions-and-population-parameter-values">Steps 1 and 2: Experimental conditions and population parameter values<a class="anchor" aria-label="anchor" href="#steps-1-and-2-experimental-conditions-and-population-parameter-values"></a>
+<h2 id="steps-1-and-2-experimental-conditions-and-population-parameter-values">Steps 1 and 2: Experimental conditions and population parameter
+values<a class="anchor" aria-label="anchor" href="#steps-1-and-2-experimental-conditions-and-population-parameter-values"></a>
 </h2>
-<p>For our example, we will investigate the power to detect a small standardized cross-lagged effect of <span class="math inline">\(0.2\)</span> for sample sizes from 100 to 1000 (with incremental steps of 50) for an RI-CLPM with 3, 4 and 5 repeated measures. In total, this results in <span class="math inline">\(19 \times 3 = 57\)</span> experimental conditions. Moreover, following the example in the <a href="https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html" class="external-link">Getting started</a> Vignette, our population parameter values are:</p>
+<p>For our example, we will investigate the power to detect a small
+standardized cross-lagged effect of <span class="math inline">\(0.2\)</span> for sample sizes from 100 to 1000
+(with incremental steps of 50) for an RI-CLPM with 3, 4 and 5 repeated
+measures. In total, this results in <span class="math inline">\(19
+\times 3 = 57\)</span> experimental conditions. Moreover, following the
+example in the <a href="https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html" class="external-link">Getting
+started</a> Vignette, our population parameter values are:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Phi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="co"># The .2 refers to our standardized cross-lagged effect of interest</span>
 <span class="va">wSigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">.3</span>, <span class="fl">.3</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
@@ -102,16 +124,24 @@
 <span class="va">RI_cor</span> <span class="op">&lt;-</span> <span class="fl">0.3</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="steps-3-6-perform-the-power-analysis">Steps 3-6: Perform the power analysis<a class="anchor" aria-label="anchor" href="#steps-3-6-perform-the-power-analysis"></a>
+<h2 id="steps-3-5-perform-the-power-analysis">Steps 3-5: Perform the power analysis<a class="anchor" aria-label="anchor" href="#steps-3-5-perform-the-power-analysis"></a>
 </h2>
-<p>To create Mplus model syntax, use the <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code> function. You must provide:</p>
+<p>To create Mplus model syntax, use the <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code>
+function. You must provide:</p>
 <ul>
-<li>the range of sample sizes to simulate the power for using the <code>search_lower</code>, <code>search_upper</code>, and <code>search_step</code> arguments,</li>
-<li>the number of repeated measures using the <code>time_points</code> argument,</li>
-<li>the population values <code>Phi</code>, <code>wSigma</code>, <code>ICC</code>, and <code>RI_cor</code>,</li>
-<li>the number of MCMC replications you want to perform per condition in the <code>reps</code> argument,</li>
-<li>a <code>seed</code> to control the starting point of the random number generator, and</li>
-<li>a <code>save_path</code>, denoting the directory to which to save the Mplus input file to.</li>
+<li>the range of sample sizes to simulate the power for using the
+<code>search_lower</code>, <code>search_upper</code>, and
+<code>search_step</code> arguments,</li>
+<li>the number of repeated measures using the <code>time_points</code>
+argument,</li>
+<li>the population values <code>Phi</code>, <code>wSigma</code>,
+<code>ICC</code>, and <code>RI_cor</code>,</li>
+<li>the number of MCMC replications you want to perform per condition in
+the <code>reps</code> argument,</li>
+<li>a <code>seed</code> to control the starting point of the random
+number generator, and</li>
+<li>a <code>save_path</code>, denoting the directory to which to save
+the Mplus input file to.</li>
 </ul>
 <p>For our example, we would specify:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -126,12 +156,20 @@
                 reps <span class="op">=</span> <span class="fl">10000</span>,
                 seed <span class="op">=</span> <span class="fl">123456</span>,
                 save_path <span class="op">=</span> <span class="st">"./saved"</span><span class="op">)</span></code></pre></div>
-<p>The <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code> creates an Mplus input file (or multiple files when multiple experimental conditions are specified) and writes it to the specified directory. The file contains the Mplus model syntax needed to run a power analysis for the RI-CLPM in Mplus. More information about Monte Carlo simulations in Mplus can be found at <a href="http://statmodel.com/download/usersguide/Chapter12.pdf" class="external-link">http://statmodel.com/download/usersguide/Chapter12.pdf</a>.</p>
+<p>The <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code> creates an Mplus input file (or
+multiple files when multiple experimental conditions are specified) and
+writes it to the specified directory. The file contains the Mplus model
+syntax needed to run a power analysis for the RI-CLPM in Mplus. More
+information about Monte Carlo simulations in Mplus can be found at <a href="http://statmodel.com/download/usersguide/Chapter12.pdf" class="external-link">http://statmodel.com/download/usersguide/Chapter12.pdf</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="step-7-summarize-results">Step 7: Summarize results<a class="anchor" aria-label="anchor" href="#step-7-summarize-results"></a>
+<h2 id="step-6-summarize-results">Step 6: Summarize results<a class="anchor" aria-label="anchor" href="#step-6-summarize-results"></a>
 </h2>
-<p>To get output, run each Mplus model syntax file in Mplus. Each time, a .out (a text file) is created summarizing the results of the Mplus power analysis. A good source for interpreting this output in the context of a MONTECARLO study is <a href="https://doi.org/10.1207/S15328007SEM0904_8" class="external-link">Muthén and Muthén (2002)</a>.</p>
+<p>To get output, run each Mplus model syntax file in Mplus. Each time,
+a .out (a text file) is created summarizing the results of the Mplus
+power analysis. A good source for interpreting this output in the
+context of a MONTECARLO study is <a href="https://doi.org/10.1207/S15328007SEM0904_8" class="external-link">Muthén and Muthén
+(2002)</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -1,6 +1,6 @@
-#' Prepare Monte Carlo power analysis
+#' Set up \code{powRICLPM} analysis
 #'
-#' `setup()` restructures the arguments of `powRICLPM()` in a list, such that it can be used to call `run()` on to perform the Monte Carlo power analysis. Additionally, it computes objects needed to perform the Monte Carlo power analysis and includes them in the list too.
+#' \code{setup()} restructures the arguments of \code{powRICLPM()} in a list, such that it can be used by \code{run()}, performing a Monte Carlo power analysis for each experimental condition.
 #'
 #' @inheritParams powRICLPM
 #'
@@ -13,149 +13,67 @@ setup <- function(target_power,
                   Phi,
                   wSigma,
                   Psi,
+                  reliability,
                   skewness,
                   kurtosis,
+                  est_ME,
                   alpha,
                   reps,
+                  bootstrap_reps,
                   seed,
-                  save_path,
-                  parameter,
                   constraints,
-                  bounds) {
+                  bounds,
+                  estimator) {
 
-  # Create sample_size, time_points, and ICC elements for powRICLPM condition list
-  grid <- expand.grid(
+  # Create experimental conditions
+  params <- expand.grid(
     sample_size = sample_size,
     time_points = time_points,
     ICC = ICC,
-    RI_cor = RI_cor
+    RI_cor = RI_cor,
+    reliability = reliability
   )
-
-  # Compute RI_var and RI_cor based on ICC in each condition
-  grid$RI_var <- purrr::map_dbl(grid$ICC, compute_RI_var)
-  grid$RI_cov <- purrr::map2_dbl(grid$RI_cor, grid$RI_var, compute_RI_cov)
+  params$RI_var <- purrr::map_dbl(params$ICC, compute_RI_var)
+  params$RI_cov <- purrr::map2_dbl(params$RI_cor, params$RI_var, compute_RI_cov)
+  params$ME_var <- purrr::map2_dbl(params$RI_var, params$reliability, compute_ME_var)
 
   # Create lavaan syntax for generating data
-  pop_synt <- purrr::pmap(
-    list(grid$time_points, grid$RI_var, grid$RI_cov),
-    function(time_points, RI_var, RI_cov) {
-      create_lavaan(
-        time_points = time_points,
-        RI_var = RI_var,
-        RI_cov = RI_cov,
-        Phi = Phi,
-        wSigma = wSigma,
-        Psi = Psi,
-        syntax = TRUE,
-        estimation = FALSE,
-        constraints = constraints
-      )
-    }
+  conds <- lapply(
+    X = asplit(params, MARGIN = 1), # List of rows
+    FUN = create_lavaan,
+    Phi = Phi,
+    wSigma = wSigma,
+    Psi = Psi,
+    constraints = constraints,
+    est_ME = est_ME,
+    skewness = skewness,
+    kurtosis = kurtosis,
+    alpha = alpha
   )
-
-  # Create lavaan parameter table for population model
-  pop_tab <- purrr::pmap(
-    list(grid$time_points, grid$RI_var, grid$RI_cov),
-    function(time_points, RI_var, RI_cov) {
-      create_lavaan(
-        time_points = time_points,
-        RI_var = RI_var,
-        RI_cov = RI_cov,
-        Phi = Phi,
-        wSigma = wSigma,
-        Psi = Psi,
-        estimation = FALSE,
-        constraints = constraints
-      )
-    }
-  )
-
-  # Create lavaan syntax for estimating the model
-  est_synt <- purrr::pmap(
-    list(grid$time_points, grid$RI_var, grid$RI_cov),
-    function(time_points, RI_var, RI_cov) {
-      create_lavaan(
-        time_points = time_points,
-        RI_var = RI_var,
-        RI_cov = RI_cov,
-        Phi = Phi,
-        wSigma = wSigma,
-        Psi = Psi,
-        estimation = TRUE,
-        syntax = TRUE,
-        constraints = constraints
-      )
-    }
-  )
-
-
-  # Create lavaan parameter table for estimating model
-  est_tab <- purrr::pmap(
-    list(grid$time_points, grid$RI_var, grid$RI_cov),
-    function(time_points, RI_var, RI_cov) {
-      create_lavaan(
-        time_points = time_points,
-        RI_var = RI_var,
-        RI_cov = RI_cov,
-        Phi = Phi,
-        wSigma = wSigma,
-        Psi = Psi,
-        estimation = TRUE,
-        constraints = constraints
-      )
-    }
-  )
-
-  # Create list with each element containing info for a single condition
-  conditions <- purrr::pmap(
-    list(
-      grid$sample_size,
-      grid$time_points,
-      grid$ICC,
-      grid$RI_var,
-      grid$RI_cov,
-      reps,
-      pop_synt,
-      pop_tab,
-      est_synt,
-      est_tab,
-      skewness,
-      kurtosis,
-      alpha,
-      save_path
-    ),
-    list
-  )
-
-  # Name elements in powRICLPM condition list
-  conditions <- purrr::map(conditions, function(x) {
-    names(x) <- c(
-      "sample_size", "time_points", "ICC", "RI_var", "RI_cov",
-      "reps", "pop_synt", "pop_tab", "est_synt", "est_tab",
-      "skewness", "kurtosis", "alpha", "save_path"
-    )
-    return(x)
-  })
 
   # Create powRICLPM object, combining conditions and general session info
   object <- list(
-    conditions = conditions,
+    conditions = conds,
     session = list(
       Psi = Psi,
+      reliability = reliability,
+      est_ME = est_ME,
       reps = reps,
+      bootstrap_reps = bootstrap_reps,
       target_power = target_power,
-      save_path = save_path,
-      parameter = parameter,
       constraints = constraints,
-      bounds = bounds
+      bounds = bounds,
+      estimator = estimator,
+      version = utils::packageVersion("powRICLPM")
     )
   )
+  rm(params, conds)
   return(object)
 }
 
-#' Prepare Mplus power analysis
+#' Set up \code{powRICLPM} analysis for Mplus
 #'
-#' `setup_Mplus()` restructures the arguments of `powRICLPM_Mplus()` in a list, such that we can generate Mplus syntax for the Monte Carlo power analysis. Additionally, it computes objects needed to perform the Monte Carlo power analysis and includes them in the list too.
+#' \code{setup_Mplus()} restructures the arguments of \code{powRICLPM_Mplus()} in a list, such that we can generate Mplus syntax for a Monte Carlo power analysis.
 #'
 #' @inheritParams powRICLPM
 #'

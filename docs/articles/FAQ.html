@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,19 +98,81 @@ function showHide(element) {
         x.style.display = "none";
     }
 }
-</script><p>Below you can find a list of frequently asked questions, organized by topic, that reach us via email. Click the question to see our response.</p>
+</script><p>Below you can find a list of frequently asked questions, organized by
+topic, that reach us via email. Click the question to see our
+response.</p>
 <hr>
 <div class="section level2">
 <h2 id="extensions">Extensions<a class="anchor" aria-label="anchor" href="#extensions"></a>
 </h2>
 <hr>
 <div onclick="showHide('faq1')" style="cursor: pointer; font-weight:bold">
-The RI-CLPM with multiple indicators
+<p>The RI-CLPM with multiple indicators</p>
 </div>
 <div id="faq1" style="display:none">
-<p>Unfortunately, the <code>powRICLPM</code> package does not have the functionality (yet) to include multiple indicator extensions of the RI-CLPM. However, one can use Mplus’s Monte Carlo functionalities to specify multiple indicator RI-CLPMs (MI-RICLPM) and simulate their power. Furthermore, there are some general comments to be made about the effect of including multiple indicators on power. For example, <a href="https://doi.org/10.1348/000711010X486633" class="external-link">Oertzen, Hertzog, Lindenberger, and Ghisletta (2010)</a> claim that the the separation of measurement error from true score variance increases power, and that this principle generalizes to all structural equation models, regardless of the regression model linking the latent variables. This implies that MI-RICLPM’s have more power than the basic RI-CLPM.</p>
-<p>To verify this, a small simulation study was performed using Mplus (model syntax for these simulations can be found on <a href="https://github.com/JeroenDMulder/powRICLPM/" class="external-link">GitHub</a>). 10,000 datasets were generated from an MI-RICLPM with a latent factor per occasion and with three indicators. These factors contain a trait-like part that is captured by the higher-order random intercepts, and a state-like part that is used to capture the dynamics over time (see bottom panel of Figure 3 in <a href="https://doi.org/10.1080/10705511.2020.1784738" class="external-link">Mulder and Hamaker, 2021</a>). The factor loadings linking the indicators with the latent factor were set to 1, measurement error variances were set to 0.5, and the cross-lagged effects were fixed at 0.2. All other population parameter values were kept the same as in the illustrative example in Mulder (under review), implying that the proportion of measurement error in the observed variables was <span class="math inline">\(20\%\)</span>. The simulated data sets were analysed using the MI-RICLPM that generated the data (and separates out measurement error variance), and a basic RI-CLPM (assuming no measurement error, using only the first indicator). Results show that the power to detect non-zero lagged effects is indeed larger in the MI-RICLPM (ranging from 0.89 to 0.93 for the standardized cross-lagged effects of 0.2, and from 0.927 to 0.939 for the standardized autoregressive effects of 0.3) than in the basic RI-CLPM (ranging from 0.70 to 0.74 for the same standardized cross-lagged effects of 0.2, and from 0.807 to 0.827 for the standardized autoregressive effects of 0.3).</p>
-All in all, while the inclusion of multiple indicators complicates the RI-CLPM power analysis, it can be generally stated that the separation of measurement error and true score variance through the extension with multiple indicators is beneficial for the power to detect lagged effects. As measurements, especially in the social and behavioural sciences are prone to include measurement error, this extension may be well-worth considering from a power point-of-view.
+<p>Unfortunately, the <code>powRICLPM</code> package does not have the
+functionality (yet) to include multiple indicator extensions of the
+RI-CLPM. However, one can use Mplus’s Monte Carlo functionalities to
+specify multiple indicator RI-CLPMs (MI-RICLPM) and simulate their
+power. Furthermore, there are some general comments to be made about the
+effect of including multiple indicators on power. For example, <a href="https://doi.org/10.1348/000711010X486633" class="external-link">Oertzen, Hertzog,
+Lindenberger, and Ghisletta (2010)</a> claim that the the separation of
+measurement error from true score variance increases power, and that
+this principle generalizes to all structural equation models, regardless
+of the regression model linking the latent variables. This implies that
+MI-RICLPM’s have more power than the basic RI-CLPM.</p>
+<p>To verify this, a small simulation study was performed using Mplus
+(model syntax for these simulations can be found on <a href="https://github.com/JeroenDMulder/powRICLPM/" class="external-link">GitHub</a>). 10,000
+datasets were generated from an MI-RICLPM with a latent factor per
+occasion and with three indicators. These factors contain a trait-like
+part that is captured by the higher-order random intercepts, and a
+state-like part that is used to capture the dynamics over time (see
+bottom panel of Figure 3 in <a href="https://doi.org/10.1080/10705511.2020.1784738" class="external-link">Mulder and Hamaker,
+2021</a>). The factor loadings linking the indicators with the latent
+factor were set to 1, measurement error variances were set to 0.5, and
+the cross-lagged effects were fixed at 0.2. All other population
+parameter values were kept the same as in the illustrative example in
+Mulder (under review), implying that the proportion of measurement error
+in the observed variables was <span class="math inline">\(20\%\)</span>.
+The simulated data sets were analysed using the MI-RICLPM that generated
+the data (and separates out measurement error variance), and a basic
+RI-CLPM (assuming no measurement error, using only the first indicator).
+Results show that the power to detect non-zero lagged effects is indeed
+larger in the MI-RICLPM (ranging from 0.89 to 0.93 for the standardized
+cross-lagged effects of 0.2, and from 0.927 to 0.939 for the
+standardized autoregressive effects of 0.3) than in the basic RI-CLPM
+(ranging from 0.70 to 0.74 for the same standardized cross-lagged
+effects of 0.2, and from 0.807 to 0.827 for the standardized
+autoregressive effects of 0.3).</p>
+<p>All in all, while the inclusion of multiple indicators complicates
+the RI-CLPM power analysis, it can be generally stated that the
+separation of measurement error and true score variance through the
+extension with multiple indicators is beneficial for the power to detect
+lagged effects. As measurements, especially in the social and
+behavioural sciences are prone to include measurement error, this
+extension may be well-worth considering from a power point-of-view.</p>
+</div>
+<div onclick="showHide('faq2')" style="cursor: pointer; font-weight:bold">
+<p>The multiple indicator RI-CLPM</p>
+</div>
+<div id="faq2" style="display:none">
+<p>The multiple group RI-CLPM is based on fitting a multiple group
+version of the RI-CLPM both with and without constraints across groups
+(e.g., the constraint of equal lagged effects), and comparing the model
+fit to determine whether the imposed constraints are tenable. Power thus
+refers to the probability of rejecting a bad-fitting model due to
+untenable across-group constraints in this context, rather than
+rejecting the null-hypothesis for a specific parameter. The effect size
+then refers to how much worse the constrained model fits the data
+compared to the more general model (with less, or no across-group
+constraints). Analytic solutions, like the likelihood ratio test by <a href="https://doi.org/10.1007/BF02294150" class="external-link">Satorra and Saris (1985)</a>
+or power analyses based on the RMSEA by <a href="https://doi.org/10.1037/1082-989X.1.2.130" class="external-link">MacCallum, Browne, and
+Sugawara (1996)</a>, are more efficient to use for these types of power
+analyses than computationally intensive Monte Carlo simulation studies.
+See, for example, the <code>SSpower()</code> function from the R-package
+<code>semTools</code> for multiple group SEM power analysis by <a href="https://doi.org/10.3758/s13428-020-01479-0" class="external-link">Jak, Jorgensen,
+Verdam, Oort, and Elffers (2020)</a>, and <a href="https://cran.r-project.org/package=semTools" class="external-link">Jorgensen,
+Pornprasertmanit, Schoeman, and Rosseel (2021)</a>.</p>
 </div>
 </div>
   </main>

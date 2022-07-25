@@ -20,7 +20,7 @@ ICC <- 0.5
 RI_cor <- 0.3
 ```
 
-## Steps 3-6: Perform the power analysis
+## Steps 3-5: Perform the power analysis
 To create Mplus model syntax, use the `powRICLPM_Mplus()` function. You must provide:
 
 - the range of sample sizes to simulate the power for using the `search_lower`, `search_upper`, and `search_step` arguments,
@@ -48,5 +48,5 @@ powRICLPM_Mplus(search_lower = 100,
 
 The `powRICLPM_Mplus()` creates an Mplus input file (or multiple files when multiple experimental conditions are specified) and writes it to the specified directory. The file contains the Mplus model syntax needed to run a power analysis for the RI-CLPM in Mplus. More information about Monte Carlo simulations in Mplus can be found at [http://statmodel.com/download/usersguide/Chapter12.pdf](http://statmodel.com/download/usersguide/Chapter12.pdf).
 
-## Step 7: Summarize results
+## Step 6: Summarize results
 To get output, run each Mplus model syntax file in Mplus. Each time, a .out (a text file) is created summarizing the results of the Mplus power analysis. A good source for interpreting this output in the context of a MONTECARLO study is [Muthén and Muthén (2002)](https://doi.org/10.1207/S15328007SEM0904_8).

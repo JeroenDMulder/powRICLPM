@@ -1,8 +1,8 @@
 #' @title
-#' Create Mplus Model Syntax for RICLPM Power Analysis
+#' Create Mplus model syntax for RICLPM power analysis
 #'
 #' @description
-#' Creates Mplus model syntax for a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM).
+#' \code{create_Mplus()} creates Mplus model syntax for a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM).
 #'
 #' @param input A list with elements representing input for the Monte Carlo power analysis. See "Details" for the required elements in \code{input}.
 #'
@@ -25,6 +25,8 @@
 #' \subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
 #'
 #' @return NULL
+#'
+#' @noRd
 create_Mplus <- function(input) {
 
   # Number of variables

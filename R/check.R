@@ -1,6 +1,6 @@
 #' Check if matrix is positive definite
 #'
-#' `is_PD()` determines if matrix `x` is positive definite by checking if the eigenvalues are non-negative. The function also handles complex eigenvalues.
+#' \code{is_PD()} determines if matrix \code{x} is positive definite by checking if the eigenvalues are non-negative. The function also handles complex eigenvalues.
 #'
 #' @param x A square matrix.
 #'
@@ -21,7 +21,7 @@ is_PD <- function(x) {
 
 #' Check if the implied process is stationary
 #'
-#' `is_unit()` checks if the process implied by the regression matrix `x` is stationary, by testing if its eigenvalues lie within the unit circle.
+#' \code{is_unit()} checks if the process implied by the regression matrix \code{x} is stationary, by testing if its eigenvalues lie within the unit circle.
 #'
 #' @param x A square matrix.
 #'
@@ -41,93 +41,93 @@ is_unit <- function(x) {
 }
 
 
-#' Check `time_points` argument
+#' Check \code{time_points} argument
 #'
-#' `check_T()` checks if the `time_points` argument represents (a) valid number(s) of repeated measures.
+#' \code{check_T()} checks if the \code{time_points} argument represents (a) valid number(s) of repeated measures.
 #'
-#' @param x An integer vector.
+#' @inheritParams powRICLPM
 #'
 #' @noRd
-check_T <- function(x) {
-  if (!all(is.numeric(x))) {
+check_T <- function(time_points, est_ME) {
+  if (!all(is.numeric(time_points))) {
     stop(rlang::format_error_bullets(c(
       "`time_points` must be an integer vector:",
       x = "Not all elements are numeric."
     )))
   }
-  if (!all(x %% 1 == 0)) {
+  if (!all(time_points %% 1 == 0)) {
     stop(rlang::format_error_bullets(c(
       "`time_points` must be an integer vector:",
       x = "Not all elements are integers."
     )))
   }
-  if (any(x < 3)) {
+  if (any(time_points < 3) && !est_ME) {
     stop(rlang::format_error_bullets(c(
       "Elements in `time_points` should be larger than 2:",
       i = "The RI-CLPM is not identified with fewer than 3 time points.",
       x = "You've supplied a number of time points smaller than 3."
     )))
   }
-  if (any(x > 20)) {
+  if (any(time_points < 4) && est_ME) {
+    stop(rlang::format_error_bullets(c(
+      "Elements in `time_points` should be larger than 3:",
+      i = "If you want to estimate measurement errors, you should have at least 4 waves of data.",
+      x = "You've supplied a number of time points smaller than 3."
+    )))
+  }
+  if (any(time_points > 20)) {
     warning(rlang::format_error_bullets(c(
       "You've supplied (a) large number(s) of time points:",
       i = "This can lead to computational problems in estimation.",
-      " " = "You want to consider methods for intensive longitudinal data."
+      " " = "You might want to consider methods for intensive longitudinal data."
     )))
   }
-  return(x)
+  return(time_points)
 }
 
-#' Check `sample_size` argument
+#' Check \code{sample_size} argument
 #'
-#' `check_N()` checks if the `sample_size` argument represents (a) valid sample size(s).
+#' \code{check_N()} checks if the \code{sample_size} argument represents (a) valid sample size(s) (given constraints).
 #'
-#' @param n An integer vector representing sample size(s).
-#' @param t An integer vector representing the number(s) of time points.
+#' @inheritParams powRICLPM
 #'
 #' @noRd
-check_N <- function(n, t) {
-  if (!all(is.numeric(n))) {
+check_N <- function(sample_size, time_points, constraints = "none", est_ME = FALSE) {
+  if (!all(is.numeric(sample_size))) {
     stop(rlang::format_error_bullets(c(
       "`sample_size` must be an integer vector:",
       x = "Not all elements are numeric."
     )))
   }
 
-  if (!all(n %% 1 == 0)) {
+  if (!all(sample_size %% 1 == 0)) {
     stop(rlang::format_error_bullets(c(
       "`sample_size` must be an integer vector:",
       x = "Not all elements are integers."
     )))
   }
-  if (!all(n > 0)) {
+  if (!all(sample_size > 0)) {
     stop(rlang::format_error_bullets(c(
       "`sample_size` must only contain positive integers:",
       x = "You've supplied negative integers."
     )))
   }
 
-  k <- 2 # Number of variables (might be variable in new releases)
-  t_max <- max(t)
+  n_parameters <- count_parameters(2, time_points, constraints, est_ME)
 
-  n_parameters <- sum(
-    factorial(1 + k) / (2 * (k - 1)) * (t_max + 1),
-    k^2 * (t_max - 1)
-  )
-
-  if (!all(n > n_parameters)) {
+  if (!all(sample_size > n_parameters)) {
     stop(rlang::format_error_bullets(c(
       "The sample size must be larger than the number of parameters estimated (for all experimental conditions):",
-      i = paste0("The most estimated parameters in an experimental condition is ", n_parameters, "."),
-      x = paste0("The smallest sample size is ", min(n), ".")
+      i = paste0("The highest number of estimated parameters in an experimental condition is ", n_parameters, "."),
+      x = paste0("The smallest sample size you have specified is ", min(sample_size), ".")
     )))
   }
-  return(n)
+  return(sample_size)
 }
 
-#' Check `ICC` argument
+#' Check \code{ICC} argument
 #'
-#' `check_ICC()` checks if the `ICC` argument represents (a) valid intraclass correlation(s).
+#' \code{check_ICC()} checks if the \code{ICC} argument represents (a) valid intraclass correlation(s).
 #'
 #' @param x A numeric vector.
 #'
@@ -155,9 +155,9 @@ check_ICC <- function(x) {
   return(x)
 }
 
-#' Check `RIcor` argument
+#' Check \code{RIcor} argument
 #'
-#' `check_RIcor()` tests if the `RIcor` argument represents a valid correlation.
+#' \code{check_RIcor()} tests if the \code{RIcor} argument represents a valid correlation.
 #'
 #' @param x A double.
 #'
@@ -188,9 +188,9 @@ check_RIcor <- function(x) {
   return(x)
 }
 
-#' Check `wSigma` argument
+#' Check \code{wSigma} argument
 #'
-#' `check_wSigma()` tests if `wSigma` represents a valid correlation matrix.
+#' \code{check_wSigma()} tests if \code{wSigma} represents a valid correlation matrix.
 #'
 #' @param x A square matrix
 #'
@@ -219,9 +219,9 @@ check_wSigma <- function(x) {
   return(x)
 }
 
-#' Check `Phi` argument
+#' Check \code{Phi} argument
 #'
-#' `check_Phi()` tests if `Phi` represents a valid regression matrix for the within-components of the RI-CLPM.
+#' \code{check_Phi()} tests if \code{Phi} represents a valid regression matrix for the within-components of the RI-CLPM.
 #'
 #' @param x A square matrix.
 #'
@@ -243,9 +243,9 @@ check_Phi <- function(x) {
   return(x)
 }
 
-#' Check computed `Psi` argument
+#' Check computed \code{Psi}
 #'
-#' `check_Psi()` checks if `Psi` represents a valid variance-covariance matrix by checking if it is positive definite using `is_PD()`.
+#' \code{check_Psi()} checks if \code{Psi} represents a valid variance-covariance matrix by checking if it is positive definite using \code{is_PD()}.
 #'
 #' @param x
 #'
@@ -261,9 +261,9 @@ check_Psi <- function(x) {
   return(x)
 }
 
-#' Check `skewness` argument
+#' Check \code{skewness} argument
 #'
-#' `check_skewness()` tests if `skewness` is a numeric value of length 1.
+#' \code{check_skewness()} tests if \code{skewness} is a numeric value of length 1.
 #'
 #' @param x A numeric value.
 #'
@@ -285,9 +285,9 @@ check_skewness <- function(x) {
   return(x)
 }
 
-#' Check `kurtosis` argument
+#' Check \code{kurtosis} argument
 #'
-#' `check_kurtosis()` tests if `kurtosis` is a numeric value of length 1.
+#' \code{check_kurtosis()} tests if \code{kurtosis} is a numeric value of length 1.
 #'
 #' @param x A numeric value.
 #'
@@ -309,9 +309,9 @@ check_kurtosis <- function(x, t) {
   return(x)
 }
 
-#' Check `alpha` argument
+#' Check \code{alpha} argument
 #'
-#' `check_alpha()` tests if the `alpha` argument is numeric value representing a valid significance criterion.
+#' \code{check_alpha()} tests if the \code{alpha} argument is numeric value representing a valid significance criterion.
 #'
 #' @param x A double.
 #'
@@ -332,9 +332,9 @@ check_alpha <- function(x) {
   return(x)
 }
 
-#' Check `seed` argument
+#' Check \code{seed} argument
 #'
-#' `check_seed()` checks if a seed is specified. If yes, then it tests if `seed` is an integer. If not, it randomly generates a seed.
+#' \code{check_seed()} checks if a seed is specified. If yes, then it tests if \code{seed} is an integer. If not, it randomly generates a seed.
 #'
 #' @param seed An integer.
 #'
@@ -362,15 +362,21 @@ check_seed <- function(seed) {
   return(seed)
 }
 
-#' Check `parameter` argument
+#' Check \code{parameter} argument
 #'
-#' `check_parameter()` tests if the specified parameter is a character string.
+#' \code{check_parameter()} tests if the specified parameter is a character string of length 1.
 #'
 #' @param x A character string.
 #'
 #' @noRd
-check_parameter <- function(x) {
+check_parameter_argument <- function(x) {
   if (!is.null(x)) {
+    if (length(x) > 1) {
+      stop(rlang::format_error_bullets(c(
+        "`parameter` must be a character string of length 1:",
+        x = paste0("Your `parameter` is of length ", length(x), ".")
+      )))
+    }
     if (!is.character(x)) {
       stop(rlang::format_error_bullets(c(
         "`parameter` must be a character string:",
@@ -381,63 +387,89 @@ check_parameter <- function(x) {
   return(x)
 }
 
-#' Check `parameter` argument given `powRICLPM` object
+#' Check \code{parameter} argument given \code{powRICLPM} object
 #'
-#' `check_parameter_summary()` tests if
+#' \code{check_parameter_summary()} tests if the character string refers to a parameter within the \code{powRICLPM} object.
 #'
 #' @param parameter A character string.
-#' @param object An `powRICLPM` object.
+#' @param object An \code{powRICLPM} object.
 #'
 #' @noRd
-check_parameter_summary <- function(parameter, object) {
-  check_parameter(parameter)
+check_parameter_available <- function(parameter, object) {
   condition_length <- purrr::map_int(object$conditions, function(x) {
-    length(x$results$par)
+    length(x$estimates$Par)
   })
-
-  # Check condition with least parameters because these names apply to every condition
-  names_pars <- object$conditions[[which.min(condition_length)]]$results$par
+  names_pars <- object$conditions[[which.min(condition_length)]]$estimates$Par
   if (!parameter %in% names_pars) {
     stop(rlang::format_error_bullets(c(
       "`parameter` is not valid:",
       i = "`parameter` should be a parameter name in the experimental condition with the least amount of parameters.",
-      x = "Perhaps use `summary(object, names = TRUE)` to get an overview of parameter names in the `powRICLPM` object."
+      x = "Perhaps use `give(object, what = 'names')` to get an overview of parameter names in the `powRICLPM` object."
     )))
   }
   return(parameter)
 }
 
-#' Check `sample_size` in `summary.powRICLPM()`
+#' Check \code{parameter} argument
 #'
-#' `check_N_summary()` tests if the specified sample size `n` is in the `powRICLPM` object.
+#' \code{check_parameter()} tests if a parameter was specified.
 #'
-#' @param object A `powRICLPM` object.
+#' @param x A character string.
+#'
+#' @noRd
+check_parameter_given <- function(parameter, object) {
+  if (is.null(parameter)) {
+    stop(rlang::format_error_bullets(c(
+      "No `parameter` was specified:",
+      i = "`plot()` needs to know which specific parameter to create a plot for."
+    )))
+  }
+  return(parameter)
+}
+
+#' Check \code{sample_size} in \code{summary.powRICLPM()}
+#'
+#' \code{check_N_summary()} tests if the specified sample size \code{n} is in the \code{powRICLPM} object.
+#'
+#' @param object A \code{powRICLPM} object.
 #' @param n An integer.
 #'
 #' @noRd
-check_N_summary <- function(object, n) {
-  n_unique <- unique(purrr::map_dbl(object$condition, function(x) {
+check_N_summary <- function(object, sample_size) {
+  if (length(sample_size) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`sample_size` must be a single number:",
+      x = paste0("Your `sample_size` is of length ", length(sample_size), ".")
+    )))
+  }
+  sample_size_unique <- unique(purrr::map_dbl(object$condition, function(x) {
     x$sample_size
   }))
-  if (!n %in% n_unique) {
+  if (!sample_size %in% sample_size_unique) {
     stop(rlang::format_error_bullets(c(
       "`sample_size` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
       i = "The sample size you've indicated is not included in any experimental condition.",
       x = "Perhaps you meant any of the following sample sizes?",
-      n_unique
+      sample_size_unique
     )))
   }
 }
 
-#' Check `time_points` in `summary.powRICLPM()`
+#' Check \code{time_points} in \code{summary.powRICLPM()}
 #'
-#' `check_T_summary()` tests if the specified sample size `time_points` is in the `powRICLPM` object.
+#' \code{check_T_summary()} tests if the specified sample size \code{time_points} is in the \code{powRICLPM} object.
 #'
-#' @param object A `powRICLPM` object.
+#' @param object A \code{powRICLPM} object.
 #' @param time_points An integer.
 #'
 #' @noRd
 check_T_summary <- function(object, time_points) {
+  if (length(time_points) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`time_points` must be a single number:",
+      x = paste0("Your `time_points` is of length ", length(time_points), ".")
+    )))
+  }
   t_unique <- unique(purrr::map_dbl(object$condition, function(x) {
     x$time_points
   }))
@@ -451,15 +483,21 @@ check_T_summary <- function(object, time_points) {
   }
 }
 
-#' Check `ICC` in `summary.powRICLPM()`
+#' Check \code{ICC} in \code{summary.powRICLPM()}
 #'
-#' `check_ICC_summary()` tests if the specified sample size `ICC` is in the `powRICLPM` object.
+#' \code{check_ICC_summary()} tests if the specified sample size \code{ICC} is in the \code{powRICLPM} object.
 #'
-#' @param object A `powRICLPM` object.
+#' @param object A \code{powRICLPM} object.
 #' @param ICC A double.
 #'
 #' @noRd
 check_ICC_summary <- function(object, ICC) {
+  if (length(ICC) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`ICC` must be a single number:",
+      x = paste0("Your `ICC` is of length ", length(ICC), ".")
+    )))
+  }
   ICC_unique <- unique(purrr::map_dbl(object$condition, function(x) {
     x$ICC
   }))
@@ -473,9 +511,9 @@ check_ICC_summary <- function(object, ICC) {
   }
 }
 
-#' Check `reps` argument
+#' Check \code{reps} argument
 #'
-#' `check_reps()` tests if the `reps` argument is an integer.
+#' \code{check_reps()} tests if the \code{reps} argument is an integer.
 #'
 #' @param x An integer greater than 0.
 #'
@@ -502,9 +540,9 @@ check_reps <- function(x) {
   return(x)
 }
 
-#' Check `target` argument
+#' Check \code{target} argument
 #'
-#' `check_target()` tests if the `target` argument is an integer.
+#' \code{check_target()} tests if the \code{target} argument is an integer.
 #'
 #' @param x A double between 0 and 1.
 #'
@@ -525,9 +563,9 @@ check_target <- function(x) {
   return(x)
 }
 
-#' Check `object` argument
+#' Check \code{object} argument
 #'
-#' `check_object()` tests if the `object` argument is an `powRICLPM` object.
+#' \code{check_object()} tests if the \code{object} argument is an \code{powRICLPM} object.
 #'
 #' @param x An object.
 #'
@@ -539,6 +577,177 @@ check_object <- function(x) {
       x = paste0("Your `object` is a `", typeof(x), "`.")
     )))
   }
+}
+
+
+#' Check \code{bounds} argument
+#'
+#' \code{check_bounds()} tests if \code{bounds} is a logical, and whether bounded estimation can be used (i.e., no constraints are imposed).
+#'
+#' @param bounds A logical.
+#' @param constraints A character string.
+#'
+#' @noRd
+check_bounds <- function(bounds, constraints) {
+  if (!is.logical(bounds)) {
+    stop(rlang::format_error_bullets(c(
+      "`bounds` should be a `logical`:",
+      x = paste0("Your `bounds` is a `", typeof(bounds), "`.")
+    )))
+  }
+  if (bounds && constraints != "none") {
+    stop(rlang::format_error_bullets(c(
+      "Bounded estimation can only be used without constraints on the estimation model:",
+      x = paste0("You've placed the following constraints on the estimation model: ", constraints)
+    )))
+  }
+  return(bounds)
+}
+
+#' Check \code{what} argument
+#'
+#' \code{check_give} checks the \code{what} argument of \code{give()} by testing if it is a character string of length 1.
+#'
+#' @param what A character string of length 1.
+#'
+#' @noRd
+check_give <- function(what) {
+  if (!is.character(what)) {
+    stop(rlang::format_error_bullets(c(
+      "`what` must be a character string:",
+      x = paste0("Your `what` is a `", typeof(what), "`.")
+    )))
+  }
+  if (length(what) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`what` must be of length 1:",
+      x = paste0("Your `what` contains ", length(what), " elements.")
+    )))
+  }
+}
+
+#' Check arguments for \code{give(what = "results")}
+#'
+#' \code{check_give_results} checks that the \code{parameter} argument is correctly specified when results are extracted using \code{give(what = "results")}.
+#'
+#' @param object A \code{powRICLPM} object.
+#' @param parameter A character string.
+#'
+#' @noRd
+check_give_results <- function(object, parameter) {
+  if (!is.null(parameter)) {
+    check_parameter_argument(parameter)
+    check_parameter_available(parameter, object)
+  } else if (!is.null(object$session$parameter)) {
+    parameter <- object$session$parameter
+  } else {
+    stop(rlang::format_error_bullets(c(
+      "`give(what = 'results')` must know which parameter to extract results for:",
+      x = "You've not supplied a `parameter` argument, nor set `parameter` when running `powRICLPM()`."
+    )))
+  }
+}
+
+#' Check \code{reliability} argument
+#'
+#' \code{check_reliability()} checks if the \code{reliability} argument is a valid reliability coefficient.
+#'
+#' @inheritParams powRICLPM
+#'
+#' @noRd
+check_reliability <- function(reliability) {
+  if (!is.numeric(reliability)) {
+    stop(rlang::format_error_bullets(c(
+      "`reliability` must be `numeric`:",
+      x = paste0("Your `reliability` is a `", class(reliability), "`.")
+    )))
+  }
+  if (length(reliability) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`reliability` must be a single `numeric` value:",
+      x = paste0("Your `reliability` is of length ", length(reliability), ".")
+    )))
+  }
+  if (reliability < 0 || reliability > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`reliability` must be between 0 and 1:",
+      x = paste0("Your `reliability` is ", reliability, ".")
+    )))
+  }
+  return(reliability)
+}
+
+#' Check \code{est_ME} argument
+#'
+#' \code{check_est_ME()} checks if \code{est_ME} is a logical of length 1.
+#'
+#' @inheritParams powRICLPM
+#'
+#' @noRd
+check_est_ME <- function(est_ME) {
+  if (!is.logical(est_ME)) {
+    stop(rlang::format_error_bullets(c(
+      "`est_ME` must be a `logical`:",
+      x = paste0("Your `est_ME` is a `", class(est_ME), "`.")
+    )))
+  }
+  if (length(est_ME) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "`est_ME` must be a single `logical`:",
+      x = paste0("Your `est_ME` is of length ", length(est_ME), ".")
+    )))
+  }
+  return(est_ME)
+}
+
+#' Check \code{constraints} argument
+#'
+#' \code{check_constraints()} checks if the \code{constraints} arguments refers to a valid set of constraints.
+#'
+#' @inheritParams powRICLPM
+#'
+#' @noRd
+check_constraints <- function(constraints) {
+  if (length(constraints) > 1) {
+    stop(rlang::format_error_bullets(c(
+      "You can only specify a single set of constraints at the time:",
+      x = paste0("You specified ", length(constraints), " constraints.")
+    )))
+  }
+  if (!constraints %in% c("none", "lagged", "residuals", "within", "stationarity")) {
+    stop(rlang::format_error_bullets(c(
+      "`constraints` must be 'none', 'lagged', 'residuals', 'within', 'stationarity', or 'ME':",
+      x = paste0("Your `constraints` is ", constraints, ".")
+    )))
+  }
+  return(constraints)
+}
+
+#' Check \code{estimator} argument
+#'
+#' \code{check_estimator()} checks if the \code{estimator} argument refers to a valid maximum likelihood estimators implemented in \pkg{lavaan}.
+#'
+#' @inheritParams powRICLPM
+#'
+#' @noRd
+check_estimator <- function(estimator, skewness, kurtosis) {
+  if (is.na(estimator)) {
+    if (skewness != 0 || kurtosis != 0) {
+      message(rlang::format_error_bullets(c(
+        i = "Estimator defaulting to `MLR` for skewed and/or kurtosed data."
+      )))
+      return("MLR")
+    } else {
+      return("ML")
+    }
+  }
+  if (!estimator %in% c("ML", "MLR", "MLM", "MLMVS", "MLMV", "MLF")) {
+    stop(rlang::format_error_bullets(c(
+      "`estimator` must be 'ML', 'MLR', 'MLM', 'MLMVS', 'MLMV', or 'MLF':",
+      x = paste0("Your `estimator` is ", estimator, ".")
+    )))
+  }
+  return(estimator)
 }
 
 #' Check `save_path` argument
@@ -564,28 +773,4 @@ check_save <- function(x) {
   } else {
     return(x)
   }
-}
-
-#' Check `bounds` argument
-#'
-#' `check_bounds()` tests if `bounds` is a logical, and whether bounded estimation can be used (i.e., no constraints are imposed).
-#'
-#' @param bounds A logical.
-#' @param constraints A character string.
-#'
-#' @noRd
-check_bounds <- function(bounds, constraints) {
-  if (!is.logical(bounds)) {
-    stop(rlang::format_error_bullets(c(
-      "`bounds` should be a `logical`:",
-      x = paste0("Your `bounds` is a `", typeof(bounds), "`.")
-    )))
-  }
-  if (bounds && constraints != "none") {
-    stop(rlang::format_error_bullets(c(
-      "Bounded estimation can only be used without constraints on the estimation model:",
-      x = paste0("You've placed the following constraints on the estimation model: ", constraints)
-    )))
-  }
-  return(bounds)
 }

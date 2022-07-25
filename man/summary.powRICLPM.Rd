@@ -2,12 +2,11 @@
 % Please edit documentation in R/summary.R
 \name{summary.powRICLPM}
 \alias{summary.powRICLPM}
-\title{Summarize powRICLPM analysis}
+\title{Summarize setup and results from \code{powRICLPM} object}
 \usage{
 \method{summary}{powRICLPM}(
   object,
   ...,
-  names = FALSE,
   parameter = NULL,
   sample_size = NULL,
   time_points = NULL,
@@ -15,29 +14,28 @@
 )
 }
 \arguments{
-\item{object}{A powRICLPM object.}
+\item{object}{A \code{powRICLPM} object.}
 
-\item{...}{Additional arguments not affecting the summary produced.}
+\item{...}{(don't use) Additional arguments not affecting the summary produced.}
 
-\item{names}{A logical denoting if parameter names contained in \code{object} should be printed.}
+\item{parameter}{Character string of length denoting the parameter to visualize the results for.}
 
-\item{parameter}{A character string denoting the parameter of interest.}
+\item{sample_size}{(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the \code{search_} arguments.}
 
-\item{sample_size}{An integer denoting the sample size of interest.}
+\item{time_points}{An integer (vector) with elements at least larger than 3, indicating number of time points.}
 
-\item{time_points}{An integer denoting the number of time points of interest.}
-
-\item{ICC}{A numeric value denoting the proportion of variance at the between-unit level of interest.}
-}
-\value{
-The powRICLPM \code{object} with the \code{parameter} element in \code{object$session} set to the value of the \code{parameter} argument.
+\item{ICC}{A \code{double} (vector), denoting the proportion of variance at the between-unit level.}
 }
 \description{
-S3 method for class `powRICLPM`. \code{summary.powRICLPM} summarizes and outputs the setup and results of the powRICLPM analysis either generally, for a specific parameter (when \code{parameter} argument is specified), or for a specific parameter in a specific experimental condition (when the \code{parameter}, \code{sample_size}, \code{time_points}, and \code{ICC} arguments are specified). Optionally, it can display the parameter names contained in \code{object}.
+S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the input, \code{summary.powRICLPM} provides a different summary (see "Details").
 }
 \details{
-\code{summary.powRICLPM} sets the \code{parameter} element in \code{session} with the value of the \code{parameter} argument, and returns the \code{object}. Saving this object might be useful as it renders the \code{parameter} argument for \code{\link{plot.powRICLPM}} and \code{\link{coef.powRICLPM}} superfluous.
-\subsection{Parameter names}{When simulating the power across conditions with a varying number of time points, there are also a different numbers of parameters across the experimental conditions. By specifying the argument \code{names = TRUE}, this function returns the parameter names from the condition with the smallest number of parameters. As such, the returned parameter names are valid for each experimental condition.}
+\code{summary.powRICLPM} provides a different summary of the \code{powRICLPM} object, depending on the additional arguments that are set:
+\itemize{
+  \item When \code{sample_size = ...}, \code{time_points = ...}, and \code{ICC = ...} are set: Estimation information and results for all parameters of the experimental condition denoted by \code{sample_size}, \code{time_points}, and \code{ICC}.
+  \item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
+  \item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to each conditions, such the number of replications, etc.).
+}
 }
 \examples{
 # Example - Same starting point as example from ?powRICLPM()
@@ -71,7 +69,7 @@ summary(out)
 # General results and recommendation for specific parameter
 summary(out, parameter = "wB2~wA1")
 
-# Set parameter element of object
-out_wB2wA1 <- summary(out, parameter = "wB2~wA1")
+# Summary for specific condition
+summary(out, sample_size = 600, time_points = 4, ICC = .5)
 }
 }

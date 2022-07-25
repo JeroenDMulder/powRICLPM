@@ -2,30 +2,30 @@
 % Please edit documentation in R/plot.R
 \name{plot.powRICLPM}
 \alias{plot.powRICLPM}
-\title{Plot `powRICLPM` analysis results}
+\title{Plot results from \code{powRICLPM} object}
 \usage{
-\method{plot}{powRICLPM}(x, y, ..., parameter)
+\method{plot}{powRICLPM}(x, y, ..., parameter = NULL)
 }
 \arguments{
-\item{x}{A `powRICLPM` object.}
+\item{x}{A \code{powRICLPM} object.}
 
-\item{y}{Argument not in use.}
+\item{y}{(don't use)}
 
-\item{...}{Argument not in use.}
+\item{...}{(don't use)}
 
-\item{parameter}{A character string denoting the parameter of interest. Use the argument \code{names = TRUE} in \code{summary()} to get an overview of parameter names in the `powRICLPM` object.}
+\item{parameter}{Character string of length denoting the parameter to visualize the results for.}
 }
 \value{
-A `ggplot2` object.
+A \code{ggplot2} object.
 }
 \description{
-\code{plot.powRICLPM} visualizes results from `powRICLPM` objects using \pkg{ggplot2}. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
+\code{plot.powRICLPM()} visualizes (using \pkg{ggplot2}) the estimated power across all experimental conditions within the \code{powRICLPM} object, for a specific parameter. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
 }
 \details{
-\subsection{Manually creating plots}{\code{plot.powRICLPM()} creates the most obvious plot in the context of power analysis: The relation between power and sample size. However, \code{powRICLPM} computes several other metrics (e.g., accuracy, coverage rate, etc.) that research might want to plot. To this end, I suggest that user use \code{coef.powRICLPM} to collect all metrics, across all experimental conditions, for a specific parameter, into a data frame first. Then, user can use any plotting function they like to create their own manual plot. See "Details" of \code{\link{coef.powRICLPM}} for a list of measures that are computed by the function.}
+\subsection{Manually creating plots}{\code{plot.powRICLPM()} creates arguably the most obvious plot in the context of power analysis: The relation between power and sample size. However, \code{powRICLPM} computes several other metrics (e.g., accuracy, coverage rate, etc.) that researchers might want to plot. To this end, I suggest that users use \code{give()} to collect other metrics, across all experimental conditions, for a specific parameter, into a data frame first. Then, users can use any plotting function they like to create their own manual plot. See "Details" of \code{\link{give}()} for a list of measures that are computed by the function.}
 }
 \seealso{
 \itemize{
-  \code{\link{coef.powRICLPM}}: Extract performance measures for a specific parameter, across all experimental conditions. This function is used internally in \code{plot.powRICLPM}.
+  \code{\link{give}}: Extract information (e.g., performance measures) for a specific parameter, across all experimental conditions. This function is used internally in \code{plot.powRICLPM}.
 }
 }

@@ -1,10 +1,11 @@
 
 # Test check_T() ----
 test_that("check_T() works", {
-  expect_equal(check_T(c(3, 4)), c(3, 4))
-  expect_error(check_T(3.5))
-  expect_error(check_T(c(2, 3)))
-  expect_warning(check_T(c(3:30)))
+  expect_equal(check_T(c(3, 4), est_ME = FALSE), c(3, 4))
+  expect_error(check_T(3.5, est_ME = FALSE))
+  expect_error(check_T(c(2, 3), est_ME = FALSE))
+  expect_warning(check_T(c(3:30), est_ME = FALSE))
+  expect_error(check_T(c(3, 4), est_ME = TRUE))
 })
 
 # Test is_PD() ----
@@ -30,10 +31,13 @@ test_that("is_unit() works", {
 
 # Test check_N() ----
 test_that("check_N() works", {
-  expect_equal(check_N(c(200, 300), 3), c(200, 300))
-  expect_error(check_N(c(200.4, 300), 3))
-  expect_error(check_N(c(-200, 300), 3))
-  expect_error(check_N(10, 3))
+  expect_equal(check_N(c(200, 300), 3, constraints = "none", est_ME = FALSE), c(200, 300))
+  expect_error(check_N(c(200.4, 300), 3, constraints = "none", est_ME = FALSE))
+  expect_error(check_N(c(-200, 300), 3, constraints = "none", est_ME = FALSE))
+  expect_error(check_N(10, 3, constraints = "none", est_ME = FALSE))
+  expect_equal(check_N(17, 3, constraints = "lagged", est_ME = FALSE), 17)
+  expect_error(check_N(20, 3, constraints = "none", est_ME = TRUE))
+  expect_equal(check_N(20, 3, constraints = "within", est_ME = TRUE), 20)
 })
 
 # Test check_ICC() ----
@@ -95,10 +99,10 @@ test_that("check_seed() works", {
   expect_error(check_seed(1234.5))
 })
 
-# Test check_parameter() ----
-test_that("check_parameter() works", {
-  expect_equal(check_parameter("wB2~wA1"), "wB2~wA1")
-  expect_error(check_parameter(1234))
+# Test check_parameter_given() ----
+test_that("check_parameter_given() works", {
+  expect_equal(check_parameter_given("wB2~wA1"), "wB2~wA1")
+  expect_error(check_parameter_given(NULL))
 })
 
 # Test check_reps() ----
@@ -116,10 +120,10 @@ test_that("check_target() works", {
   expect_error(check_target(1.4))
 })
 
-# Test check_parameter() ----
-test_that("check_parameter() works", {
-  expect_error(check_parameter(1))
-  expect_equal(check_parameter("wB2~wA1"), "wB2~wA1")
+# Test check_parameter_argument() ----
+test_that("check_parameter_argument() works", {
+  expect_error(check_parameter_argument(1))
+  expect_error(check_parameter_argument(c("a", "b")))
 })
 
 # Test check_object() ----
@@ -138,3 +142,39 @@ test_that("check_bounds() works", {
   expect_false(check_bounds(FALSE, "lagged"))
   expect_error(check_bounds(TRUE, "lagged"))
 })
+
+# Test check_reliability() ----
+test_that("check_reliability() works", {
+  expect_error(check_reliability(8))
+  expect_error(check_reliability("a"))
+  expect_error(check_reliability(-.8))
+  expect_error(check_reliability(c(.8, .9)))
+  expect_equal(check_reliability(.8), .8)
+})
+
+# Test check_est_ME() ----
+test_that("check_est_ME() works", {
+  expect_error(check_est_ME(1))
+  expect_error(check_est_ME("ME"))
+  expect_error(check_est_ME(c(TRUE, TRUE)))
+  expect_equal(check_est_ME(TRUE), TRUE)
+})
+
+# Test check_constraints() ----
+test_that("check_constraints() works", {
+  expect_error(check_constraints(1))
+  expect_error(check_constraints("a"))
+  expect_error(check_constraints(TRUE))
+  expect_error(check_constraints(c("none", "ME")))
+  expect_equal(check_constraints("lagged"), "lagged")
+})
+
+# Test check_estimator() ----
+test_that("check_estimator() works", {
+  expect_error(check_estimator("a", skewness = 0, kurtosis = 0))
+  expect_error(check_estimator(1, skewness = 0, kurtosis = 0))
+  expect_equal(check_estimator(NA, skewness = 1, kurtosis = 0), "MLR")
+  expect_equal(check_estimator(NA, skewness = 0, kurtosis = 1), "MLR")
+  expect_equal(check_estimator(NA, 0, 0), "ML")
+})
+

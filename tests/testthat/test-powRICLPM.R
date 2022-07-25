@@ -4,7 +4,7 @@ test_that("powRICLPM() works", {
   Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
   wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
 
-  # Base condition - Single experimental condition
+  # Single experimental condition
   out1 <- powRICLPM(
     target_power = 0.8,
     sample_size = 1000,
@@ -24,21 +24,14 @@ test_that("powRICLPM() works", {
   # Test "conditions" element
   expect_equal(length(out1$conditions), 1)
   expect_equal(
-    c("results", "errors", "not_converged", "inadmissible") %in% names(out1$conditions[[1]]),
-    c(T, T, T, T)
+    c("estimates", "uncertainty", "errors", "not_converged", "inadmissible") %in% names(out1$conditions[[1]]),
+    c(T, T, T, T, T)
   )
-  expect_type(out1$conditions[[1]]$results, "list")
+  expect_type(out1$conditions[[1]]$estimates, "list")
+  expect_type(out1$conditions[[1]]$uncertainty, "list")
   expect_type(out1$conditions[[1]]$errors, "logical")
   expect_type(out1$conditions[[1]]$not_converged, "logical")
   expect_type(out1$conditions[[1]]$inadmissible, "logical")
-
-  # Test "sessions" element
-  expect_equal(out1$session$reps, 2)
-  expect_equal(out1$session$target_power, 0.8)
-  expect_equal(out1$session$save_path, NA)
-  expect_null(out1$session$parameter)
-  expect_equal(out1$session$constraints, "none")
-  expect_false(out1$session$bounds)
 
   # Multiple experimental conditions
   out2 <- powRICLPM(
@@ -60,7 +53,28 @@ test_that("powRICLPM() works", {
   # Test "conditions" element
   expect_equal(length(out2$conditions), 8)
   expect_equal(
-    c("results", "errors", "not_converged", "inadmissible") %in% names(out2$conditions[[6]]),
+    c("estimates", "uncertainty", "errors", "not_converged", "inadmissible") %in% names(out2$conditions[[6]]),
+    c(T, T, T, T, T)
+  )
+
+  # Include measurement error (STARTS)
+  out3 <- powRICLPM(
+    target_power = 0.8,
+    sample_size = c(200, 300),
+    time_points = 4,
+    ICC = .5,
+    RI_cor = 0.3,
+    Phi = Phi,
+    wSigma = wSigma,
+    reliability = .85,
+    est_ME = TRUE,
+    reps = 2,
+    seed = 1234
+  )
+  # Run tests
+  expect_equal(out3$session$est_ME, TRUE)
+  expect_equal(
+    c("A1~~A1", "A2~~A2", "B1~~B1", "B2~~B2") %in% out3$conditions[[1]]$estimates$Par,
     c(T, T, T, T)
   )
 })
@@ -102,10 +116,11 @@ test_that("bounded estimation in powRICLPM() works", {
   # Test "conditions" element
   expect_equal(length(out2$conditions), 1)
   expect_equal(
-    c("results", "errors", "not_converged", "inadmissible") %in% names(out1$conditions[[1]]),
-    c(T, T, T, T)
+    c("estimates", "uncertainty", "errors", "not_converged", "inadmissible") %in% names(out1$conditions[[1]]),
+    c(T, T, T, T, T)
   )
-  expect_type(out2$conditions[[1]]$results, "list")
+  expect_type(out2$conditions[[1]]$estimates, "list")
+  expect_type(out2$conditions[[1]]$uncertainty, "list")
   expect_type(out2$conditions[[1]]$errors, "logical")
   expect_type(out2$conditions[[1]]$not_converged, "logical")
   expect_type(out2$conditions[[1]]$inadmissible, "logical")

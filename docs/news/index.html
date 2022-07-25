@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,9 +60,34 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.0.9004" id="powriclpm-0009004">powRICLPM 0.0.0.9004<a class="anchor" aria-label="anchor" href="#powriclpm-0009004"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9004">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9004"></a></h3>
+<ul><li>
+<code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> can now set the reliability of the observed variables for the generated data through the <code>reliability</code> argument (i.e., include measurement error).</li>
+<li>
+<code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> can estimate measurement errors by setting <code>est_ME = TRUE</code>.</li>
+<li>
+<code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> quantifies the uncertainty around the simulated power through non-parametric bootstrapping.</li>
+<li>
+<code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> now allows for various estimators implemented in <code>lavaan</code>.</li>
+<li>
+<code>give(from = ..., what = "...")</code> is implemented to extract various bits of information from a <code>powRICLPM</code> object.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-fixes-0-0-0-9004">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-0-0-0-9004"></a></h3>
+<ul><li>
+<code>check_N()</code> now takes imposed constraints into account to create more informative error messages (<a href="https://github.com/dbaranger" class="external-link">@dbaranger</a>, <a href="https://github.com/JeroenDMulder/powRICLPM/issues/1" class="external-link">#1</a>).</li>
+<li>
+<code><a href="../reference/summary.powRICLPM.html">summary.powRICLPM()</a></code> now tabulates the output.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9003" id="powriclpm-0009003">powRICLPM 0.0.0.9003<a class="anchor" aria-label="anchor" href="#powriclpm-0009003"></a></h2>
-<ul><li>Original GitHub release of the Beta-version of <code>powRICLPM</code> on May 17th, 2022.</li></ul></div>
-  </main></div>
+<ul><li>Original GitHub release of the Beta-version of <code>powRICLPM</code> on May 17th, 2022.</li>
+</ul></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

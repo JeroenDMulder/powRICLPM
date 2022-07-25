@@ -2,7 +2,7 @@
 % Please edit documentation in R/powRICLPM.R
 \name{powRICLPM_Mplus}
 \alias{powRICLPM_Mplus}
-\title{Create Mplus xyntax for RI-CLPM power analysis}
+\title{Create Mplus syntax for RI-CLPM power analysis}
 \usage{
 powRICLPM_Mplus(
   search_lower = NULL,
@@ -17,41 +17,41 @@ powRICLPM_Mplus(
   reps = 1000,
   seed = NA,
   save_path = getwd(),
-  constraints = NULL
+  constraints = "none"
 )
 }
 \arguments{
-\item{search_lower}{A positive integer, denoting the lower bound of the range of sample sizes.}
+\item{search_lower}{A positive integer, denoting the lower bound of a range of sample sizes.}
 
-\item{search_upper}{A positive integer, denoting the upper bound of the range of sample sizes.}
+\item{search_upper}{A positive integer, denoting the upper bound of a range of sample sizes.}
 
-\item{search_step}{A positive integer, denoting the increment in sample size.}
+\item{search_step}{A positive integer, denoting an increment in sample size.}
 
-\item{sample_size}{An integer (vector) with elements at least larger than 20 (i.e., the number of free parameters in a basic bivariate RI-CLPM with 3 repeated measures), indicating the sample sizes at which to evaluate power. This argument can be specified as an alternative to the `search_` arguments to denote specific sample sizes, rather than an entire range.}
+\item{sample_size}{(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the \code{search_} arguments.}
 
-\item{time_points}{An integer (vector) with elements larger than 3, indicating number of time points.}
+\item{time_points}{An integer (vector) with elements at least larger than 3, indicating number of time points.}
 
-\item{ICC}{A `double` denoting the proportion of variance at the between-unit level.}
+\item{ICC}{A \code{double} (vector), denoting the proportion of variance at the between-unit level.}
 
-\item{RI_cor}{A `double` denoting the correlation between random intercepts.}
+\item{RI_cor}{A \code{double}, denoting the correlation between random intercepts.}
 
-\item{Phi}{A matrix of standardized autoregressive and cross-lagged effects in the population. Columns represent predictors and rows represent outcomes.}
+\item{Phi}{A matrix, with standardized autoregressive effects (on the diagonal) and cross-lagged effects (off-diagonal) in the population. Columns represent predictors and rows represent outcomes.}
 
 \item{wSigma}{A correlation matrix for the within-unit components.}
 
-\item{reps}{A positive `integer` denoting the number of Monte Carlo replications to be used during simulations.}
+\item{reps}{A positive \code{integer}, denoting the number of Monte Carlo replications to be used during simulations.}
 
-\item{seed}{An `integer` of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores. For more information, see \code{\link[furrr]{furrr_options}}.}
+\item{seed}{An `integer` of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see \code{\link[furrr]{furrr_options}}).}
 
-\item{save_path}{A character string naming the directory to save any (data) files to.}
+\item{save_path}{Character string denoting a path leading to the folder where to save the Mplus syntax files to.}
 
-\item{constraints}{A character string specifying the RI-CLPM parameters that should be constrained over time in the estimation model. "\code{lagged}" refers to both cross-lagged and autoregressive effects, "\code{residuals}" refers to the residual variances, "\code{within}" refers to both lagged effects and residual variances, and "\code{stationarity}" imposes stationarity constraints on the lagged effects and residual variances. By default, the lagged effects and residual variances are allowed to vary freely over time.}
+\item{constraints}{(optional) A character string, specifying the type of constraints that should be imposed on the estimation model (see "Details").}
 }
 \description{
-\code{powRICLPM_Mplus()} creates and saves syntax for performing a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM) in Mplus. It can create Mplus model syntax across multiple experimental conditions simultaneously. Conditions can vary in terms of sample size, number of time points, and proportion of between-unit variance. See "Details" for information on the naming conventions of parameters.
+\code{powRICLPM_Mplus()} creates and saves syntax for performing a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM) in Mplus. It can create Mplus model syntax across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the naming conventions of parameters, and b) the various constraints that can be imposed on the model.
 }
 \details{
-\subsection{Syntax generation}{Mplus model syntax is created in multiple steps: First, the \code{MODEL POPULATION} command syntax is created in which parameters are constrained to population values. Second, the \code{MODEL} command syntax is created for model estimation. Optionally, if the user wants to impose constraints over time for the estimation model, the \code{MODEL CONSTRAINTS} command syntax is created for model estimation. Ultimately, the parameter tables are combined to form character vectors containing the Mplus syntax to be exported.}
+\subsection{Syntax generation}{Mplus model syntax is created in multiple steps: First, the \code{MODEL POPULATION} command syntax is created in which parameters are constrained to population values. Second, the \code{MODEL} command syntax is created for model estimation. Optionally, syntax for constraints on the estimation model, in the \code{MODEL CONSTRAINTS} command, is created next. Ultimately, the parameter tables are combined to form character vectors containing the Mplus syntax to be exported (see "Details" of \code{\link{powRICLPM}} for more information on the \code{constraints} options).}
 
 \subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
 }
@@ -73,7 +73,7 @@ powRICLPM_Mplus(
   Phi = Phi,
   wSigma = wSigma,
   reps = 10000,
-  seed = 123456
+  seed = 1234
 )
 }
 }

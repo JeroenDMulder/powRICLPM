@@ -1,23 +1,21 @@
 #' @title
-#' Summarize powRICLPM analysis
+#' Summarize setup and results from \code{powRICLPM} object
 #'
 #' @description
-#' S3 method for class `powRICLPM`. \code{summary.powRICLPM} summarizes and outputs the setup and results of the powRICLPM analysis either generally, for a specific parameter (when \code{parameter} argument is specified), or for a specific parameter in a specific experimental condition (when the \code{parameter}, \code{sample_size}, \code{time_points}, and \code{ICC} arguments are specified). Optionally, it can display the parameter names contained in \code{object}.
+#' S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the input, \code{summary.powRICLPM} provides a different summary (see "Details").
 #'
-#' @param object A powRICLPM object.
-#' @param ... Additional arguments not affecting the summary produced.
-#' @param parameter A character string denoting the parameter of interest.
-#' @param sample_size An integer denoting the sample size of interest.
-#' @param time_points An integer denoting the number of time points of interest.
-#' @param ICC A numeric value denoting the proportion of variance at the between-unit level of interest.
-#' @param names A logical denoting if parameter names contained in \code{object} should be printed.
+#' @param object A \code{powRICLPM} object.
+#' @param ... (don't use) Additional arguments not affecting the summary produced.
+#' @param parameter Character string of length denoting the parameter to visualize the results for.
+#' @inheritParams powRICLPM
 #'
 #' @details
-#' \code{summary.powRICLPM} sets the \code{parameter} element in \code{session} with the value of the \code{parameter} argument, and returns the \code{object}. Saving this object might be useful as it renders the \code{parameter} argument for \code{\link{plot.powRICLPM}} and \code{\link{coef.powRICLPM}} superfluous.
-#' \subsection{Parameter names}{When simulating the power across conditions with a varying number of time points, there are also a different numbers of parameters across the experimental conditions. By specifying the argument \code{names = TRUE}, this function returns the parameter names from the condition with the smallest number of parameters. As such, the returned parameter names are valid for each experimental condition.}
-#'
-#' @return
-#' The powRICLPM \code{object} with the \code{parameter} element in \code{object$session} set to the value of the \code{parameter} argument.
+#' \code{summary.powRICLPM} provides a different summary of the \code{powRICLPM} object, depending on the additional arguments that are set:
+#' \itemize{
+#'   \item When \code{sample_size = ...}, \code{time_points = ...}, and \code{ICC = ...} are set: Estimation information and results for all parameters of the experimental condition denoted by \code{sample_size}, \code{time_points}, and \code{ICC}.
+#'   \item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
+#'   \item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to each conditions, such the number of replications, etc.).
+#' }
 #'
 #' @examples
 #' # Example - Same starting point as example from ?powRICLPM()
@@ -51,14 +49,13 @@
 #' # General results and recommendation for specific parameter
 #' summary(out, parameter = "wB2~wA1")
 #'
-#' # Set parameter element of object
-#' out_wB2wA1 <- summary(out, parameter = "wB2~wA1")
+#' # Summary for specific condition
+#' summary(out, sample_size = 600, time_points = 4, ICC = .5)
 #' }
 #' @method summary powRICLPM
 #' @export
 summary.powRICLPM <- function(object,
                               ...,
-                              names = FALSE,
                               parameter = NULL,
                               sample_size = NULL,
                               time_points = NULL,
@@ -67,29 +64,23 @@ summary.powRICLPM <- function(object,
   # Argument validation ----
   check_object(object)
   if (!is.null(parameter)) {
-    parameter <- check_parameter_summary(parameter, object)
-    object$session$parameter <- parameter
+    parameter <- check_parameter_argument(parameter)
+    parameter <- check_parameter_available(parameter, object)
   }
 
   # Summarize ----
-  if (!is.null(sample_size) && !is.null(time_points) &&
-    !is.null(ICC) && !is.null(parameter)) {
+  if (!is.null(sample_size) && !is.null(time_points) && !is.null(ICC)) {
     summary_condition(object, sample_size, time_points, ICC)
   } else if (!is.null(parameter)) {
     summary_parameter(object, parameter)
-  } else if (names) {
-    condition_length <- purrr::map_int(object$conditions, function(condition) { # No. parameters per condition
-      length(condition$results$par)
-    })
-    object$conditions[[which.min(condition_length)]]$results$par # Universal parameter names
   } else {
-    summary_default(object)
+    print.powRICLPM(object)
   }
 }
 
-#' `powRICLPM` summary for specific experimental condition
+#' \code{powRICLPM} summary for specific experimental condition
 #'
-#' Print results from a specific experimental condition in the `powRICLPM` object.
+#' Print results for all parameters from a specific experimental condition in the \code{powRICLPM} object.
 #'
 #' @inheritParams summary.powRICLPM
 #'
@@ -103,99 +94,77 @@ summary_condition <- function(object,
   check_T_summary(object, time_points)
   check_ICC_summary(object, ICC)
 
-  # Select specified condition
+  # Collect information ----
   condition <- purrr::keep(object$conditions, function(x) {
-    x$sample_size == sample_size &&
-      x$time_points == time_points &&
-      x$ICC == ICC
+    x$sample_size == sample_size && x$time_points == time_points && x$ICC == ICC
   })[[1]]
 
-  results_parameter <- condition$results[which(condition$results$par == object$session$parameter), ]
+  df_c <- data.frame(
+    c("Skewness:", "Kurtosis:", "Constraints:", "Bounds:", "Estimate ME:", "Significance criterion:"),
+    c(
+      condition$skewness, condition$kurtosis, object$session$constraints, object$session$bounds,
+      object$session$est_ME, condition$alpha
+    )
+  )
+  df_e <- data.frame(
+    c("Errors:", "Non-convergences:", "Inadmissible results:"),
+    c(sum(condition$errors),sum(condition$not_converged), sum(condition$inadmissible)
+    )
+  )
 
-  cat("Experimental condition with:",
-    sep = ""
+  # Print ----
+  cat("\nResults:")
+  print(
+    knitr::kable(
+      condition$estimates,
+      format = "simple",
+      digits = 3,
+      col.names = c("Par", "Pop val", "Avg", "Min", "stdDev", "SEAvg", "MSE", "Acc", "Cov", "Pow"),
+      align = "lrrrrrrrr"
+    )
   )
-  cat("\n\n  Sample size:", sample_size)
-  cat("\n  Time points:", time_points)
-  cat("\n  Proportion random intercept variance:", ICC)
-  cat("\n  Skewness:", condition$skewness)
-  cat("\n  Kurtosis:", condition$kurtosis)
-  cat("\n\nEstimation:")
-  cat("\n\n  Significance criterion:", condition$alpha)
-  cat("\n  Bounds:", object$session$bounds)
-  cat("\n  Constraints:", object$session$constraints)
-  cat("\n  Effective no. replications:", (condition$reps - sum(condition$not_converged)), "/", condition$reps)
-  cat("\n\nResults for ", object$session$parameter, ":",
-    sep = ""
+  cat("\nEstimation problems:")
+  print(
+    knitr::kable(
+      df_e,
+      align = "lr",
+      col.names = NULL,
+      format = "simple"
+    )
   )
-  cat("\n\n  Inadmissible results:", sum(condition$inadmissible))
-  cat("\n  Average estimate:", results_parameter$avg)
-  cat("\n  Standard deviation of estimates:", results_parameter$stdDev)
-  cat("\n  Average standard error:", results_parameter$SEAvg)
-  cat("\n  Mean square error:", results_parameter$mse)
-  cat("\n  Coverage rate:", results_parameter$coverage)
-  cat("\n  Accuracy:", results_parameter$acc)
-  cat("\n  Power:", results_parameter$pwr)
+  cat("\nCondition info:")
+  print(
+    knitr::kable(
+      df_c,
+      align = "lr",
+      col.names = NULL,
+      format = "simple"
+    )
+  )
 }
 
-#' Basic `powRICLPM` summary
+#' \code{powRICLPM} summary for specific parameter
 #'
-#' Output a basic summary of an `powRICLPM` object.
-#'
-#' @param object A `powRICLPM` object.
-#'
-#' @noRd
-summary_default <- function(object) {
-  print.powRICLPM(object)
-  print_suggestion_parameter()
-}
-
-#' `powRICLPM` summary for specific parameter
-#'
-#' @param object A `powRICLPM` object.
-#' @param parameter Character string denoting a parameter.
+#' @param object A \code{powRICLPM} object.
+#' @param parameter Character string, denoting a parameter.
 #'
 #' @noRd
 summary_parameter <- function(object, parameter) {
-  n_recommendations <- length(
-    purrr::keep(object$conditions, function(x) {
-      x$results[x$results$par == parameter, "pwr"] >= object$session$target_power
-    })
+  df <- dplyr::full_join(
+    give(object, "estimation_problems"),
+    give(object, what = "results", parameter = parameter),
+    by = c("sample_size", "time_points", "ICC")
   )
-  if (n_recommendations == 1) {
-    candidate <- purrr::detect_index(object$conditions, function(condition) { # Detect condition that meets target_power
-      condition$results[condition$results$par == parameter, "pwr"] >= object$session$target_power
-    })
-  }
-
-  # Print ----
-  print_basic(object)
-  cat("  Targeted power:", object$session$target_power)
-  cat("\n\nResults for", parameter, ":")
-  cat("\n\n  No. conditions with power > targeted power: ", n_recommendations, "/", length(object$conditions))
-  cat("\n")
-
-  if (n_recommendations == 0) {
-    cat("\nSuggested next steps:")
-    cat("\n\n  - Increase `search_upper` and/or `time_points`, and rerun the analysis.")
-  } else if (n_recommendations == 1) {
-    cat(
-      "\n  Simulated power: ", object$conditions[[candidate]]$results[object$conditions$results$par == parameter, "pwr"],
-      "(with ICC = ", object$conditions[[candidate]]$ICC, ")"
+  cat("Results for ", parameter, " across conditions:", sep = "")
+  print(
+    knitr::kable(
+      df,
+      format = "simple",
+      col.names = c(
+        "N", "T", "ICC",
+        "Err", "N-C", "Inadm",
+        "Pop val", "Avg", "Min", "stdDev", "SEAvg", "MSE", "Accy", "Cov", "Pow")
     )
-    cat("\n")
-    cat("\n  Sample size: ", object$conditions[[candidate]]$sample_size)
-    cat("\n  No. time points: ", object$conditions[[candidate]]$time_points)
-    cat("\n")
-    cat("\n  No. non-converged replications:", sum(object$conditions[[candidate]]$not_converged))
-    cat("\n  No. replications with inadmissible estimates:", sum(object$conditions[[candidate]]$inadmissible))
-    cat("\n")
-    cat("\nSugested next step:")
-    cat("\n\n  - For preliminary powRICLPM analyses, validate the recommendation by rerunning\n   the analysis with an increased number of replications (e.g., `reps = 1000`).")
-  } else if (n_recommendations > 1) {
-    cat("\nSuggested next steps:")
-    cat("\n\n  - For preliminary powRICLPM analyses, validate the results by rerunning the\n   analysis (for a selection of conditions) with an increased number of\n   replications (e.g., `reps = 1000`).")
-  }
-  # Print suggestion that applies to every scenario
-  cat("\n  - Use `plot()` to visualize results across all experimental conditions.")
+  )
+  invisible(df)
 }

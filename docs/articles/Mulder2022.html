@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,11 +89,25 @@
 
     
     
-<p>This vignette is a supplement to “Research design planning for the random intercept cross-lagged panel model” by Mulder (under review). It contains the R-code used for performing a power analysis (using the <code>powRICLPM</code> package) for the illustrative example. In total there are 171 experimental conditions (19 sample sizes <span class="math inline">\(\times\)</span> 3 numbers of repeated measures <span class="math inline">\(\times\)</span> 3 proportions of between person variance). The analysis is partitioned into two parts to reduce total computation time: A preliminary analysis part, and a validation part.</p>
+<p>This vignette is a supplement to “Power analysis for the random
+intercept cross-lagged panel model using the <code>powRICLPM</code>
+R-package” by Mulder (under review). It contains the R-code used for
+performing a power analysis for the illustrative example. In total,
+there are 171 experimental conditions (19 sample sizes <span class="math inline">\(\times\)</span> 3 numbers of repeated measures
+<span class="math inline">\(\times\)</span> 3 proportions of between
+person variance). The analysis is partitioned into two parts to reduce
+total computation time: A preliminary analysis part, and a validation
+part.</p>
 <div class="section level2">
 <h2 id="preliminary-analysis">Preliminary analysis<a class="anchor" aria-label="anchor" href="#preliminary-analysis"></a>
 </h2>
-<p>First, a Monte Carlo power analysis is performed over all 171 experimental conditions using a limited number of replications (<code>reps = 100</code>). These preliminary results serve as a basis for selecting those experimental conditions that show promising results (i.e., that meet the desired power- and accuracy levels). These conditions are then validated using a large number of replications (<code>reps = 2000</code>) in the next step.</p>
+<p>First, a Monte Carlo power analysis is performed over all 171
+experimental conditions using a limited number of replications
+(<code>reps = 100</code>). These preliminary results serve as a basis
+for selecting those experimental conditions that show promising results
+(i.e., that meet the desired power- and accuracy levels). These
+conditions are then validated using a large number of replications
+(<code>reps = 2000</code>) in the next step.</p>
 <p>The R-code for the preliminary analysis can be found below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Matrix of standardized lagged effects</span>
@@ -114,28 +128,22 @@
                                search_upper <span class="op">=</span> <span class="fl">2000</span>,
                                search_step <span class="op">=</span> <span class="fl">100</span>,
                                time_points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,
-                               ICC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.50</span>, <span class="fl">0.55</span>, <span class="fl">0.60</span><span class="op">)</span>,
+                               ICC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span><span class="op">)</span>,
                                RI_cor <span class="op">=</span> <span class="fl">0.35</span>, 
                                Phi <span class="op">=</span> <span class="va">Phi</span>,
                                wSigma <span class="op">=</span> <span class="va">wSigma</span>,
-                               reps <span class="op">=</span> <span class="fl">5</span>, 
-                               seed <span class="op">=</span> <span class="fl">20220209</span><span class="op">)</span>
+                               reps <span class="op">=</span> <span class="fl">100</span>, 
+                               seed <span class="op">=</span> <span class="fl">123456</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
 <span class="co"># Tabular summary of results</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out_preliminary</span><span class="op">)</span>
-<span class="va">coef_wB2wA1</span> <span class="op">&lt;-</span> <span class="fu">coef_powRICLPM</span><span class="op">(</span><span class="va">out_preliminary</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
-<span class="va">coef_wB2wA1</span> <span class="co"># Can be used to check if any issues occurred with estimation </span>
+<span class="va">res_wB2wA1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/give.html">give</a></span><span class="op">(</span><span class="va">out_preliminary</span>, what <span class="op">=</span> <span class="st">"results"</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
 
 <span class="co"># Visualize power</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">plot_powRICLPM</span><span class="op">(</span>object <span class="op">=</span> <span class="va">out_preliminary</span>,
-                    x <span class="op">=</span> <span class="st">"sample_size"</span>,
-                    y <span class="op">=</span> <span class="st">"pwr"</span>,
-                    color <span class="op">=</span> <span class="st">"factor(time_points)"</span>,
-                    wrap <span class="op">=</span> <span class="st">"ICC"</span>,
-                    parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">out_preliminary</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
 
-<span class="co"># Tailor visualization for Mulder (2022)</span>
+<span class="co"># Tailor visualization for Mulder (under review)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span> 
   <span class="fu">labs</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Number of time points"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_x_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Sample size"</span>,
@@ -143,93 +151,61 @@
                      guide <span class="op">=</span> <span class="fu">guide_axis</span><span class="op">(</span>n.dodge <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>
 <span class="va">p</span>
-<span class="co">#ggsave("Mulder2022_preliminary_power.png", height = 5, width = 7)</span>
-
-<span class="co"># Visualize accuracy</span>
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">plot_powRICLPM</span><span class="op">(</span><span class="va">out_preliminary</span>,
-                    <span class="st">"sample_size"</span>,
-                    <span class="st">"acc"</span>,
-                    color <span class="op">=</span> <span class="st">"factor(time_points)"</span>,
-                    wrap <span class="op">=</span> <span class="st">"ICC"</span>, 
-                    parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="va">a</span> <span class="op">+</span>
-  <span class="fu">labs</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Number of time points"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ylab</span><span class="op">(</span><span class="st">"Accuracy"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Sample size"</span>,
-                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">2000</span>, <span class="fl">200</span><span class="op">)</span>,
-                     guide <span class="op">=</span> <span class="fu">guide_axis</span><span class="op">(</span>n.dodge <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>
-<span class="va">a</span>
-<span class="co">#ggsave("Mulder2022_preliminary_accuracy.png", height = 5, width = 7)</span></code></pre></div>
+<span class="fu">ggsave</span><span class="op">(</span><span class="st">"Mulder2022_preliminary_power.png"</span>, height <span class="op">=</span> <span class="fl">5</span>, width <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="validation">Validation<a class="anchor" aria-label="anchor" href="#validation"></a>
 </h2>
-<p>The preliminary results suggest three minimum sample sizes that meet the desired power level:</p>
-<ul>
-<li>600 (for conditions with 4 and 5 times points, across all proportions of between-unit variance),</li>
-<li>1100 (for conditions with 3 repeated measures and with a 0.50 or 0.55 proportion of between-unit variance), and</li>
-<li>1200 (for conditions with 3 repeated measures and with a 0.60 proportion of between-unit variance).</li>
-</ul>
-<p>Therefore, power analysis results are validated for a total of 9 experimental conditions using <code>reps = 1000</code>.</p>
+<p>The preliminary results suggest that at least 4 time-points and a
+sample size upwards of a 1000 are required in the condition with the
+most advantageous proportion of between-unit variance (where proportion
+of between-unit variance is 0.3). For conditions with a 0.7 proportion
+of between-unit variance, sample sizes of approximately 1500 are needed
+with 5 repeated measures, whereas sample sizes upwards of 1700 are
+needed for 4 repeated measures. Based on these results, the following
+experimental conditions for validation are selected: The range of sample
+sizes is reduced to 900 to 1800, and experimental conditions with 3
+repeated measures are omitted. This results in a total of 10 sample
+sizes <span class="math inline">\(\times\)</span> 2 numbers of repeated
+measures <span class="math inline">\(\times\)</span> 3 proportions of
+between-unit variance, totaling 60 experimental conditions for
+validation.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Setup parallel processing to speed up computations</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>
 
 <span class="co"># Perform preliminary power analysis (with progress bar)</span>
 <span class="fu"><a href="https://progressr.futureverse.org/reference/with_progress.html" class="external-link">with_progress</a></span><span class="op">(</span><span class="op">{</span>
   <span class="va">out_validation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/powRICLPM.html">powRICLPM</a></span><span class="op">(</span>target_power <span class="op">=</span> <span class="fl">0.8</span>,
-                              search_lower <span class="op">=</span> <span class="fl">1200</span>,
-                              search_upper <span class="op">=</span> <span class="fl">2000</span>,
+                              search_lower <span class="op">=</span> <span class="fl">900</span>,
+                              search_upper <span class="op">=</span> <span class="fl">1800</span>,
                               search_step <span class="op">=</span> <span class="fl">100</span>,
                               time_points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,
-                              ICC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.50</span>, <span class="fl">0.55</span>, <span class="fl">0.60</span><span class="op">)</span>,
+                              ICC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span><span class="op">)</span>,
                               RI_cor <span class="op">=</span> <span class="fl">0.35</span>, 
                               Phi <span class="op">=</span> <span class="va">Phi</span>,
                               wSigma <span class="op">=</span> <span class="va">wSigma</span>,
                               reps <span class="op">=</span> <span class="fl">2000</span>, 
-                              seed <span class="op">=</span> <span class="fl">20220209</span><span class="op">)</span>
+                              seed <span class="op">=</span> <span class="fl">123456</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
 <span class="co"># Tabular summary of results</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out_validation</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
-<span class="va">coef_wB2wA1</span> <span class="op">&lt;-</span> <span class="fu">coef_powRICLPM</span><span class="op">(</span><span class="va">out_validation</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
-<span class="va">coef_wB2wA1</span>
+<span class="va">res_wB2wA1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/give.html">give</a></span><span class="op">(</span><span class="va">out_validation</span>, what <span class="op">=</span> <span class="st">"results"</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
 
 <span class="co"># Visualize power</span>
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">plot_powRICLPM</span><span class="op">(</span><span class="va">out_validation</span>,
-                    <span class="st">"sample_size"</span>,
-                    <span class="st">"pwr"</span>,
-                    color <span class="op">=</span> <span class="st">"factor(time_points)"</span>,
-                    wrap <span class="op">=</span> <span class="st">"ICC"</span>,
-                    parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
+<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">out_validation</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
 
 <span class="co"># Tailor visualization of power for Mulder (2022)</span>
 <span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">p2</span> <span class="op">+</span> 
   <span class="fu">labs</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Number of time points"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_x_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Sample size"</span>,
-                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1200</span>, <span class="fl">2000</span>, <span class="fl">100</span><span class="op">)</span>,
+                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">900</span>, <span class="fl">1800</span>, <span class="fl">100</span><span class="op">)</span>,
                      guide <span class="op">=</span> <span class="fu">guide_axis</span><span class="op">(</span>n.dodge <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_color_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00BA38"</span>, <span class="st">"#619CFF"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>
 <span class="va">p2</span>
-<span class="co">#ggsave("Mulder2022_validation_power.png", height = 5, width = 7)</span>
-
-<span class="co"># Visualize accuracy</span>
-<span class="va">a2</span> <span class="op">&lt;-</span> <span class="fu">plot_powRICLPM</span><span class="op">(</span><span class="va">out_validation</span>,
-                    <span class="st">"sample_size"</span>,
-                    <span class="st">"acc"</span>,
-                    color <span class="op">=</span> <span class="st">"factor(time_points)"</span>,
-                    wrap <span class="op">=</span> <span class="st">"ICC"</span>, 
-                    parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span>
-<span class="va">a2</span> <span class="op">&lt;-</span> <span class="va">a2</span> <span class="op">+</span>
-  <span class="fu">labs</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Number of time points"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Sample size"</span>,
-                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1200</span>, <span class="fl">2000</span>, <span class="fl">100</span><span class="op">)</span>,
-                     guide <span class="op">=</span> <span class="fu">guide_axis</span><span class="op">(</span>n.dodge <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>
-<span class="va">a2</span>
-<span class="co">#ggsave("Mulder2022_validation_accuracy.png", height = 5, width = 7)</span></code></pre></div>
+<span class="fu">ggsave</span><span class="op">(</span><span class="st">"Mulder2022_validation_power.png"</span>, height <span class="op">=</span> <span class="fl">5</span>, width <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
