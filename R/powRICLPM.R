@@ -40,15 +40,15 @@
 #' \subsection{Imposing constraints}{The following constraints can be imposed on the estimation model using the \code{constraints = "..."} argument:
 #'
 #' \itemize{
-#'   \code{lagged}: Time-invariant autoregressive and cross-lagged effects.
-#'   \code{residuals}: Time-invariant residual variances.
-#'   \code{within}: Time-invariant lagged effects and residual variances.
-#'   \code{stationarity}: Constraints such that at the within-unit level a stationary process is estimated. This included time-invariant lagged effects, and constraints on the residual variances.
-#'   \code{ME}: Time-invariant measurement error variances. Only possible when \code{est_ME = TRUE}.
+#'   \item \code{lagged}: Time-invariant autoregressive and cross-lagged effects.
+#'   \item \code{residuals}: Time-invariant residual variances.
+#'   \item \code{within}: Time-invariant lagged effects and residual variances.
+#'   \item \code{stationarity}: Constraints such that at the within-unit level a stationary process is estimated. This included time-invariant lagged effects, and constraints on the residual variances.
+#'   \item \code{ME}: Time-invariant measurement error variances. Only possible when \code{est_ME = TRUE}.
 #' }
 #' }
 #'
-#' \subsection{Bounded estimation}{Bounded estimation is useful to avoid nonconvergence in small samples (< 100). Here, automatic wide bounds are used as advised by \href{https://doi.org/10.1080/10705511.2021.1982716}{De Jonckere and Rosseel (2022}; see \code{optim.bounds} in \code{\link[lavaan]{lavOptions}}). This option can only be used when no constraints are imposed on the estimation model.}
+#' \subsection{Bounded estimation}{Bounded estimation is useful to avoid nonconvergence in small samples (< 100). Here, automatic wide bounds are used as advised by \doi{https://doi.org/10.1080/10705511.2021.1982716}{De Jonckere and Rosseel (2022}; see \code{optim.bounds} in \code{\link[lavaan]{lavOptions}}). This option can only be used when no constraints are imposed on the estimation model.}
 #'
 #' \subsection{Parallel processing using \pkg{furrr}}{To speed up the analysis, power analysis for multiple experimental conditions can be executed in parallel. This has been implemented using \pkg{furrr}. By default the analysis is executed sequentially (i.e., single-core). Parallel execution (i.e., multicore) can be setup using \code{\link[future]{plan}}, for example \code{plan(multisession, workers = 4)}. For more information and options, see \url{https://furrr.futureverse.org}.}
 #'

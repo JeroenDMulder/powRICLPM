@@ -13,7 +13,7 @@ Using `powRICLPM_Mplus()`, you can create Mplus model syntax for multiple experi
 ## Steps 1 and 2: Experimental conditions and population parameter values  
 For our example, we will investigate the power to detect a small standardized cross-lagged effect of $0.2$ for sample sizes from 100 to 1000 (with incremental steps of 50) for an RI-CLPM with 3, 4 and 5 repeated measures. In total, this results in $19 \times 3 = 57$ experimental conditions. Moreover, following the example in the [Getting started](https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html) Vignette, our population parameter values are:
 
-```{r preparation}
+```{r preparation, eval = FALSE}
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = T) # The .2 refers to our standardized cross-lagged effect of interest
 wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = T)
 ICC <- 0.5

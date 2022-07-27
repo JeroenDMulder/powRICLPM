@@ -85,16 +85,16 @@
 <p><code>powRICLPM</code> is an <code>R</code> package that performs a power analysis for the random intercept cross-lagged panel model (RI-CLPM) in a simple and user-friendly way. It implements the strategy as proposed by Mulder (under review). Its main functionalities include:</p>
 <ul>
 <li>
-<a href="https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html" class="external-link">Setting up and performing a basic power analysis</a>: Obtain the power to reject the null-hypothesis of no effect (as well as other performance measures, such as bias, mean square error, etc.) for all parameters in the RI-CLPM given a specific sample size, number of repeated measures, and proportion of between-unit variance (amongst other things). This can be done across multiple experimental conditions simultaneously (i.e., across varying numbers of repeated measures, proportions of between-unit variance, etc.).</li>
+<a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html" class="external-link">Setting up and performing a basic power analysis</a>: Obtain the power to reject the null-hypothesis of no effect (as well as other performance measures, such as bias, mean square error, etc.) for all parameters in the RI-CLPM given a specific sample size, number of repeated measures, and proportion of between-unit variance (amongst other things). This can be done across multiple experimental conditions simultaneously (i.e., across varying numbers of repeated measures, proportions of between-unit variance, etc.).</li>
 <li>
-<a href="https://jeroendmulder.github.io/powRICLPM/reference/extensions.html" class="external-link">Extending the basic power analyis setup</a>: This includes the option to perform bounded estimation and imposing various (stationarity) constraints over time on parameters of the estimation model.</li>
+<a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html" class="external-link">Extending the basic power analyis setup</a>: This includes the option to perform bounded estimation, impose various (stationarity) constraints over time on parameters of the estimation model, and include the estimation of measurement error.</li>
 <li>
 <a href="https://jeroendmulder.github.io/powRICLPM/articles/mplus.html" class="external-link">Create Mplus model syntax</a>: Create syntax for performing a RI-CLPM power analysis using Mplus.</li>
 </ul>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
-<p>Every user-facing function in the package is documented, and the documentation can be accessed by running <code>?function_name</code> in the R console, e.g., <code><a href="reference/powRICLPM.html">?powRICLPM</a></code>. These function references contain explanations on how to use the functions, as well as some technical details. Furthermore, there are four main vignettes (accessible via the ‘Vignettes’ tab), describing functionalities and analysis options of this package more generally. The ‘Example’ vignette serves as the supplementary material to Mulder (under review), and contains the R code for an illustrative example using the <code>powRICLPM</code> package. A rationale for the power analysis strategy implemented here can be found in Mulder (under review). Finally, the <a href="https://jeroendmulder.github.io/powRICLPM/faq.html" class="external-link">FAQ</a> contains answers to frequently asked question that reach me via email.</p>
+<p>The rationale for the power analysis strategy implemented here can be found in Mulder (under review). Every user-facing function in the package is documented, and the documentation can be accessed by running <code>?function_name</code> in the R console, e.g., <code><a href="reference/powRICLPM.html">?powRICLPM</a></code>. These function references contain explanations on how to use the functions, as well as some technical details. Furthermore, there are four main vignettes (accessible via the ‘Vignettes’ tab), describing functionalities and analysis options of this package more generally. The ‘Example’ vignette serves as the supplementary material to Mulder (under review), and contains the R code for an illustrative example using the <code>powRICLPM</code> package. Finally, the <a href="https://jeroendmulder.github.io/powRICLPM/faq.html" class="external-link">FAQ</a> contains answers to frequently asked question that reach me via email.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -110,7 +110,7 @@
 </h2>
 <p>You can cite the R-package with the following citation:</p>
 <blockquote>
-<p>Mulder, J.D., (n.d.). <em>Performing power analysis for the RI-CLPM</em></p>
+<p>Mulder, J.D., (n.d.). <em>Power analysis for the random intercept cross-lagged panel model using the powRICLPM R-package</em></p>
 </blockquote>
 </div>
 <div class="section level2">

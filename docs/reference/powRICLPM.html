@@ -158,16 +158,17 @@
 <div class="section">
 <h3 id="imposing-constraints">Imposing constraints<a class="anchor" aria-label="anchor" href="#imposing-constraints"></a></h3>
 <p>The following constraints can be imposed on the estimation model using the <code>constraints = "..."</code> argument:</p>
-<ul><li><p><code>lagged</code>: Time-invariant autoregressive and cross-lagged effects.
-  <code>residuals</code>: Time-invariant residual variances.
-  <code>within</code>: Time-invariant lagged effects and residual variances.
-  <code>stationarity</code>: Constraints such that at the within-unit level a stationary process is estimated. This included time-invariant lagged effects, and constraints on the residual variances.
-  <code>ME</code>: Time-invariant measurement error variances. Only possible when <code>est_ME = TRUE</code>.</p></li>
+<ul><li><p><code>lagged</code>: Time-invariant autoregressive and cross-lagged effects.</p></li>
+<li><p><code>residuals</code>: Time-invariant residual variances.</p></li>
+<li><p><code>within</code>: Time-invariant lagged effects and residual variances.</p></li>
+<li><p><code>stationarity</code>: Constraints such that at the within-unit level a stationary process is estimated. This included time-invariant lagged effects, and constraints on the residual variances.</p></li>
+<li><p><code>ME</code>: Time-invariant measurement error variances. Only possible when <code>est_ME = TRUE</code>.</p></li>
 </ul></div>
 
 <div class="section">
 <h3 id="bounded-estimation">Bounded estimation<a class="anchor" aria-label="anchor" href="#bounded-estimation"></a></h3>
-<p>Bounded estimation is useful to avoid nonconvergence in small samples (&lt; 100). Here, automatic wide bounds are used as advised by <a href="https://doi.org/10.1080/10705511.2021.1982716" class="external-link">De Jonckere and Rosseel (2022</a>; see <code>optim.bounds</code> in <code><a href="https://rdrr.io/pkg/lavaan/man/lavOptions.html" class="external-link">lavOptions</a></code>). This option can only be used when no constraints are imposed on the estimation model.</p>
+<p>Bounded estimation is useful to avoid nonconvergence in small samples (&lt; 100). Here, automatic wide bounds are used as advised by <a href="https://doi.org/10.1080/10705511.2021.1982716" class="external-link">doi:10.1080/10705511.2021.1982716</a>
+De Jonckere and Rosseel (2022; see <code>optim.bounds</code> in <code><a href="https://rdrr.io/pkg/lavaan/man/lavOptions.html" class="external-link">lavOptions</a></code>). This option can only be used when no constraints are imposed on the estimation model.</p>
 </div>
 
 <div class="section">

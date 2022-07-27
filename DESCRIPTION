@@ -1,7 +1,7 @@
 Package: powRICLPM
-Title: Power analysis for the random intercept cross-lagged panel model
+Title: Power Analysis for the Random Intercept Cross-Lagged Panel Model
 Version: 0.0.0.9004
-Date: 2022-05-17
+Date: 2022-07-25
 Authors@R: 
     person(given = "Jeroen",
            family = "Mulder",
@@ -12,7 +12,7 @@ Maintainer: Jeroen Mulder <j.d.mulder@uu.nl>
 Description: Perform user-friendly power analyses for the random intercept
     cross-lagged panel model (RI-CLPM).
 License: MIT + file LICENSE
-URL: http://jeroen.d.mulder.github.io/powRICLPM
+URL: https://jeroendmulder.github.io/powRICLPM
 BugReports: https://github.com/JeroenDMulder/powRICLPM/issues
 Depends:
     R (>= 4.0.0),
