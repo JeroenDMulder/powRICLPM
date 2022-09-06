@@ -3,10 +3,10 @@
 .gitignore
 tikzDictionary$
 ^docs$
-^NEWS\.md$
 ^LICENSE\.md$
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^cran-comments\.md$
 ^\.github$
 ^revdep$
+^CRAN-SUBMISSION$
