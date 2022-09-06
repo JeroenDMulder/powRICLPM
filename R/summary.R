@@ -2,12 +2,14 @@
 #' Summarize setup and results from \code{powRICLPM} object
 #'
 #' @description
-#' S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the input, \code{summary.powRICLPM} provides a different summary (see "Details").
+#' S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the arguments that are set, \code{summary.powRICLPM} provides a different summary (see "Details").
 #'
 #' @param object A \code{powRICLPM} object.
 #' @param ... (don't use) Additional arguments not affecting the summary produced.
 #' @param parameter Character string of length denoting the parameter to visualize the results for.
-#' @inheritParams powRICLPM
+#' @param sample_size (optional) An \code{integer}, denoting the sample size of the experimental condition of interest.
+#' @param time_points (optional) An \code{integer}, denoting the number of time points of the experimental condition of interest.
+#' @param ICC (optional) A \code{double}, denoting the proportion of variance at the between-unit level of the experimental condition of interest.
 #'
 #' @details
 #' \code{summary.powRICLPM} provides a different summary of the \code{powRICLPM} object, depending on the additional arguments that are set:
@@ -103,13 +105,12 @@ summary_condition <- function(object,
     c("Skewness:", "Kurtosis:", "Constraints:", "Bounds:", "Estimate ME:", "Significance criterion:"),
     c(
       condition$skewness, condition$kurtosis, object$session$constraints, object$session$bounds,
-      object$session$est_ME, condition$alpha
+      object$session$estimate_ME, condition$alpha
     )
   )
   df_e <- data.frame(
     c("Errors:", "Non-convergences:", "Inadmissible results:"),
-    c(sum(condition$errors),sum(condition$not_converged), sum(condition$inadmissible)
-    )
+    c(sum(condition$errors), sum(condition$not_converged), sum(condition$inadmissible))
   )
 
   # Print ----
@@ -163,7 +164,8 @@ summary_parameter <- function(object, parameter) {
       col.names = c(
         "N", "T", "ICC",
         "Err", "N-C", "Inadm",
-        "Pop val", "Avg", "Min", "stdDev", "SEAvg", "MSE", "Accy", "Cov", "Pow")
+        "Pop val", "Avg", "Min", "stdDev", "SEAvg", "MSE", "Accy", "Cov", "Pow"
+      )
     )
   )
   invisible(df)

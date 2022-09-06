@@ -3,10 +3,10 @@ test_that("run() works", {
   # Create valid input
   Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
   wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
-  Psi <- compute_Psi(Phi = Phi, wSigma = wSigma)
+  Psi <- powRICLPM:::compute_Psi(Phi = Phi, wSigma = wSigma)
 
   # Run setup()
-  setup1 <- setup(
+  setup1 <- powRICLPM:::setup(
     target_power = .8,
     sample_size = 300,
     time_points = 3,
@@ -18,14 +18,15 @@ test_that("run() works", {
     reliability = .85,
     skewness = 0,
     kurtosis = 0,
-    est_ME = FALSE,
+    estimate_ME = FALSE,
     alpha = .05,
     reps = 10,
     bootstrap_reps = 1000,
     seed = 1234,
     constraints = "none",
     bounds = FALSE,
-    estimator = "ML"
+    estimator = "ML",
+    save_path = NULL
   )
 
   # Prepare progress bar
@@ -39,7 +40,8 @@ test_that("run() works", {
       bounds = FALSE,
       estimator = "ML",
       reps = 10,
-      bootstrap_reps = 1000
+      bootstrap_reps = 1000,
+      save_path = NULL
     )
   })
 
@@ -48,7 +50,7 @@ test_that("run() works", {
   expect_equal(names(out1), c(
     "sample_size", "time_points", "ICC", "RI_var",
     "RI_cov", "pop_synt", "pop_tab",
-    "est_synt", "est_tab", "est_ME", "skewness", "kurtosis",
+    "est_synt", "est_tab", "estimate_ME", "skewness", "kurtosis",
     "alpha", "estimates", "uncertainty", "errors",
     "not_converged", "inadmissible"
   ))
@@ -80,14 +82,15 @@ test_that("run() works for bivariate STARTS model", {
     reliability = .85,
     skewness = 0,
     kurtosis = 0,
-    est_ME = TRUE,
+    estimate_ME = TRUE,
     alpha = .05,
     reps = 10,
     bootstrap_reps = 1000,
     seed = 1234,
     constraints = "within",
     bounds = FALSE,
-    estimator = "ML"
+    estimator = "ML",
+    save_path = NULL
   )
 
   # Prepare progress bar
@@ -95,13 +98,14 @@ test_that("run() works for bivariate STARTS model", {
     p <- progressr::progressor(along = setup2$conditions)
 
     # Run run_condition()
-    out2<- run_condition(
+    out2 <- run_condition(
       condition = setup2$conditions[[1]],
       progress = p,
       bounds = FALSE,
       estimator = "ML",
       reps = 10,
-      bootstrap_reps = 1000
+      bootstrap_reps = 1000,
+      save_path = NULL
     )
   })
 
@@ -110,7 +114,7 @@ test_that("run() works for bivariate STARTS model", {
   expect_equal(names(out2), c(
     "sample_size", "time_points", "ICC", "RI_var",
     "RI_cov", "pop_synt", "pop_tab",
-    "est_synt", "est_tab", "est_ME", "skewness", "kurtosis",
+    "est_synt", "est_tab", "estimate_ME", "skewness", "kurtosis",
     "alpha", "estimates", "uncertainty", "errors",
     "not_converged", "inadmissible"
   ))

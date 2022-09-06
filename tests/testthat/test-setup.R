@@ -18,14 +18,15 @@ test_that("setup() works", {
     reliability = 1,
     skewness = 0,
     kurtosis = 0,
-    est_ME = FALSE,
+    estimate_ME = FALSE,
     alpha = .05,
     reps = 30,
     bootstrap_reps = 1000,
     seed = 1234,
     constraints = "none",
     bounds = FALSE,
-    estimator = "ML"
+    estimator = "ML",
+    save_path = NULL
   )
 
   # Run general tests
@@ -36,7 +37,7 @@ test_that("setup() works", {
   # Test "conditions" element
   expect_equal(length(out1$conditions), 8)
   expect_type(out1$conditions[[1]], "list")
-  expect_equal(names(out1$conditions[[1]]), c("sample_size", "time_points", "ICC", "RI_var", "RI_cov", "pop_synt", "pop_tab", "est_synt", "est_tab", "est_ME", "skewness", "kurtosis", "alpha", "estimates", "uncertainty", "errors", "not_converged", "inadmissible"))
+  expect_equal(names(out1$conditions[[1]]), c("sample_size", "time_points", "ICC", "RI_var", "RI_cov", "pop_synt", "pop_tab", "est_synt", "est_tab", "estimate_ME", "skewness", "kurtosis", "alpha", "estimates", "uncertainty", "errors", "not_converged", "inadmissible"))
 
   # Test first element of "conditions" element
   expect_equal(out1$conditions[[1]]$sample_size, 400)
@@ -51,13 +52,11 @@ test_that("setup() works", {
 
   # Test "session" element
   expect_type(out1$session, "list")
-  expect_equal(length(out1$session), 10)
-  expect_equal(names(out1$session), c("Psi", "reliability", "est_ME", "reps", "bootstrap_reps", "target_power", "constraints", "bounds", "estimator", "version"))
+  expect_equal(length(out1$session), 11)
+  expect_equal(names(out1$session), c("Psi", "reliability", "estimate_ME", "reps", "bootstrap_reps", "target_power", "constraints", "bounds", "estimator", "save_path", "version"))
   expect_type(out1$session$Psi, "double")
   expect_type(out1$session$reps, "double")
   expect_type(out1$session$target_power, "double")
   expect_type(out1$session$constraints, "character")
   expect_type(out1$session$bounds, "logical")
 })
-
-

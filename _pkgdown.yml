@@ -23,11 +23,11 @@ development:
 navbar:
   type: default
   left:
-  - text: Getting started
+  - text: Get started
     href: articles/start.html
   - text: Vignettes
     menu:
-    - text: Getting started
+    - text: Get started
       href: articles/start.html
     - text: Extensions
       href: articles/extensions.html

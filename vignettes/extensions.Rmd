@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The basic power analysis as described in the Vignette [Getting started](https://jeroendmulder.github.io/powRICLPM/articles/getting-started.html) can be extended to using bounded estimation, estimation with constraints over time, and the inclusion of measurement error variances. These extensions are described below.
+The basic power analysis as described in the Vignette [Getting started](https://jeroendmulder.github.io/powRICLPM/articles/start.html) can be extended to using bounded estimation, estimation with constraints over time, and the inclusion of measurement error variances. These extensions are described below.
 
 ## Bounded estimation with `lavaan`
 To prevent non-convergence for small sample sizes (say, less than 100), bounds can be imposed on the parameter space during estimation of the model using `bounds = TRUE` [(De Jonckere & Rosseel, 2022)](https://doi.org/10.1080/10705511.2021.1982716). This can aid the optimization algorithm to find unique solutions and prevents it from searching in the completely wrong direction for one, or multiple parameters. Sensible lower bounds involve those on the (residual) variances of latent variables (e.g., the random intercept variances), as negative variances are theoretically not possible. Upper bound for variances are determined based on the observed variances for variable. In the context of the RI-CLPM, the factor loadings are (usually) fixed, and hence these parameters are not estimated. The lagged effects are theoretically infinite, and hence there are no sensible bounds we can place à priori on these parameters. 

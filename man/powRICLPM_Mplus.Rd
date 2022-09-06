@@ -13,7 +13,7 @@ powRICLPM_Mplus(
   ICC,
   RI_cor,
   Phi,
-  wSigma,
+  within_cor,
   reps = 1000,
   seed = NA,
   save_path = getwd(),
@@ -27,21 +27,21 @@ powRICLPM_Mplus(
 
 \item{search_step}{A positive integer, denoting an increment in sample size.}
 
-\item{sample_size}{(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the \code{search_} arguments.}
+\item{sample_size}{(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the \code{search_*} arguments.}
 
 \item{time_points}{An integer (vector) with elements at least larger than 3, indicating number of time points.}
 
-\item{ICC}{A \code{double} (vector), denoting the proportion of variance at the between-unit level.}
+\item{ICC}{A \code{double} (vector) with elements between 0 and 1, denoting the proportion of (true score) variance at the between-unit level. When measurement error is included in the data generating model, ICC is computed as the variance of the random intercept factor divided by the true score variance (i.e., controlled for measurement error).}
 
-\item{RI_cor}{A \code{double}, denoting the correlation between random intercepts.}
+\item{RI_cor}{A \code{double} between 0 and 1, denoting the correlation between random intercepts.}
 
 \item{Phi}{A matrix, with standardized autoregressive effects (on the diagonal) and cross-lagged effects (off-diagonal) in the population. Columns represent predictors and rows represent outcomes.}
 
-\item{wSigma}{A correlation matrix for the within-unit components.}
+\item{within_cor}{A \code{double} between 0 and 1, denoting the correlation between the within-unit components.}
 
 \item{reps}{A positive \code{integer}, denoting the number of Monte Carlo replications to be used during simulations.}
 
-\item{seed}{An `integer` of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see \code{\link[furrr]{furrr_options}}).}
+\item{seed}{An \code{integer} of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see \code{\link[furrr]{furrr_options}}).}
 
 \item{save_path}{Character string denoting a path leading to the folder where to save the Mplus syntax files to.}
 
@@ -59,7 +59,6 @@ powRICLPM_Mplus(
 # Example - Create Mplus syntax to simulate power across range of sample sizes
 # Define population parameters for lagged effects and within-component correlations
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
-wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = TRUE)
 
 # Create and save Mplus model syntax
 \dontrun{
@@ -71,7 +70,7 @@ powRICLPM_Mplus(
   ICC = c(0.4, 0.5, 0.6),
   RI_cor = 0.3,
   Phi = Phi,
-  wSigma = wSigma,
+  within_cor = 0.3,
   reps = 10000,
   seed = 1234
 )

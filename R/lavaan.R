@@ -20,7 +20,7 @@ create_lavaan <- function(cond,
                           wSigma = NULL,
                           Psi = NULL,
                           constraints,
-                          est_ME = FALSE,
+                          estimate_ME = FALSE,
                           skewness,
                           kurtosis,
                           alpha) {
@@ -61,8 +61,8 @@ create_lavaan <- function(cond,
     est_within_cov1(cond = cond, name_within, wSigma, constraints),
     est_within_var2(cond = cond, name_within, Psi, constraints),
     est_within_cov2(cond = cond, name_within, Psi, constraints),
-    if (est_ME) {
-      est_ME(cond = cond, name_obs, constraints)
+    if (estimate_ME) {
+      estimate_ME(cond = cond, name_obs, constraints)
     },
     if (constraints == "stationarity") {
       rbind(
@@ -107,7 +107,7 @@ create_lavaan <- function(cond,
     pop_tab = pop_tab,
     est_synt = est_synt,
     est_tab = est_tab,
-    est_ME = est_ME,
+    estimate_ME = estimate_ME,
     skewness = skewness,
     kurtosis = kurtosis,
     alpha = alpha,
@@ -206,7 +206,7 @@ est_lagged <- function(cond, name_within, Phi, constraints) {
   op <- "~"
   con <- "*"
   if (constraints == "lagged" || constraints == "within" ||
-      constraints == "stationarity") {
+    constraints == "stationarity") {
     pv <- c("alpha", "beta", "delta", "gamma") # Labels for constraints
   } else {
     pv <- paste0("start(", c(t(Phi)), ")")
@@ -344,7 +344,7 @@ pop_ME <- function(cond, name_obs) {
   ))
 }
 
-est_ME <- function(cond, name_obs, constraints) {
+estimate_ME <- function(cond, name_obs, constraints) {
   lhs <- rhs <- c(name_obs)
   op <- "~~"
   con <- "*"
@@ -360,7 +360,7 @@ est_ME <- function(cond, name_obs, constraints) {
   ))
 }
 
-est_ME0 <- function(cond, name_obs) {
+estimate_ME0 <- function(cond, name_obs) {
   lhs <- rhs <- c(name_obs)
   op <- "~~"
   pv <- 0

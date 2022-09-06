@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,12 +19,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
-  <a class="nav-link" href="../articles/start.html">Getting started</a>
+  <a class="nav-link" href="../articles/start.html">Get started</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
-    <a class="dropdown-item" href="../articles/start.html">Getting started</a>
+    <a class="dropdown-item" href="../articles/start.html">Get started</a>
     <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
     <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
     <a class="dropdown-item" href="../articles/Mulder2022.html">Example</a>
@@ -75,7 +75,7 @@
   <span class="va">ICC</span>,
   <span class="va">RI_cor</span>,
   <span class="va">Phi</span>,
-  <span class="va">wSigma</span>,
+  <span class="va">within_cor</span>,
   reps <span class="op">=</span> <span class="fl">1000</span>,
   seed <span class="op">=</span> <span class="cn">NA</span>,
   save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
@@ -92,21 +92,21 @@
 <dt>search_step</dt>
 <dd><p>A positive integer, denoting an increment in sample size.</p></dd>
 <dt>sample_size</dt>
-<dd><p>(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the <code>search_</code> arguments.</p></dd>
+<dd><p>(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the <code>search_*</code> arguments.</p></dd>
 <dt>time_points</dt>
 <dd><p>An integer (vector) with elements at least larger than 3, indicating number of time points.</p></dd>
 <dt>ICC</dt>
-<dd><p>A <code>double</code> (vector), denoting the proportion of variance at the between-unit level.</p></dd>
+<dd><p>A <code>double</code> (vector) with elements between 0 and 1, denoting the proportion of (true score) variance at the between-unit level. When measurement error is included in the data generating model, ICC is computed as the variance of the random intercept factor divided by the true score variance (i.e., controlled for measurement error).</p></dd>
 <dt>RI_cor</dt>
-<dd><p>A <code>double</code>, denoting the correlation between random intercepts.</p></dd>
+<dd><p>A <code>double</code> between 0 and 1, denoting the correlation between random intercepts.</p></dd>
 <dt>Phi</dt>
 <dd><p>A matrix, with standardized autoregressive effects (on the diagonal) and cross-lagged effects (off-diagonal) in the population. Columns represent predictors and rows represent outcomes.</p></dd>
-<dt>wSigma</dt>
-<dd><p>A correlation matrix for the within-unit components.</p></dd>
+<dt>within_cor</dt>
+<dd><p>A <code>double</code> between 0 and 1, denoting the correlation between the within-unit components.</p></dd>
 <dt>reps</dt>
 <dd><p>A positive <code>integer</code>, denoting the number of Monte Carlo replications to be used during simulations.</p></dd>
 <dt>seed</dt>
-<dd><p>An `integer` of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see <code><a href="https://furrr.futureverse.org/reference/furrr_options.html" class="external-link">furrr_options</a></code>).</p></dd>
+<dd><p>An <code>integer</code> of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see <code><a href="https://furrr.futureverse.org/reference/furrr_options.html" class="external-link">furrr_options</a></code>).</p></dd>
 <dt>save_path</dt>
 <dd><p>Character string denoting a path leading to the folder where to save the Mplus syntax files to.</p></dd>
 <dt>constraints</dt>
@@ -132,7 +132,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Example - Create Mplus syntax to simulate power across range of sample sizes</span></span>
 <span class="r-in"><span class="co"># Define population parameters for lagged effects and within-component correlations</span></span>
 <span class="r-in"><span class="va">Phi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">wSigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">.3</span>, <span class="fl">.3</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Create and save Mplus model syntax</span></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
@@ -144,7 +143,7 @@
 <span class="r-in">  ICC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span><span class="op">)</span>,</span>
 <span class="r-in">  RI_cor <span class="op">=</span> <span class="fl">0.3</span>,</span>
 <span class="r-in">  Phi <span class="op">=</span> <span class="va">Phi</span>,</span>
-<span class="r-in">  wSigma <span class="op">=</span> <span class="va">wSigma</span>,</span>
+<span class="r-in">  within_cor <span class="op">=</span> <span class="fl">0.3</span>,</span>
 <span class="r-in">  reps <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span class="r-in">  seed <span class="op">=</span> <span class="fl">1234</span></span>
 <span class="r-in"><span class="op">)</span></span>

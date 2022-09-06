@@ -45,7 +45,8 @@ run_condition <- function(condition,
                           estimator,
                           reps,
                           bootstrap_reps,
-                          constraints) {
+                          constraints,
+                          save_path) {
 
   # Get the population values
   PV <- as.numeric(condition$pop_tab$pv)[condition$est_tab$free]
@@ -59,10 +60,18 @@ run_condition <- function(condition,
   # Memory allocation
   coefs <- SEs <- cvr_r <- acc_r <- matrix(NA, nrow = n_pars, ncol = reps)
   sigs <- cover <- matrix(FALSE, nrow = n_pars, ncol = reps)
-  errors <- warnings <- not_converged <- inadmissible <- rep(FALSE, times = reps)
+  errors <- not_converged <- inadmissible <- rep(FALSE, times = reps)
+
+  # Create folder for saving simulated data to
+  if (!is.null(save_path)) {
+    save_path_aux <- file.path(save_path, paste0("data_N", condition$sample_size, "_T", condition$time_points, "_RIvar", condition$RI_var))
+    dir.create(save_path_aux)
+  }
 
   # Start simulation
   for (r in 1:reps) {
+
+    # Simulate data
     dat <- lavaan::simulateData(
       model = condition$pop_synt,
       sample.nobs = condition$sample_size,
@@ -70,41 +79,59 @@ run_condition <- function(condition,
       kurtosis = condition$kurtosis
     )
 
-    fit <- tryCatch({
-      suppressWarnings(
-        lavaan(
-          model = condition$est_synt,
-          data = dat,
-          estimator = estimator,
-          bounds = bounds,
-          warn = FALSE,
-          check.start = FALSE
-        )
+    # (optional) Save data
+    if (!is.null(save_path)) {
+      utils::write.table(dat,
+        file = file.path(save_path_aux, paste0("df", r, ".dat")),
+        sep = "\t", col.names = FALSE, row.names = FALSE, na = "-999"
       )
+    }
+
+    # Fit RI-CLPM
+    fit <- tryCatch(
+      {
+        suppressWarnings(
+          lavaan(
+            model = condition$est_synt,
+            data = dat,
+            estimator = estimator,
+            bounds = bounds,
+            warn = FALSE,
+            check.start = FALSE,
+            check.lv.names = FALSE,
+            test = "none",
+            h1 = FALSE,
+            baseline = FALSE,
+            check.post = FALSE
+          )
+        )
       },
       error = function(e) {
         errors[r] <<- TRUE
-        not_converged[r] <<- TRUE
-        NULL
+        return(NULL)
       }
     )
 
     if (is.null(fit) || !lavInspect(fit, what = "converged")) {
       not_converged[r] <- TRUE
-      next # Estimates from non-converged replications are not included in results
+      next # Don't get estimates
     }
     if (!suppressWarnings(lavInspect(fit, what = "post.check"))) {
       inadmissible[r] <- TRUE
+      if (!bounds) {
+        next # Don't get estimates
+      }
     }
 
     # Get estimates
-    tryCatch({
+    tryCatch(
+      {
         coefs[, r] <- parameterEstimates(fit, remove.nonfree = TRUE)$est[1:n_pars]
         SEs[, r] <- parameterEstimates(fit, remove.nonfree = TRUE)$se[1:n_pars]
         sigs[, r] <- parameterEstimates(fit, remove.nonfree = TRUE)$pvalue[1:n_pars] < condition$alpha
         cvr_r[, r] <- suppressWarnings({
           parameterEstimates(fit, remove.nonfree = TRUE, level = (1 - condition$alpha))$ci.lower[1:n_pars] < PV &
-          parameterEstimates(fit, remove.nonfree = TRUE, level = (1 - condition$alpha))$ci.upper[1:n_pars] > PV
+            parameterEstimates(fit, remove.nonfree = TRUE, level = (1 - condition$alpha))$ci.upper[1:n_pars] > PV
         })
         acc_r[, r] <- parameterEstimates(fit, remove.nonfree = TRUE, level = (1 - condition$alpha))$ci.upper[1:n_pars] -
           parameterEstimates(fit, remove.nonfree = TRUE, level = (1 - condition$alpha))$ci.lower[1:n_pars]
@@ -116,9 +143,20 @@ run_condition <- function(condition,
     )
   }
 
+  # Create and save repList
+  if (!is.null(save_path)) {
+    df_list <- paste0("df", 1:reps, ".dat")
+    utils::write.table(df_list,
+      file = file.path(save_path_aux, "dfList.dat"),
+      sep = "\n", col.names = FALSE, row.names = FALSE, quote = FALSE
+    )
+  }
+
   # Compute simulation results
   converged_reps <- reps - sum(not_converged)
-  min <- suppressWarnings({apply(coefs, 1, min, na.rm = TRUE)})
+  min <- suppressWarnings({
+    apply(coefs, 1, min, na.rm = TRUE)
+  })
   avg <- rowMeans(coefs, na.rm = TRUE)
   stdDev <- apply(coefs, 1, stats::sd, na.rm = TRUE)
   SEAvg <- rowMeans(SEs, na.rm = TRUE)
@@ -129,11 +167,11 @@ run_condition <- function(condition,
 
   # Quantify uncertainty around Pow using bootstrapping
   Pow_uncertainty <- t(
-   apply(sigs, 1, quantify_uncertainty,
-     bootstrap_reps = bootstrap_reps,
-     converged_reps = converged_reps
-   )
- )
+    apply(sigs, 1, quantify_uncertainty,
+      bootstrap_reps = bootstrap_reps,
+      converged_reps = converged_reps
+    )
+  )
 
   # Structure results
   condition$estimates <- data.frame(

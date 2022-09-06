@@ -12,5 +12,5 @@
 \item{...}{Argument not in use.}
 }
 \description{
-\code{print.powRICLPM} prints a textual summary of the setup of the power analysis within the \code{powRICLPM} object. Specifically, it prints the characteristics of the different experimental conditions, as well as session info (information that applies to every condition).
+\code{print.powRICLPM} prints a table listing all experimental conditions contained in the \code{powRICLPM} object, as well as the frequency of the estimation problems that occurred in each.
 }

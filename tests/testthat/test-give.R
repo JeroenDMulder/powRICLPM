@@ -2,7 +2,6 @@ test_that("give() works", {
 
   # Create valid powRICLPM() input
   Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
-  wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
 
   # Test 1
   out1 <- powRICLPM(
@@ -12,7 +11,7 @@ test_that("give() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456
   )
@@ -52,5 +51,4 @@ test_that("give() works", {
 
   expect_type(x_names, "character")
   expect_equal(length(x_names), 20)
-
 })

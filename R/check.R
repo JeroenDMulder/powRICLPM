@@ -48,7 +48,7 @@ is_unit <- function(x) {
 #' @inheritParams powRICLPM
 #'
 #' @noRd
-check_T <- function(time_points, est_ME) {
+check_T <- function(time_points, estimate_ME) {
   if (!all(is.numeric(time_points))) {
     stop(rlang::format_error_bullets(c(
       "`time_points` must be an integer vector:",
@@ -61,14 +61,14 @@ check_T <- function(time_points, est_ME) {
       x = "Not all elements are integers."
     )))
   }
-  if (any(time_points < 3) && !est_ME) {
+  if (any(time_points < 3) && !estimate_ME) {
     stop(rlang::format_error_bullets(c(
       "Elements in `time_points` should be larger than 2:",
       i = "The RI-CLPM is not identified with fewer than 3 time points.",
       x = "You've supplied a number of time points smaller than 3."
     )))
   }
-  if (any(time_points < 4) && est_ME) {
+  if (any(time_points < 4) && estimate_ME) {
     stop(rlang::format_error_bullets(c(
       "Elements in `time_points` should be larger than 3:",
       i = "If you want to estimate measurement errors, you should have at least 4 waves of data.",
@@ -92,7 +92,7 @@ check_T <- function(time_points, est_ME) {
 #' @inheritParams powRICLPM
 #'
 #' @noRd
-check_N <- function(sample_size, time_points, constraints = "none", est_ME = FALSE) {
+check_N <- function(sample_size, time_points, constraints = "none", estimate_ME = FALSE) {
   if (!all(is.numeric(sample_size))) {
     stop(rlang::format_error_bullets(c(
       "`sample_size` must be an integer vector:",
@@ -113,7 +113,7 @@ check_N <- function(sample_size, time_points, constraints = "none", est_ME = FAL
     )))
   }
 
-  n_parameters <- count_parameters(2, time_points, constraints, est_ME)
+  n_parameters <- count_parameters(2, time_points, constraints, estimate_ME)
 
   if (!all(sample_size > n_parameters)) {
     stop(rlang::format_error_bullets(c(
@@ -188,35 +188,30 @@ check_RIcor <- function(x) {
   return(x)
 }
 
-#' Check \code{wSigma} argument
+#' Check \code{within_cor} argument
 #'
-#' \code{check_wSigma()} tests if \code{wSigma} represents a valid correlation matrix.
+#' \code{check_within_cor()} tests if \code{within_cor} represents a valid correlation.
 #'
-#' @param x A square matrix
+#' @param x A correlation
+#'
+#' @return A correlation matrix including \code{x}.
 #'
 #' @noRd
-check_wSigma <- function(x) {
-  if (!is.matrix(x)) {
+check_within_cor <- function(x) {
+  if (!is.double(x)) {
     stop(rlang::format_error_bullets(c(
-      "`wSigma` must be a square matrix:",
+      "`within_cor` must be a `double`:",
       x = paste0("You've provided a `", typeof(x), "`.")
     )))
   }
-  if (all(diag(x) != 1)) {
+  if (x > 1 || x < 0) {
     stop(rlang::format_error_bullets(c(
-      "`wSigma` must be a correlation matrix:",
-      i = "Correlation matrices have 1's on the diagonal.",
-      x = paste0("Your matrix has on the diagonal the values: ", diag(x)[1], " and ", diag(x)[2])
+      "`within_cor` must be between 0 and 1:",
+      i = "A correlation is always between 0 and 1.",
+      x = paste0("Your `within_cor` is ", x, ".")
     )))
   }
-  if (!is_PD(x)) {
-    stop(rlang::format_error_bullets(c(
-      "`wSigma` must be a correlation matrix:",
-      i = "Correlation matrices must be positive definite (i.e., eigenvalues smaller than 0).",
-      x = "Your `wSigma` is not positive definite. Perhaps try out smaller correlations?"
-    )))
-  }
-  return(x)
+  return(matrix(c(1, x, x, 1), ncol = 2, byrow = TRUE))
 }
 
 #' Check \code{Phi} argument
@@ -254,8 +249,8 @@ check_Psi <- function(x) {
   if (!is_PD(x)) {
     stop(rlang::format_error_bullets(c(
       "The residual variance-covariance matrix for within-components `Psi` must be positive definite:",
-      i = "`Psi` is computed from the specified `Phi` and `wSigma` arguments.",
-      x = "`Psi` is not positive definite. Try smaller values for `Phi` and `wSigma`?"
+      i = "`Psi` is computed from the specified `Phi` and `within_cor` arguments.",
+      x = "`Psi` is not positive definite. Try smaller values for `Phi` and `within_cor`?"
     )))
   }
   return(x)
@@ -677,27 +672,27 @@ check_reliability <- function(reliability) {
   return(reliability)
 }
 
-#' Check \code{est_ME} argument
+#' Check \code{estimate_ME} argument
 #'
-#' \code{check_est_ME()} checks if \code{est_ME} is a logical of length 1.
+#' \code{check_estimate_ME()} checks if \code{estimate_ME} is a logical of length 1.
 #'
 #' @inheritParams powRICLPM
 #'
 #' @noRd
-check_est_ME <- function(est_ME) {
-  if (!is.logical(est_ME)) {
+check_estimate_ME <- function(estimate_ME) {
+  if (!is.logical(estimate_ME)) {
     stop(rlang::format_error_bullets(c(
-      "`est_ME` must be a `logical`:",
-      x = paste0("Your `est_ME` is a `", class(est_ME), "`.")
+      "`estimate_ME` must be a `logical`:",
+      x = paste0("Your `estimate_ME` is a `", class(estimate_ME), "`.")
     )))
   }
-  if (length(est_ME) > 1) {
+  if (length(estimate_ME) > 1) {
     stop(rlang::format_error_bullets(c(
-      "`est_ME` must be a single `logical`:",
-      x = paste0("Your `est_ME` is of length ", length(est_ME), ".")
+      "`estimate_ME` must be a single `logical`:",
+      x = paste0("Your `estimate_ME` is of length ", length(estimate_ME), ".")
     )))
   }
-  return(est_ME)
+  return(estimate_ME)
 }
 
 #' Check \code{constraints} argument
@@ -759,6 +754,31 @@ check_estimator <- function(estimator, skewness, kurtosis) {
 #' @noRd
 check_save <- function(x) {
   if (is.na(x)) {
+    return(x)
+  } else if (!is.character(x)) {
+    stop(rlang::format_error_bullets(c(
+      "`save_path` must be a character string:",
+      x = paste0("Your `save_path` is a `", typeof(x), "`.")
+    )))
+  } else if (!dir.exists(x)) {
+    stop(rlang::format_error_bullets(c(
+      "`save_path` must point to an existing folder:",
+      x = "The directory in `save_path` does not exist. Create this folder or change `save_path`."
+    )))
+  } else {
+    return(x)
+  }
+}
+
+#' Check `save_path` argument
+#'
+#' `check_save()` tests if the `save_path` argument points to an existing folder.
+#'
+#' @param x A character string.
+#'
+#' @noRd
+check_save_path <- function(x) {
+  if (is.null(x)) {
     return(x)
   } else if (!is.character(x)) {
     stop(rlang::format_error_bullets(c(

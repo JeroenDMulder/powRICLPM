@@ -9,16 +9,16 @@ vignette: >
 
 This vignette details how you can set up and execute a basic power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the `powRICLPM` package. Throughout, an illustrating example will be used in which we wish to detect a small cross-lagged effect $\beta_{2}$ (defined here as the effect of $a_{1}^{*}$ to $b_{2}^{*}$, where $a_{1}^{*}$ and $b_{2}^{*}$ denote the latent within-unit components of $a_{1}$ and $b_{2}$, respectively) of 0.2 (standardized). For the design of our power analysis we follow the strategy as described in Mulder (under review). The basic power analysis described here can be extended with various options, as described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
 
-## Steps 1: Experimental conditions
+## Step 1: Experimental conditions
 Before performing the power analysis, you must first determine the *experimental conditions* of interest. Experimental conditions (or: simulation conditions) are defined by characteristics of the study design that can impact statistical power. This includes characteristics like the *sample size* and the *number of repeated measures*. You must decide on the number of repeated measures that will be used in the simulations, as well as the range of sample sizes over which you want to simulate the power. 
 
 For this example, we take a sample size range from 100 to 1000 first, increasing with steps of 100. We let the numbers of repeated measures range from 3 to 5. If these experimental conditions do not lead to the desired amount of power for detecting the small cross-lagged effect, the ranges can be extended. 
 
-## Steps 2: Choosing population parameter values
+## Step 2: Choosing population parameter values
 Next, you must determine population parameter values for generating data from the RI-CLPM. This requires the specification of:
 
 - `Phi`: Standardized autoregressive and cross-lagged effects for the within-unit components of the model. These values are collected in a matrix with columns representing predictors and rows representing outcomes.
-- `wSigma`: A correlation matrix for the within-unit components.
+- `within_cor`: A correlation for the within-unit components.
 - `ICC`: The proportion of variance at the between-unit level (relative to the total variance).
 - `RI_cor`: The correlation between the random intercepts.
 
@@ -26,7 +26,6 @@ For our example, the parameter values are set to:
 
 ```{r step2}
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = T) # The .2 refers to our standardized cross-lagged effect of interest
-wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = T)
 ICC <- 0.5
 RI_cor <- 0.3
 ```
@@ -37,7 +36,7 @@ Steps 3 to 5 are automated by the `powRICLPM` function. As input, you must provi
 - the desired power level using the `target_power` argument, 
 - the range of sample sizes to simulate the power for using the `search_lower`, `search_upper`, and `search_step` arguments (alternatively, you can specify this directly by providing a vector of sample sizes to the `sample_size` argument), 
 - the number of time points for the simulated data using the `time_points` argument, 
-- the population values `Phi`, `wSigma`, `ICC`, and `RI_cor`, and
+- the population values `Phi`, `within_cor`, `ICC`, and `RI_cor`, and
 - the number of Monte Carlo replications we want to perform per experimental condition in the `reps` argument. 
 
 Optionally, you can specify:
@@ -60,7 +59,7 @@ output <- powRICLPM(target_power = 0.8,
                     ICC = ICC,
                     RI_cor = RI_cor, 
                     Phi = Phi,
-                    wSigma = wSigma,
+                    within_cor = 0.3,
                     reps = 1000)
 ```
 
@@ -97,7 +96,7 @@ with_progress({ # Subscribe to progress updates
                       ICC = ICC,
                       RI_cor = RI_cor, 
                       Phi = Phi,
-                      wSigma = wSigma,
+                      within_cor = 0.3,
                       reps = 1000,
                       parameter = `wB2~wA1`)
 })

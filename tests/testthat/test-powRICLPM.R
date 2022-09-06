@@ -2,7 +2,6 @@ test_that("powRICLPM() works", {
 
   # Create valid powRICLPM() input
   Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
-  wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
 
   # Single experimental condition
   out1 <- powRICLPM(
@@ -12,7 +11,7 @@ test_that("powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456
   )
@@ -41,7 +40,7 @@ test_that("powRICLPM() works", {
     ICC = c(0.4, 0.6),
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456
   )
@@ -65,14 +64,14 @@ test_that("powRICLPM() works", {
     ICC = .5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reliability = .85,
-    est_ME = TRUE,
+    estimate_ME = TRUE,
     reps = 2,
     seed = 1234
   )
   # Run tests
-  expect_equal(out3$session$est_ME, TRUE)
+  expect_equal(out3$session$estimate_ME, TRUE)
   expect_equal(
     c("A1~~A1", "A2~~A2", "B1~~B1", "B2~~B2") %in% out3$conditions[[1]]$estimates$Par,
     c(T, T, T, T)
@@ -91,7 +90,7 @@ test_that("bounded estimation in powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 10,
     seed = 123456,
     bounds = FALSE
@@ -104,7 +103,7 @@ test_that("bounded estimation in powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 10,
     seed = 123456,
     bounds = TRUE
@@ -144,7 +143,7 @@ test_that("constrained estimation model in powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456,
     bounds = FALSE,
@@ -163,7 +162,7 @@ test_that("constrained estimation model in powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456,
     bounds = FALSE,
@@ -182,7 +181,7 @@ test_that("constrained estimation model in powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456,
     bounds = FALSE,
@@ -205,7 +204,7 @@ test_that("constrained estimation model in powRICLPM() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456,
     bounds = FALSE,

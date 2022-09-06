@@ -16,14 +16,15 @@ setup <- function(target_power,
                   reliability,
                   skewness,
                   kurtosis,
-                  est_ME,
+                  estimate_ME,
                   alpha,
                   reps,
                   bootstrap_reps,
                   seed,
                   constraints,
                   bounds,
-                  estimator) {
+                  estimator,
+                  save_path) {
 
   # Create experimental conditions
   params <- expand.grid(
@@ -45,7 +46,7 @@ setup <- function(target_power,
     wSigma = wSigma,
     Psi = Psi,
     constraints = constraints,
-    est_ME = est_ME,
+    estimate_ME = estimate_ME,
     skewness = skewness,
     kurtosis = kurtosis,
     alpha = alpha
@@ -57,13 +58,14 @@ setup <- function(target_power,
     session = list(
       Psi = Psi,
       reliability = reliability,
-      est_ME = est_ME,
+      estimate_ME = estimate_ME,
       reps = reps,
       bootstrap_reps = bootstrap_reps,
       target_power = target_power,
       constraints = constraints,
       bounds = bounds,
       estimator = estimator,
+      save_path = save_path,
       version = utils::packageVersion("powRICLPM")
     )
   )

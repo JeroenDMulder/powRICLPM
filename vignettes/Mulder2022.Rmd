@@ -24,10 +24,7 @@ The R-code for the preliminary analysis can be found below:
 # Matrix of standardized lagged effects
 Phi <- matrix(c(0.20, 0.10, 0.15, 0.30), byrow = FALSE, ncol = 2)
 
-# Correlation matrix of within-components
-wSigma <- matrix(c(1, 0.26, 0.26, 1), byrow = FALSE, ncol = 2)
-
-# powRICLPM automatically computes Psi based on Phi and wSigma
+# powRICLPM automatically computes Psi based on Phi and within_cor
 
 # Setup parallel processing to speed up computations
 plan(multisession, workers = 6)
@@ -42,7 +39,7 @@ with_progress({
                                ICC = c(0.3, 0.5, 0.7),
                                RI_cor = 0.35, 
                                Phi = Phi,
-                               wSigma = wSigma,
+                               within_cor = 0.26,
                                reps = 100, 
                                seed = 123456)
 })
@@ -82,7 +79,7 @@ with_progress({
                               ICC = c(0.3, 0.5, 0.7),
                               RI_cor = 0.35, 
                               Phi = Phi,
-                              wSigma = wSigma,
+                              within_cor = 0.26,
                               reps = 2000, 
                               seed = 123456)
 })

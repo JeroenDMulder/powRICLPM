@@ -3,7 +3,6 @@ test_that("setting a seed in furrr_options() works", {
 
   # Create valid powRICLPM() input
   Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
-  wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
 
   out1 <- powRICLPM(
     target_power = 0.8,
@@ -12,7 +11,7 @@ test_that("setting a seed in furrr_options() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456,
     bounds = FALSE
@@ -25,7 +24,7 @@ test_that("setting a seed in furrr_options() works", {
     ICC = 0.5,
     RI_cor = 0.3,
     Phi = Phi,
-    wSigma = wSigma,
+    within_cor = 0.3,
     reps = 2,
     seed = 123456, # Same seed
     bounds = TRUE
@@ -33,4 +32,3 @@ test_that("setting a seed in furrr_options() works", {
 
   expect_equal(out1$conditions[[1]]$results$avg[1], out2$conditions[[1]]$results$avg[1])
 })
-

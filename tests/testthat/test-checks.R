@@ -1,11 +1,11 @@
 
 # Test check_T() ----
 test_that("check_T() works", {
-  expect_equal(check_T(c(3, 4), est_ME = FALSE), c(3, 4))
-  expect_error(check_T(3.5, est_ME = FALSE))
-  expect_error(check_T(c(2, 3), est_ME = FALSE))
-  expect_warning(check_T(c(3:30), est_ME = FALSE))
-  expect_error(check_T(c(3, 4), est_ME = TRUE))
+  expect_equal(check_T(c(3, 4), estimate_ME = FALSE), c(3, 4))
+  expect_error(check_T(3.5, estimate_ME = FALSE))
+  expect_error(check_T(c(2, 3), estimate_ME = FALSE))
+  expect_warning(check_T(c(3:30), estimate_ME = FALSE))
+  expect_error(check_T(c(3, 4), estimate_ME = TRUE))
 })
 
 # Test is_PD() ----
@@ -31,13 +31,13 @@ test_that("is_unit() works", {
 
 # Test check_N() ----
 test_that("check_N() works", {
-  expect_equal(check_N(c(200, 300), 3, constraints = "none", est_ME = FALSE), c(200, 300))
-  expect_error(check_N(c(200.4, 300), 3, constraints = "none", est_ME = FALSE))
-  expect_error(check_N(c(-200, 300), 3, constraints = "none", est_ME = FALSE))
-  expect_error(check_N(10, 3, constraints = "none", est_ME = FALSE))
-  expect_equal(check_N(17, 3, constraints = "lagged", est_ME = FALSE), 17)
-  expect_error(check_N(20, 3, constraints = "none", est_ME = TRUE))
-  expect_equal(check_N(20, 3, constraints = "within", est_ME = TRUE), 20)
+  expect_equal(check_N(c(200, 300), 3, constraints = "none", estimate_ME = FALSE), c(200, 300))
+  expect_error(check_N(c(200.4, 300), 3, constraints = "none", estimate_ME = FALSE))
+  expect_error(check_N(c(-200, 300), 3, constraints = "none", estimate_ME = FALSE))
+  expect_error(check_N(10, 3, constraints = "none", estimate_ME = FALSE))
+  expect_equal(check_N(17, 3, constraints = "lagged", estimate_ME = FALSE), 17)
+  expect_error(check_N(20, 3, constraints = "none", estimate_ME = TRUE))
+  expect_equal(check_N(20, 3, constraints = "within", estimate_ME = TRUE), 20)
 })
 
 # Test check_ICC() ----
@@ -47,17 +47,11 @@ test_that("check_ICC() works", {
   expect_error(check_ICC("0.5"))
 })
 
-# Test check_wSigma() ----
-test_that("check_wSigma() works", {
-  # Create sample matrices
-  m1 <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = TRUE)
-  m2 <- matrix(c(.3, .4, .3, .2), ncol = 2, byrow = TRUE)
-  m3 <- matrix(c(1, 2, 2, 1), ncol = 2, byrow = TRUE)
-
-  expect_equal(check_wSigma(m1), m1)
-  expect_error(check_wSigma(m2))
-  expect_error(check_wSigma("m2"))
-  expect_error(check_wSigma(m3))
+# Test check_within_cor() ----
+test_that("check_within_cor() works", {
+  expect_equal(check_within_cor(0.3), matrix(c(1, .3, .3, 1), ncol = 2, byrow = TRUE))
+  expect_error(check_within_cor("0.3"))
+  expect_error(check_within_cor(1.1))
 })
 
 # Test check_Phi() ----
@@ -153,11 +147,11 @@ test_that("check_reliability() works", {
 })
 
 # Test check_est_ME() ----
-test_that("check_est_ME() works", {
-  expect_error(check_est_ME(1))
-  expect_error(check_est_ME("ME"))
-  expect_error(check_est_ME(c(TRUE, TRUE)))
-  expect_equal(check_est_ME(TRUE), TRUE)
+test_that("check_estimate_ME() works", {
+  expect_error(check_estimate_ME(1))
+  expect_error(check_estimate_ME("ME"))
+  expect_error(check_estimate_ME(c(TRUE, TRUE)))
+  expect_equal(check_estimate_ME(TRUE), TRUE)
 })
 
 # Test check_constraints() ----
@@ -177,4 +171,3 @@ test_that("check_estimator() works", {
   expect_equal(check_estimator(NA, skewness = 0, kurtosis = 1), "MLR")
   expect_equal(check_estimator(NA, 0, 0), "ML")
 })
-

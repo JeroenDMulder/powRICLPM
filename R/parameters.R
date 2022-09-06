@@ -23,7 +23,7 @@ count_parameters <- function(k, time_points, constraints, est_ME) {
   if (constraints == "residuals" || constraints == "within") {
     n_parameters <- n_parameters - ((k + sum((k - 1):1)) * (time_points_max - 2))
   }
-  if (constraints == "stationarity" ) {
+  if (constraints == "stationarity") {
     n_parameters <- n_parameters - ((time_points_max - 1) * k)
   }
   if (constraints == "ME") {

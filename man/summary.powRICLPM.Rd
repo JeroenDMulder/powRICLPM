@@ -20,14 +20,14 @@
 
 \item{parameter}{Character string of length denoting the parameter to visualize the results for.}
 
-\item{sample_size}{(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the \code{search_} arguments.}
+\item{sample_size}{(optional) An \code{integer}, denoting the sample size of the experimental condition of interest.}
 
-\item{time_points}{An integer (vector) with elements at least larger than 3, indicating number of time points.}
+\item{time_points}{(optional) An \code{integer}, denoting the number of time points of the experimental condition of interest.}
 
-\item{ICC}{A \code{double} (vector), denoting the proportion of variance at the between-unit level.}
+\item{ICC}{(optional) A \code{double}, denoting the proportion of variance at the between-unit level of the experimental condition of interest.}
 }
 \description{
-S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the input, \code{summary.powRICLPM} provides a different summary (see "Details").
+S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the arguments that are set, \code{summary.powRICLPM} provides a different summary (see "Details").
 }
 \details{
 \code{summary.powRICLPM} provides a different summary of the \code{powRICLPM} object, depending on the additional arguments that are set:
