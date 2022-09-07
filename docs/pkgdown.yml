@@ -1,5 +1,5 @@
-pandoc: 2.17.1.1
-pkgdown: 2.0.3
+pandoc: '2.18'
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   extensions: extensions.html
@@ -7,5 +7,5 @@ articles:
   mplus: mplus.html
   Mulder2022: Mulder2022.html
   start: start.html
-last_built: 2022-09-06T12:56Z
+last_built: 2022-09-07T07:37Z
 

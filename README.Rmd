@@ -49,6 +49,7 @@ devtools::install_github("jeroendmulder/powRICLPM")
 You can cite the R-package with the following citation:
 
 > Mulder, J.D., (in press). *Power analysis for the random intercept cross-lagged panel model using the powRICLPM R-package* 
+
 ## Contact
 
 If you have ideas, comments, or issues you would like to raise, please get in touch.  
