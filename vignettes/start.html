@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Getting started</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started</h1>
+
+
+
+<p>This vignette details how you can set up and execute a basic power
+analysis for a bivariate random intercept cross-lagged panel model
+(RI-CLPM) using the <code>powRICLPM</code> package. Throughout, an
+illustrating example will be used in which we wish to detect a small
+cross-lagged effect <span class="math inline">\(\beta_{2}\)</span>
+(defined here as the effect of <span class="math inline">\(a_{1}^{*}\)</span> to <span class="math inline">\(b_{2}^{*}\)</span>, where <span class="math inline">\(a_{1}^{*}\)</span> and <span class="math inline">\(b_{2}^{*}\)</span> denote the latent within-unit
+components of <span class="math inline">\(a_{1}\)</span> and <span class="math inline">\(b_{2}\)</span>, respectively) of 0.2
+(standardized). For the design of our power analysis we follow the
+strategy as described in Mulder (under review). The basic power analysis
+described here can be extended with various options, as described in the
+Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
+<div id="step-1-experimental-conditions" class="section level2">
+<h2>Step 1: Experimental conditions</h2>
+<p>Before performing the power analysis, you must first determine the
+<em>experimental conditions</em> of interest. Experimental conditions
+(or: simulation conditions) are defined by characteristics of the study
+design that can impact statistical power. This includes characteristics
+like the <em>sample size</em> and the <em>number of repeated
+measures</em>. You must decide on the number of repeated measures that
+will be used in the simulations, as well as the range of sample sizes
+over which you want to simulate the power.</p>
+<p>For this example, we take a sample size range from 100 to 1000 first,
+increasing with steps of 100. We let the numbers of repeated measures
+range from 3 to 5. If these experimental conditions do not lead to the
+desired amount of power for detecting the small cross-lagged effect, the
+ranges can be extended.</p>
+</div>
+<div id="step-2-choosing-population-parameter-values" class="section level2">
+<h2>Step 2: Choosing population parameter values</h2>
+<p>Next, you must determine population parameter values for generating
+data from the RI-CLPM. This requires the specification of:</p>
+<ul>
+<li><code>Phi</code>: Standardized autoregressive and cross-lagged
+effects for the within-unit components of the model. These values are
+collected in a matrix with columns representing predictors and rows
+representing outcomes.</li>
+<li><code>within_cor</code>: A correlation for the within-unit
+components.</li>
+<li><code>ICC</code>: The proportion of variance at the between-unit
+level (relative to the total variance).</li>
+<li><code>RI_cor</code>: The correlation between the random
+intercepts.</li>
+</ul>
+<p>For our example, the parameter values are set to:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Phi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(.<span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> T) <span class="co"># The .2 refers to our standardized cross-lagged effect of interest</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ICC <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>RI_cor <span class="ot">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div>
+</div>
+<div id="steps-3-5-performing-the-power-analysis" class="section level2">
+<h2>Steps 3-5: Performing the power analysis</h2>
+<p>Steps 3 to 5 are automated by the <code>powRICLPM</code> function. As
+input, you must provide:</p>
+<ul>
+<li>the desired power level using the <code>target_power</code>
+argument,</li>
+<li>the range of sample sizes to simulate the power for using the
+<code>search_lower</code>, <code>search_upper</code>, and
+<code>search_step</code> arguments (alternatively, you can specify this
+directly by providing a vector of sample sizes to the
+<code>sample_size</code> argument),</li>
+<li>the number of time points for the simulated data using the
+<code>time_points</code> argument,</li>
+<li>the population values <code>Phi</code>, <code>within_cor</code>,
+<code>ICC</code>, and <code>RI_cor</code>, and</li>
+<li>the number of Monte Carlo replications we want to perform per
+experimental condition in the <code>reps</code> argument.</li>
+</ul>
+<p>Optionally, you can specify:</p>
+<ul>
+<li><code>skewness</code> and <code>kurtosis</code>: An integer (vector)
+that determines the skewness and kurtosis for the simulated observed
+variables, respectively. Suppose we have reason to believe the <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> variables are positively skewed, and
+have heavy tails (i.e., a higher kurtosis) we can include the arguments
+<code>skewness = 1</code> and <code>kurtosis = 0.5</code> (defaults:
+0).</li>
+<li><code>alpha</code>: A numeric value denoting the significance
+criterion (default: 0.05).</li>
+<li><code>seed</code>: An integer to control the starting point of the
+random number generator. This is important to use if you want to
+replicate the results.</li>
+<li><code>reliability</code>: A numeric value representing the
+reliability of the indicators (i.e., the proportion of true score
+variance) (default: 1)</li>
+</ul>
+<p>The <code>constraints</code>, <code>bounds</code>, and
+<code>est_ME</code> arguments can be set as well to extend the basic
+power analysis setup, as described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
+<p>For our example, we can perform the power analysis by running:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">powRICLPM</span>(<span class="at">target_power =</span> <span class="fl">0.8</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">search_lower =</span> <span class="dv">100</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">search_upper =</span> <span class="dv">1000</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">search_step =</span> <span class="dv">50</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">time_points =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ICC =</span> ICC,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">RI_cor =</span> RI_cor, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">Phi =</span> Phi,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">within_cor =</span> <span class="fl">0.3</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">reps =</span> <span class="dv">1000</span>)</span></code></pre></div>
+<div id="parallel-processing-using-furrr" class="section level3">
+<h3>Parallel processing using <code>furrr</code></h3>
+<p>Performing a Monte Carlo power analysis with a large number of
+replications, and across multiple simulation conditions (in our
+illustrative example, we have 57 experimental conditions) can take a lot
+of time. To speed up the process, it is recommended to perform the power
+analysis <em>across simulation conditions</em> in parallel (i.e., on
+multiple cores). The <code>powRICLPM()</code> function has implemented
+<code>future</code>’s parallel processing capabilities using the
+<code>furrr</code> package.</p>
+<p>Load the <code>furrr</code> package, and use its <code>plan()</code>
+function to change the power analysis execution from <em>sequential</em>
+(i.e., single-core, the default), to <em>multisession</em> (i.e.,
+multicore). Use the <code>workers</code> argument in <code>plan()</code>
+to specify how many cores you want to use. Next, run the
+<code>powRICLPM</code> analysis, and the power analysis will run on the
+specified number of cores. This can result in a significant reduction of
+computing time. For more information on other parallel execution
+strategies, see <code>?furrr::plan()</code>.</p>
+</div>
+<div id="progress-bar-using-progressr" class="section level3">
+<h3>Progress bar using <code>progressr</code></h3>
+<p>It can be useful to get an approximation of the progress of the
+<code>powRICLPM</code> analysis while running the code, especially when
+running the analysis in parallel. <code>powRICLPM()</code> has
+implemented progress notifications using the <code>progressr</code>
+package. Simply put, there are two options through which you can get
+progress notifications:</p>
+<ul>
+<li>You can subscribe to progress updates from a specific expression by
+wrapping this expression with <code>with_progress({...})</code>.</li>
+<li>You can subscribe to progress updates from everywhere by running
+<code>handlers(global = T)</code>.</li>
+</ul>
+<p>The second option is not fully developed yet for the
+<code>furrr</code> package, so instead I focus on the first.
+Implementing the <code>with_progress({...})</code> option, as well as
+parallel execution of the <code>powRICLPM</code> analysis, results in
+the below code:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the furrr package</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(furrr)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check how many cores are available</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>future<span class="sc">::</span><span class="fu">availableCores</span>()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plan the powRICLPM analysis to run on 1 core less than the number of available cores</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">7</span>) <span class="co"># For the case of 8 available cores</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the powRICLPM analysis </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">with_progress</span>({ <span class="co"># Subscribe to progress updates</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">powRICLPM</span>(<span class="at">target_power =</span> <span class="fl">0.8</span>, <span class="co"># The actual power analysis function</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">search_lower =</span> <span class="dv">100</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">search_upper =</span> <span class="dv">1000</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">search_step =</span> <span class="dv">50</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">time_points =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ICC =</span> ICC,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                      <span class="at">RI_cor =</span> RI_cor, </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Phi =</span> Phi,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">within_cor =</span> <span class="fl">0.3</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                      <span class="at">reps =</span> <span class="dv">1000</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">parameter =</span> <span class="st">`</span><span class="at">wB2~wA1</span><span class="st">`</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Revert back to sequential execution of code upon completion of the analysis</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span></code></pre></div>
+<p>For more information about progress notification options using
+<code>progressr</code> for end-users, including auditory and email
+updates, see <a href="https://progressr.futureverse.org">https://progressr.futureverse.org</a>.</p>
+</div>
+</div>
+<div id="step-6-summarize-results" class="section level2">
+<h2>Step 6: Summarize results</h2>
+<p>The <code>powRICLPM()</code> function creates a
+<code>powRICLPM</code> object: A list with results, upon which we can
+call <code>print()</code>, <code>summary()</code>, <code>give()</code>,
+and <code>plot()</code> functions to print, summarize, extract results,
+and optionally visualize the results from the analysis,
+respectively.</p>
+<p><code>print()</code> outputs a textual summary of the power analysis
+design contained within the object it was called upon. It does not
+output any performance metrics computed by the power analysis.</p>
+<p><code>summary()</code> can be used in one of four ways. First,
+summary can be used simply like <code>print()</code> to get information
+about the design of the power analysis (the different experimental
+conditions), as well as the number of problems the occured per condition
+(e.g., non-convergence, fatal estimation errors, or inadmissible
+results). Second, by specifying the <code>parameter = &quot;...&quot;</code>
+argument in <code>summary()</code>, the function will print the results
+specifically for that parameter across all experimental conditions.
+Third, if you specify a specific experimental condition (by specifying a
+sample size, number of time points and ICC using the
+<code>sample_size</code>, <code>time_points</code>, and <code>ICC</code>
+arguments), the function displays performance measures for all
+parameters in that experimental condition.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. General results</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(output)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Get (slightly) more detailed parameter-specific information</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(output, <span class="at">parameter =</span> <span class="st">&quot;wB2~wA1&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Display parameter-specific and condition-specific performance metrics</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(output, <span class="at">sample_size =</span> <span class="dv">400</span>, <span class="at">time_points =</span> <span class="dv">4</span>, <span class="at">ICC =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><code>give()</code> extracts various bits of information from an
+<code>powRICLPM</code> object. The exact information to be extracted is
+given by the <code>what = &quot;...&quot;</code> argument:</p>
+<ol style="list-style-type: decimal">
+<li><code>what = &quot;conditions&quot;</code> gives the different experimental
+conditions per row, where each condition is defined by a unique
+combination of sample size, number of time points and ICC.</li>
+<li><code>what = &quot;estimation_problems&quot;</code> gives the proportion of
+fatal errors, inadmissible values, or non-converged estimations
+(columns) per experimental conditions (row).</li>
+<li><code>what = &quot;results&quot;</code> gives the average estimate
+<code>Avg</code>, minimum estimate <code>Min</code>, standard deviation
+of parameter estimates <code>stdDev</code>, the average standard error
+<code>SEavg</code>, the mean square error <code>MSE</code>, the average
+width of the confidence interval <code>Acc</code>, the coverage rate
+<code>Cov</code>, and the proportion of times the <em>p</em>-value was
+lower than the significance criterion <code>Pow</code>. It requires
+setting the <code>parameter = &quot;...&quot;</code> argument.</li>
+<li><code>what = &quot;names&quot;</code> gives the parameter names contained
+within the <code>powRICLPM</code> object.</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Extract experimental conditions</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">give</span>(output, <span class="at">what =</span> <span class="st">&quot;conditions&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Extract estimation problems</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">give</span>(output, <span class="at">what =</span> <span class="st">&quot;estimation_problems&quot;</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Extract results for cross-lagged effect &quot;wB2~wA1&quot; </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">give</span>(output, <span class="at">what =</span> <span class="st">&quot;results&quot;</span>, <span class="at">parameter =</span> <span class="st">&quot;wB2~wA1&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Extract parameter names</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">give</span>(output, <span class="at">what =</span> <span class="st">&quot;names&quot;</span>)</span></code></pre></div>
+<p>Finally, <code>plot()</code> creates a <code>ggplot2</code>-plot for
+a specific parameter (specified using the <code>parameter = &quot;...&quot;</code>
+argument) with sample size on the x-axis, the simulated power on the
+y-axis, lines grouped by number of time-points, and plots wrapped by
+proportion of between-unit variance. <code>plot()</code> returns a
+<code>ggplot2</code> object that can be fully customized using
+<code>ggplot2</code> functionality. For example, you can change the
+scales, add titles, change geoms, etc. More information about options in
+the <code>ggplot2</code> framework can be found at <a href="https://ggplot2-book.org/index.html">https://ggplot2-book.org/index.html</a>.
+In the below example, I add a title and change the labels on the
+x-axis:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create basic plot of powRICLPM object</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot</span>(output, <span class="at">parameter =</span> <span class="st">&quot;wB2~wA1&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust plot aesthetics</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> p <span class="sc">+</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Power analysis for RI-CLPM&quot;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Based on 1000 replications.&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Sample size&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">100</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">n.dodge =</span> <span class="dv">2</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>p2</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

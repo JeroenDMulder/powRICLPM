@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Extensions</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Extensions</h1>
+
+
+
+<p>The basic power analysis as described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
+started</a> can be extended to using bounded estimation, estimation with
+constraints over time, and the inclusion of measurement error variances.
+These extensions are described below.</p>
+<div id="bounded-estimation-with-lavaan" class="section level2">
+<h2>Bounded estimation with <code>lavaan</code></h2>
+<p>To prevent non-convergence for small sample sizes (say, less than
+100), bounds can be imposed on the parameter space during estimation of
+the model using <code>bounds = TRUE</code> <a href="https://doi.org/10.1080/10705511.2021.1982716">(De Jonckere &amp;
+Rosseel, 2022)</a>. This can aid the optimization algorithm to find
+unique solutions and prevents it from searching in the completely wrong
+direction for one, or multiple parameters. Sensible lower bounds involve
+those on the (residual) variances of latent variables (e.g., the random
+intercept variances), as negative variances are theoretically not
+possible. Upper bound for variances are determined based on the observed
+variances for variable. In the context of the RI-CLPM, the factor
+loadings are (usually) fixed, and hence these parameters are not
+estimated. The lagged effects are theoretically infinite, and hence
+there are no sensible bounds we can place à priori on these
+parameters.</p>
+</div>
+<div id="constraints-over-time" class="section level2">
+<h2>Constraints over time</h2>
+<p><code>powRICLPM</code> offers users the option to impose various
+constraints over time on the estimation model through the
+<code>constraints</code> argument. This has statistical advantages as
+constraints over time reduce model complexity, thereby potentially
+reducing convergence issues and increasing power. Moreover, some
+researchers are interested in so called ‘stationarity’ constraints for
+theoretical reasons. Disadvantages of such constraints are that they
+assume certain parameters over time do not change. This might not be an
+assumption researchers are willing to make, especially in developmental
+contexts where you expect lagged effects might change over time (e.g.,
+the variable <code>wA</code> gets more important in driving
+<code>wB</code> as one gets older). Therefore, by default
+<code>constraints = &quot;none&quot;</code>, implying that all lagged effects, and
+within-components (residual) variances and covariances are freely
+estimated over time.</p>
+<p>Constraint options include:</p>
+<ul>
+<li><code>constraints = &quot;lagged&quot;</code>: All autoregressive and
+cross-lagged effects are constrained to be equal over time.</li>
+<li><code>constraints = &quot;residuals</code>: The within-unit residual
+variances and covariance (from wave 2 onwards) are constrained to be
+equal over time.</li>
+<li><code>constraints = &quot;within&quot;</code>: Both lagged effects and
+residual variances and covariances are constrained to be equal over
+time.</li>
+<li><code>constraints = &quot;stationary&quot;</code>: Constraints are imposed on
+the variances of the within-components at the first wave, and residual
+variances at wave 2 and further, such that the variances of the
+within-components themselves are all 1. This implies that the variances
+at the first wave are fixed to 1, and that the residual variances are a
+function of the lagged effects, and correlation between
+within-components at the same wave. These constraints are deduced in the
+supplementary materials of <a href="https://jeroendmulder.github.io/RI-CLPM/faq.html#Standardization">Mulder
+and Hamaker (see the FAQ “How can I constrain the <em>standardized</em>
+parameters to be invariant over time?”)</a>.</li>
+<li><code>constraints = &quot;ME&quot;</code>: Constraints are imposed on the
+measurement error variances across time. This constraint is only
+possible when <code>est_ME = TRUE</code>.</li>
+</ul>
+</div>
+<div id="measurment-error" class="section level2">
+<h2>Measurment error</h2>
+<p>While it is generally advisable to include measurement error when
+analyzing psychological data, the RI-CLPM does not include it. Adding
+measurement error to the model would result in the bivariate Trait State
+Error (TSE) model by <a href="https://doi.org/10.1037/10409-008">Kenny
+and Zautra (1995)</a>, and requires at least 4 waves of data to be
+identified. Users can add measurement error variances to the estimation
+model by setting the <code>est_ME</code> argument to
+<code>est_ME = TRUE</code>. Measurement error can be added to the
+simulated data using the <code>reliability</code> argument.</p>
+<p>Note, however, that this model (the bivariate TSE) has been shown to
+be prone to empirical under-identification, often requiring upwards of 8
+waves of data and sample sizes larger than 500.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
