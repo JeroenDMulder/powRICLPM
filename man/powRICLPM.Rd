@@ -75,10 +75,10 @@ powRICLPM(
 \item{save_path}{A character string naming the directory to save (data) files to (used for validation purposes of this package). Variables are saved in alphabetical and numerical order.}
 }
 \value{
-A list containing a \code{conditions} and \code{session} element. \code{condition} itself is a list of experimental conditions, where each element is again a list containing the input and output of the power analysis for that particular experimental condition. \code{session} is a list containing information common to all experimental conditions.
+A \code{list} containing a \code{conditions} and \code{session} element. \code{condition} itself is a \code{list} of experimental conditions, where each element is again a \code{list} containing the input and output of the power analysis for that particular experimental condition. \code{session} is a \code{list} containing information common to all experimental conditions.
 }
 \description{
-\code{powRICLPM()} performs a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM). It computes performance metrics (e.g., bias, mean square error, coverage, power, etc) for all RI-CLPM parameters, and can perform power analyses across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the data simulation, b) model estimation, c) internal naming conventions of parameters, d) the option to include measurement errors (i.e., estimating the Stable Trait Autoregressive Trait State model), e) imposing various constraints over time, and f) parallel execution capabilities for speeding up the analysis.
+Perform a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM). This function computes performance metrics (e.g., bias, mean square error, coverage, power, etc) for all RI-CLPM parameters, and can perform power analyses across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the data simulation, b) model estimation, c) internal naming conventions of parameters, d) the option to include measurement errors (i.e., estimating the Stable Trait Autoregressive Trait State model), e) imposing various constraints over time, and f) parallel execution capabilities for speeding up the analysis.
 }
 \details{
 A rationale for the power analysis strategy implemented in this package can be found in Mulder (2022).
@@ -87,13 +87,13 @@ A rationale for the power analysis strategy implemented in this package can be f
 
 \subsection{Model estimation}{Data are analyzed using \code{\link[lavaan]{lavaan}} from the \pkg{lavaan} package. The default estimator is maximum likelihood (\code{ML}). Other maximum likelihood based estimators implemented in \href{https://lavaan.ugent.be/tutorial/est.html}{\pkg{lavaan}} can be specified as well. When skewed or kurtosed data are generated (using the \code{skewness} and \code{kurtosis} arguments), the estimator defaults to robust maximum likelihood \code{MLR}. The population parameter values are used as starting values.
 
-Parameter estimates from non-converged model solutions are discarded from the results. When \code{bounds = FALSE}, inadmissible parameter estimates from converged solutions (e.g., a negative random intercept variance) are discarded. When \code{bounds = TRUE}, inadmissible parameter estimates are retained following advice by \href{https://doi.org/10.1080/10705511.2021.1982716}{De Jonckere and Rosseel (2022)}. The results include the minimum estimates for all parameters across replications to diagnose which parameter(s) is (are) the cause of the inadmissible solution.}
+Parameter estimates from non-converged model solutions are discarded from the results. When \code{bounds = FALSE}, inadmissible parameter estimates from converged solutions (e.g., a negative random intercept variance) are discarded. When \code{bounds = TRUE}, inadmissible parameter estimates are retained following advice by De Jonckere and Rosseel (2022). The results include the minimum estimates for all parameters across replications to diagnose which parameter(s) is (are) the cause of the inadmissible solution.}
 
 \subsection{Naming conventions for observed and latent variables}{The observed variables in the RI-CLPM are given default names, namely capital letters in alphabetical order, with numbers denoting the measurement occasion. For example, for a bivariate RICLPM with 3 time points, we observe \code{A1}, \code{A2}, \code{A3}, \code{B1}, \code{B2}, and \code{B3}. Their within-components are denoted by \code{wA1}, \code{wA2}, ..., \code{wB3}, respectively. The between-components have \code{RI_} prepended to the variable name, resulting in \code{RI_A} and \code{RI_B}.
 
 Parameters are denoted using \pkg{lavaan} model syntax (see \href{https://lavaan.ugent.be/tutorial/syntax1.html}{the \pkg{lavaan} website}). For example, the random intercept variances are denoted by \code{RI_A~~RI_A} and \code{RI_B~~RI_B}, the cross-lagged effects at the first wave as \code{wB2~wA1} and \code{wA2~wB1}, and the autoregressive effects as \code{wA2~wA1} and \code{wB2~wB1}. Use \code{give(object, "names")} to extract parameter names from the \code{powRICLPM} object.}
 
-\subsection{Measurement errors (STARTS model)}{Including measurement error to the RI-CLPM makes the model equivalent to the Stable Trait Autoregressive Trait State (STARTS) model by \href{https://doi.org/10.1037/10409-008}{Kenny and Zautra (2001)} without constraints over time. Measurement error can be added to the generated data through the \code{reliability} argument. Setting \code{reliability = 0.8} implies that 80\% is true score variance and 20\% is measurement error variance; \code{ICC} then denotes the proportion of \emph{true score variance} captured by the random intercept factors. Estimating measurement errors (i.e., the STARTS model) is done by setting \code{est_ME = TRUE}.}
+\subsection{Measurement errors (STARTS model)}{Including measurement error to the RI-CLPM makes the model equivalent to the Stable Trait Autoregressive Trait State (STARTS) model by Kenny and Zautra (2001) without constraints over time. Measurement error can be added to the generated data through the \code{reliability} argument. Setting \code{reliability = 0.8} implies that 80\% is true score variance and 20\% is measurement error variance; \code{ICC} then denotes the proportion of \emph{true score variance} captured by the random intercept factors. Estimating measurement errors (i.e., the STARTS model) is done by setting \code{est_ME = TRUE}.}
 
 \subsection{Imposing constraints}{The following constraints can be imposed on the estimation model using the \code{constraints = "..."} argument:
 
@@ -106,7 +106,7 @@ Parameters are denoted using \pkg{lavaan} model syntax (see \href{https://lavaan
 }
 }
 
-\subsection{Bounded estimation}{Bounded estimation is useful to avoid nonconvergence in small samples (< 100). Here, automatic wide bounds are used as advised by \href{https://doi.org/10.1080/10705511.2021.1982716}{De Jonckere and Rosseel (2022)}; See \code{optim.bounds} in \code{\link[lavaan]{lavOptions}}. This option can only be used when no constraints are imposed on the estimation model.}
+\subsection{Bounded estimation}{Bounded estimation is useful to avoid nonconvergence in small samples (< 100). Here, automatic wide bounds are used as advised by De Jonckere and Rosseel (2022), see \code{optim.bounds} in \code{\link[lavaan]{lavOptions}}. This option can only be used when no constraints are imposed on the estimation model.}
 
 \subsection{Parallel processing using \pkg{furrr}}{To speed up the analysis, power analysis for multiple experimental conditions can be executed in parallel. This has been implemented using \pkg{furrr}. By default the analysis is executed sequentially (i.e., single-core). Parallel execution (i.e., multicore) can be setup using \code{\link[future]{plan}}, for example \code{plan(multisession, workers = 4)}. For more information and options, see \url{https://furrr.futureverse.org}.
 
@@ -140,13 +140,21 @@ with_progress({
   )
 })
 }
+
+}
+\references{
+De Jonckere, J., & Rosseel, Y. (2022). Using bounded estimation to avoid nonconvergence in small sample structural equation modeling. \emph{Structural Equation Modeling}, \emph{29}(3), 412-427. \doi{10.1080/10705511.2021.1982716}
+
+Kenny, D. A., & Zautra, A. (2001). Trait–state models for longitudinal data. \emph{New methods for the analysis of change} (pp. 243–263). American Psychological Association. \doi{10.1037/10409-008}
+
+Mulder, J. D. (in press). Power analysis for the random intercept cross-lagged panel model using the \emph{powRICLPM} R-package. \emph{Structural Equation Modeling}. \doi{10.1080/10705511.2022.2122467}
 }
 \seealso{
 \itemize{
   \item \code{\link{powRICLPM_Mplus}}: Create Mplus model syntax for RI-CLPM power analysis.
-  \item \code{\link{summary}}: Summarize the setup of \code{powRICLPM} object.
+  \item \code{\link{summary.powRICLPM}}: Summarize the setup of \code{powRICLPM} object.
   \item \code{\link{give}}: Extract information from \code{powRICLPM} objects.
-  \item \code{\link{plot}}: Visualize results \code{powRICLPM} object for a specific parameter.
+  \item \code{\link{plot.powRICLPM}}: Visualize results \code{powRICLPM} object for a specific parameter.
 }
 }
 \author{

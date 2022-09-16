@@ -23,10 +23,10 @@ press). Its main functionalities include:
     as other performance measures, such as bias, mean square error,
     etc.) for all parameters in the RI-CLPM given a specific sample
     size, number of repeated measures, and proportion of between-unit
-    variance (amongst other things). This can be done across multiple
+    variance (among other things). This can be done across multiple
     experimental conditions simultaneously (i.e., across varying numbers
     of repeated measures, proportions of between-unit variance, etc.).
--   [Extending the basic power analyis
+-   [Extending the basic power analysis
     setup](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html):
     This includes the option to perform bounded estimation, impose
     various (stationarity) constraints over time on parameters of the
@@ -54,7 +54,9 @@ There are four sources of `powRICLPM` documentation:
 -   The
     [FAQ](https://jeroendmulder.github.io/powRICLPM/articles/FAQ.html)
     contains answers to frequently asked question that reach me via
-    email. \## Installation
+    email.
+
+## Installation
 
 You can install the development version of `powRICLPM` from GitHub with:
 

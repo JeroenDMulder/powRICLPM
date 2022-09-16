@@ -523,16 +523,17 @@ output any performance metrics computed by the power analysis.</p>
 <p><code>summary()</code> can be used in one of four ways. First,
 summary can be used simply like <code>print()</code> to get information
 about the design of the power analysis (the different experimental
-conditions), as well as the number of problems the occured per condition
-(e.g., non-convergence, fatal estimation errors, or inadmissible
-results). Second, by specifying the <code>parameter = &quot;...&quot;</code>
-argument in <code>summary()</code>, the function will print the results
-specifically for that parameter across all experimental conditions.
-Third, if you specify a specific experimental condition (by specifying a
-sample size, number of time points and ICC using the
-<code>sample_size</code>, <code>time_points</code>, and <code>ICC</code>
-arguments), the function displays performance measures for all
-parameters in that experimental condition.</p>
+conditions), as well as the number of problems the occurred per
+condition (e.g., non-convergence, fatal estimation errors, or
+inadmissible results). Second, by specifying the
+<code>parameter = &quot;...&quot;</code> argument in <code>summary()</code>, the
+function will print the results specifically for that parameter across
+all experimental conditions. Third, if you specify a specific
+experimental condition (by specifying a sample size, number of time
+points and ICC using the <code>sample_size</code>,
+<code>time_points</code>, and <code>ICC</code> arguments), the function
+displays performance measures for all parameters in that experimental
+condition.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. General results</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(output)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>

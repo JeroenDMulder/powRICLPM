@@ -17,7 +17,7 @@ give(from, what, parameter = NULL)
 A \code{data.frame}.
 }
 \description{
-\code{give()} can be used to extract information stored within a \code{powRICLPM} object, and is internally used by \code{\link{print.powRICLPM}} and \code{\link{summary.powRICLPM}}. See "Details" for which pieces of information can be extracted. The information is presented by condition (i.e., sample size, number of time points, and ICC).
+Extract information stored within a \code{powRICLPM} object (internally used by \code{\link{print.powRICLPM}} and \code{\link{summary.powRICLPM}}). See "Details" for which pieces of information can be extracted. The information is presented by condition (i.e., sample size, number of time points, and ICC).
 }
 \details{
 The following information can be extracted from the \code{powRICLPM} object:

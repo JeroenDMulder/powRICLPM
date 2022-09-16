@@ -1,4 +1,4 @@
-#' Quantify uncertainty around estimate using bootstrapping
+#' Quantify uncertainty using bootstrapping
 #'
 #' @param measure A numeric vector of estimates.
 #' @param bootstrap_reps A numeric, denoting the number of bootstrap samples to draw.

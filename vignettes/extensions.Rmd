@@ -18,12 +18,12 @@ To prevent non-convergence for small sample sizes (say, less than 100), bounds c
 Constraint options include:
 
 - `constraints = "lagged"`: All autoregressive and cross-lagged effects are constrained to be equal over time. 
-- `constraints = "residuals`: The within-unit residual variances and covariance (from wave 2 onwards) are constrained to be equal over time.
+- `constraints = "residuals`: The within-unit residual variances and covariance (from wave 2 onward) are constrained to be equal over time.
 - `constraints = "within"`: Both lagged effects and residual variances and covariances are constrained to be equal over time.
 - `constraints = "stationary"`: Constraints are imposed on the variances of the within-components at the first wave, and residual variances at wave 2 and further, such that the variances of the within-components themselves are all 1. This implies that the variances at the first wave are fixed to 1, and that the residual variances are a function of the lagged effects, and correlation between within-components at the same wave. These constraints are deduced in the supplementary materials of [Mulder and Hamaker (see the FAQ "How can I constrain the *standardized* parameters to be invariant over time?")](https://jeroendmulder.github.io/RI-CLPM/faq.html#Standardization).
 - `constraints = "ME"`: Constraints are imposed on the measurement error variances across time. This constraint is only possible when `est_ME = TRUE`. 
 
-## Measurment error
+## Measurement error
 While it is generally advisable to include measurement error when analyzing psychological data, the RI-CLPM does not include it. Adding measurement error to the model would result in the bivariate Trait State Error (TSE) model by [Kenny and Zautra (1995)](https://doi.org/10.1037/10409-008), and requires at least 4 waves of data to be identified. Users can add measurement error variances to the estimation model by setting the `est_ME` argument to `est_ME = TRUE`. Measurement error can be added to the simulated data using the `reliability` argument.
 
 Note, however, that this model (the bivariate TSE) has been shown to be prone to empirical under-identification, often requiring upwards of 8 waves of data and sample sizes larger than 500. 

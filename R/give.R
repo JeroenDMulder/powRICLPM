@@ -1,6 +1,6 @@
 #' Extract information from \code{powRICLPM} object
 #'
-#' \code{give()} can be used to extract information stored within a \code{powRICLPM} object, and is internally used by \code{\link{print.powRICLPM}} and \code{\link{summary.powRICLPM}}. See "Details" for which pieces of information can be extracted. The information is presented by condition (i.e., sample size, number of time points, and ICC).
+#' Extract information stored within a \code{powRICLPM} object (internally used by \code{\link{print.powRICLPM}} and \code{\link{summary.powRICLPM}}). See "Details" for which pieces of information can be extracted. The information is presented by condition (i.e., sample size, number of time points, and ICC).
 #'
 #' @param from A \code{powRICLPM} object
 #' @param what A character string denoting the information to extract, either "conditions", "estimation_problems", "results", or "names".

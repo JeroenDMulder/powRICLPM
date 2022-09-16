@@ -1,6 +1,6 @@
 #' Plot results from \code{powRICLPM} object
 #'
-#' \code{autoplot_powRICLPM()} plots the simulated power across the experimental conditions within the \code{powRICLPM} object, and returns a \pkg{ggplot2} object.
+#' Plot the simulated power across the experimental conditions within the \code{powRICLPM} object, and returns a \pkg{ggplot2} object.
 #'
 #' @param object A \code{powRICLPM} object.
 #' @param parameter Character string.
@@ -35,11 +35,10 @@ autoplot_powRICLPM <- function(object, parameter) {
     ggplot2::theme_bw()
 }
 
-#' @title
 #' Plot results from \code{powRICLPM} object
 #'
 #' @description
-#' \code{plot.powRICLPM()} visualizes (using \pkg{ggplot2}) the estimated power across all experimental conditions within the \code{powRICLPM} object, for a specific parameter. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
+#' Visualizes (using \pkg{ggplot2}) the estimated power across all experimental conditions within the \code{powRICLPM} object, \emph{for a specific parameter}. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
 #'
 #' @param x A \code{powRICLPM} object.
 #' @param y (don't use)

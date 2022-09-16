@@ -19,7 +19,7 @@
 A \code{ggplot2} object.
 }
 \description{
-\code{plot.powRICLPM()} visualizes (using \pkg{ggplot2}) the estimated power across all experimental conditions within the \code{powRICLPM} object, for a specific parameter. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
+Visualizes (using \pkg{ggplot2}) the estimated power across all experimental conditions within the \code{powRICLPM} object, \emph{for a specific parameter}. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
 }
 \details{
 \subsection{Manually creating plots}{\code{plot.powRICLPM()} creates arguably the most obvious plot in the context of power analysis: The relation between power and sample size. However, \code{powRICLPM} computes several other metrics (e.g., accuracy, coverage rate, etc.) that researchers might want to plot. To this end, I suggest that users use \code{give()} to collect other metrics, across all experimental conditions, for a specific parameter, into a data frame first. Then, users can use any plotting function they like to create their own manual plot. See "Details" of \code{\link{give}()} for a list of measures that are computed by the function.}

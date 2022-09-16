@@ -9,7 +9,7 @@ This file tracks changes to the package.
 ## Minor improvements and fixes
 
 * The `est_ME` argument in `powRICLPM` has been renamed `estimate_ME`. 
-* Internal fitting model fitting using `lavaan` now skips certain checks to speed up the process. 
+* Internal model fitting using `lavaan` now skips certain checks to speed up the process. 
 * The `wSigma` argument in `powRICLPM` has been replaced with the `within_cor` argument. Now, only a `double` denoting the correlation between the within-components needs to specified rather than a correlation matrix. 
 * By default, `powRICLPM` now discards results from Monte Carlo replications with inadmissible parameter results, unless bounded estimation is used (`bounds = TRUE`). 
 
