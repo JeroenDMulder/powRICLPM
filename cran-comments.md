@@ -1,3 +1,9 @@
+## Resubmission 3
+This is a resubmission. In this version I have:
+
+* Changed the Description field of the DESCRIPTION file such that it now starts with a capital letter (i.e., I deleted the redundant package name in the beginning).
+
+
 ## Resubmission 2
 This is a resubmission. In this version I have:
 
