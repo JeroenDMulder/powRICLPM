@@ -64,7 +64,6 @@ No return value, called for side effects (i.e., saving .txt file with Mplus synt
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 
 ## Create and save Mplus model syntax
-\donttest{
 powRICLPM_Mplus(
   sample_size = c(400, 500),
   time_points = 3,
@@ -75,5 +74,4 @@ powRICLPM_Mplus(
   reps = 10000,
   seed = 1234
 )
-}
 }

@@ -118,11 +118,11 @@ A progress bar displaying the status of the power analysis has been implemented 
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 
 ## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
-\dontrun{
 library(furrr)
 library(progressr)
 future::plan(multisession, workers = 4)
 
+\dontrun{
 ## Run analysis ("reps" is extremely small, because this is an example)
 with_progress({
   out1 <- powRICLPM(
@@ -139,7 +139,9 @@ with_progress({
     seed = 1234
   )
 })
+}
 
+\dontshow{
 ## Shut down parallel workers (done for sake of example, normally not needed)
 future::plan("sequential")
 }

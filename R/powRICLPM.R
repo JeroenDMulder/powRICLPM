@@ -84,11 +84,11 @@
 #' Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 #'
 #' ## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
-#' \dontrun{
 #' library(furrr)
 #' library(progressr)
 #' future::plan(multisession, workers = 4)
 #'
+#' \dontrun{
 #' ## Run analysis ("reps" is extremely small, because this is an example)
 #' with_progress({
 #'   out1 <- powRICLPM(
@@ -105,7 +105,9 @@
 #'     seed = 1234
 #'   )
 #' })
+#' }
 #'
+#' \dontshow{
 #' ## Shut down parallel workers (done for sake of example, normally not needed)
 #' future::plan("sequential")
 #' }
@@ -252,7 +254,6 @@ powRICLPM <- function(target_power,
 #' Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 #'
 #' ## Create and save Mplus model syntax
-#' \donttest{
 #' powRICLPM_Mplus(
 #'   sample_size = c(400, 500),
 #'   time_points = 3,
@@ -263,7 +264,6 @@ powRICLPM <- function(target_power,
 #'   reps = 10000,
 #'   seed = 1234
 #' )
-#' }
 #' @export
 powRICLPM_Mplus <- function(search_lower = NULL,
                             search_upper = NULL,
