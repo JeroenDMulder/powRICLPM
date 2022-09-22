@@ -1,4 +1,3 @@
-#' @title
 #' Summarize setup and results from \code{powRICLPM} object
 #'
 #' @description
@@ -11,6 +10,8 @@
 #' @param time_points (optional) An \code{integer}, denoting the number of time points of the experimental condition of interest.
 #' @param ICC (optional) A \code{double}, denoting the proportion of variance at the between-unit level of the experimental condition of interest.
 #'
+#' @return No return value, called for side effects.
+#'
 #' @details
 #' \code{summary.powRICLPM} provides a different summary of the \code{powRICLPM} object, depending on the additional arguments that are set:
 #' \itemize{
@@ -20,39 +21,15 @@
 #' }
 #'
 #' @examples
-#' # Example - Same starting point as example from ?powRICLPM()
-#' # Define population parameters for lagged effects and within-component correlations
-#' Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
-#' wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = TRUE)
-#'
-#' # Setup parallel computing (multicore, speeding up the analysis)
 #' \dontrun{
-#' library(furrr)
-#' plan(multisession, workers = 4)
+#' # Get setup of powRICLPM analysis and convergence issues
+#' summary(out1)
 #'
-#' # Run the analysis
-#' out1 <- powRICLPM(
-#'   target_power = 0.8,
-#'   search_lower = 500,
-#'   search_upper = 1000,
-#'   search_step = 100,
-#'   time_points = c(3, 4),
-#'   ICC = c(0.4, 0.5, 0.6),
-#'   RI_cor = 0.3,
-#'   Phi = Phi,
-#'   wSigma = wSigma,
-#'   reps = 100,
-#'   seed = 123456
-#' )
+#' # Performance measures for "wB2~wA1" parameter across experimental conditions
+#' summary(out1, parameter = "wB2~wA1")
 #'
-#' # General results (i.e., setup of powRICLPM analysis)
-#' summary(out)
-#'
-#' # General results and recommendation for specific parameter
-#' summary(out, parameter = "wB2~wA1")
-#'
-#' # Summary for specific condition
-#' summary(out, sample_size = 600, time_points = 4, ICC = .5)
+#' # Performance measures for all parameters, for specific experimental condition
+#' summary(out1, sample_size = 600, time_points = 4, ICC = .5)
 #' }
 #' @method summary powRICLPM
 #' @export

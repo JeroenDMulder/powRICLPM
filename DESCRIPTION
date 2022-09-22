@@ -1,22 +1,23 @@
 Package: powRICLPM
-Title: Power Analysis for the Random Intercept Cross-Lagged Panel Model (RI-CLPM)
+Title: Perform Power Analysis for the Random Intercept Cross-Lagged Panel Model
 Version: 0.1.0
 Date: 2022-09-08
-Authors@R: 
-    person(given = "Jeroen",
-           family = "Mulder",
+Authors@R: c(
+    person("Jeroen", "Mulder", 
            role = c("aut", "cre"),
            email = "j.d.mulder@uu.nl",
-           comment = c(ORCID = "0000-0002-5553-0856"))
+           comment = c(ORCID = "0000-0002-5553-0856")),
+    person("Netherlands Organization for Scientific Research",
+           role = "fnd"))
 Maintainer: Jeroen Mulder <j.d.mulder@uu.nl>
-Description: Perform user-friendly power analyses for the bivariate 
-  random intercept cross-lagged panel model (RI-CLPM). This package implements 
-  the strategy as proposed by Mulder (in press). Further power analysis options 
-  include the use of bounded estimation, inclusion of measurement error in the 
-  data   generating model and estimation model (i.e., the stable trait 
-  autoregressive trait state, STARTS, model), imposing various constraints over 
-  time on the parameters of the estimation model, among others. References: 
-  Mulder (in press) <doi:10.1080/10705511.2022.2122467>.
+Description: Perform user-friendly power analyses for the bivariate random 
+    intercept cross-lagged panel model (RI-CLPM). The strategy as proposed by 
+    Mulder (2022) <doi:10.1080/10705511.2022.2122467> is implemented. Extended 
+    power analysis options include the use of bounded estimation, inclusion of 
+    measurement error in the data generating model and estimation model (i.e., 
+    the stable trait autoregressive trait state, STARTS, model), imposing 
+    various constraints over time on the parameters of the estimation model, 
+    among others. 
 License: MIT + file LICENSE
 URL: https://jeroendmulder.github.io/powRICLPM/
 BugReports: https://github.com/JeroenDMulder/powRICLPM/issues/
@@ -31,7 +32,8 @@ Imports:
     dplyr,
     progressr,
     purrr,
-    rlang
+    rlang,
+    future
 Suggests: 
     knitr,
     rmarkdown,

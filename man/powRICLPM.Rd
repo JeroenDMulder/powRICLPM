@@ -113,17 +113,17 @@ Parameters are denoted using \pkg{lavaan} model syntax (see \href{https://lavaan
 A progress bar displaying the status of the power analysis has been implemented using \pkg{progressr}. By default, a simple progress bar will be shown. For more information on how to control this progress bar and several other notification options (e.g., auditory notifications), see \url{https://progressr.futureverse.org}.}
 }
 \examples{
-# Example - Simulate power across range of sample sizes
-# Define population parameters for lagged effects
+# Power analysis across range of sample sizes
+## Define population parameters for lagged effects
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 
-# Setup parallel computing (multicore, speeding up the analysis)
-\dontrun{
+## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
+\donttest{
 library(furrr)
 library(progressr)
-plan(multisession, workers = 4)
+future::plan(multisession, workers = 4)
 
-# Run preliminary analysis (with limited "reps")
+## Run analysis ("reps" is extremely small, because this is an example)
 with_progress({
   out1 <- powRICLPM(
     target_power = 0.8,
@@ -135,10 +135,13 @@ with_progress({
     RI_cor = 0.3,
     Phi = Phi,
     within_cor = 0.3,
-    reps = 50,
+    reps = 5,
     seed = 1234
   )
 })
+
+## Shut down parallel workers (done for sake of example, normally not needed)
+future::plan("sequential")
 }
 
 }
@@ -147,7 +150,7 @@ De Jonckere, J., & Rosseel, Y. (2022). Using bounded estimation to avoid nonconv
 
 Kenny, D. A., & Zautra, A. (2001). Trait–state models for longitudinal data. \emph{New methods for the analysis of change} (pp. 243–263). American Psychological Association. \doi{10.1037/10409-008}
 
-Mulder, J. D. (in press). Power analysis for the random intercept cross-lagged panel model using the \emph{powRICLPM} R-package. \emph{Structural Equation Modeling}. \doi{10.1080/10705511.2022.2122467}
+Mulder, J. D. (2022). Power analysis for the random intercept cross-lagged panel model using the \emph{powRICLPM} R-package. \emph{Structural Equation Modeling}. \doi{10.1080/10705511.2022.2122467}
 }
 \seealso{
 \itemize{
