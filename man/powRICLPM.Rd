@@ -120,9 +120,9 @@ Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 ## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
 library(furrr)
 library(progressr)
-future::plan(multisession, workers = 4)
+future::plan(multisession)
 
-\dontrun{
+\donttest{
 ## Run analysis ("reps" is extremely small, because this is an example)
 with_progress({
   out1 <- powRICLPM(
