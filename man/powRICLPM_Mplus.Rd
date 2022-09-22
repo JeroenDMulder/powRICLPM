@@ -66,7 +66,10 @@ Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 ## Create and save Mplus model syntax
 \donttest{
 powRICLPM_Mplus(
+<<<<<<< HEAD
   sample_size = c(400, 500),
+=======
+>>>>>>> f6117271f1e28af8fcdaba56e9aa9ff63eb845cb
   time_points = 3,
   ICC = 0.5,
   RI_cor = 0.3,
