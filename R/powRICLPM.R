@@ -86,7 +86,7 @@
 #' ## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
 #' library(furrr)
 #' library(progressr)
-#' future::plan(multisession, workers = 4)
+#' future::plan(multisession)
 #'
 #' \dontrun{
 #' ## Run analysis ("reps" is extremely small, because this is an example)
