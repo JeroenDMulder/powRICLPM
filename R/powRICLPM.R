@@ -84,7 +84,7 @@
 #' Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 #'
 #' ## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
-#' \donttest{
+#' \dontrun{
 #' library(furrr)
 #' library(progressr)
 #' future::plan(multisession, workers = 4)
