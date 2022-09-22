@@ -11,6 +11,9 @@
 
 \item{...}{Argument not in use.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 \code{print.powRICLPM} prints a table listing all experimental conditions contained in the \code{powRICLPM} object, as well as the frequency of the estimation problems that occurred in each.
 }

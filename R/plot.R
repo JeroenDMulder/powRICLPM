@@ -53,10 +53,19 @@ autoplot_powRICLPM <- function(object, parameter) {
 #'   \code{\link{give}}: Extract information (e.g., performance measures) for a specific parameter, across all experimental conditions. This function is used internally in \code{plot.powRICLPM}.
 #' }
 #'
-#' @return
-#' A \code{ggplot2} object.
+#' @return A \code{ggplot2} object.
+#'
 #' @method plot powRICLPM
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Visualize power for "wB2~wA1" across all simulation conditions
+#' plot(out1, parameter = "wB2~wA1")
+#'
+#' # Error: No parameter specified
+#' plot(out1)
+#' }
 plot.powRICLPM <- function(x, y, ..., parameter = NULL) {
   autoplot_powRICLPM(x, parameter = parameter)
 }

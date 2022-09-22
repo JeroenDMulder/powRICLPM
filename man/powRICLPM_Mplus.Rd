@@ -43,12 +43,15 @@ powRICLPM_Mplus(
 
 \item{seed}{An \code{integer} of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see \code{\link[furrr]{furrr_options}}).}
 
-\item{save_path}{Character string denoting a path leading to the folder where to save the Mplus syntax files to.}
+\item{save_path}{A \code{character} string, denoting the path to the folder to save the Mplus syntax files in (default: current working directory).}
 
 \item{constraints}{(optional) A character string, specifying the type of constraints that should be imposed on the estimation model (see "Details").}
 }
+\value{
+No return value, called for side effects (i.e., saving .txt file with Mplus syntax to \code{save_path}).
+}
 \description{
-\code{powRICLPM_Mplus()} creates and saves syntax for performing a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM) in Mplus. It can create Mplus model syntax across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the naming conventions of parameters, and b) the various constraints that can be imposed on the model.
+\code{powRICLPM_Mplus()} creates and saves (a) syntax file(s) for performing a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM) in Mplus. Mplus model syntax can be created across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the naming conventions of parameters, and b) the various constraints that can be imposed on the model.
 }
 \details{
 \subsection{Syntax generation}{Mplus model syntax is created in multiple steps: First, the \code{MODEL POPULATION} command syntax is created in which parameters are constrained to population values. Second, the \code{MODEL} command syntax is created for model estimation. Optionally, syntax for constraints on the estimation model, in the \code{MODEL CONSTRAINTS} command, is created next. Ultimately, the parameter tables are combined to form character vectors containing the Mplus syntax to be exported (see "Details" of \code{\link{powRICLPM}} for more information on the \code{constraints} options).}
@@ -56,18 +59,16 @@ powRICLPM_Mplus(
 \subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
 }
 \examples{
-# Example - Create Mplus syntax to simulate power across range of sample sizes
-# Define population parameters for lagged effects and within-component correlations
+# Create Mplus syntax for power analysis across range of sample sizes
+## Define population parameters for lagged effects
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 
-# Create and save Mplus model syntax
-\dontrun{
+## Create and save Mplus model syntax
+\donttest{
 powRICLPM_Mplus(
-  search_lower = 500,
-  search_upper = 1000,
-  search_step = 100,
-  time_points = c(3, 4),
-  ICC = c(0.4, 0.5, 0.6),
+  sample_size = c(400, 500)
+  time_points = 3,
+  ICC = 0.5,
   RI_cor = 0.3,
   Phi = Phi,
   within_cor = 0.3,

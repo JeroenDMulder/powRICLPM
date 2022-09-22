@@ -21,7 +21,10 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Return data frame with number of estimation problems per experimental condition
 #' give(out1, "estimation_problems")
+#'
+#' # Return data frame with performance measures for "wB2~wA1" per experimental condition
 #' give(out1, "results", parameter = "wB2~wA1")
 #' }
 give <- function(from, what, parameter = NULL) {

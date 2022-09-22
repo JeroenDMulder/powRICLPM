@@ -7,6 +7,8 @@
 #' @param x A \code{powRICLPM} object.
 #' @param ... Argument not in use.
 #'
+#' @return No return value, called for side effects.
+#'
 #' @method print powRICLPM
 #' @export
 print.powRICLPM <- function(x, ...) {
