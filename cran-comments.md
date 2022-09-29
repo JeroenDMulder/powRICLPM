@@ -5,15 +5,15 @@ This is a resubmission. In this version I have:
 
 * Added the missing \value Rd-tags to `powRICLPM_Mplus.RD`, `print.powRICLPM.Rd`, and `summary.powIRCLPM.Rd`. 
 
-* \dontrun{} has been replaced with \donttest{} for the example of `powRICLPM()`: This example takes longer than 5 sec to run but can be executed without error. The examples in `powRICLPM_Mplus()`, `give()` and `plot.powRICLPM()` remain wrapped with \donttest{}: The "out1" object of class "powRICLPM" is missing, thereby leading to an error. 
+* \dontrun{} has been replaced with \donttest{} for the example of `powRICLPM()`: This example takes longer than 5 sec to run but can be executed without error. The examples of `give()` and `plot.powRICLPM()` remain wrapped with \donttest{}: The "out1" object of class "powRICLPM" is missing, thereby leading to an error. The wrapper around the example of `powRICLPM_Mplus()` has been removed as it can be executed without error and has been made to run within 5 sec. 
+
+* The example of `powRICLPM_Mplus()` now writes to tempdir(), and the created files are cleaned up afterwards. 
 
 There are 3 NOTES, which can be safely ignored:
 
 * The term "CLPM" is not misspelled. 
 
 * The "(possibly) invalid DOI" is not invalid. As mentioned above, the paper it refers to, Mulder (2022), is currently in press but has already been given this DOI. 
-
-* The non-standard things in the check directory are expected side effects from the `powRICLPM_Mplus()` function.
 
 
 ## Resubmission 3

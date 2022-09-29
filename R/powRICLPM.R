@@ -79,17 +79,16 @@
 #' }
 #'
 #' @examples
-#' # Power analysis across range of sample sizes
-#' ## Define population parameters for lagged effects
+#' # Define population parameters for lagged effects
 #' Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 #'
-#' ## (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
+#' # (optional) Set up parallel computing (i.e., multicore, speeding up the analysis)
 #' library(furrr)
 #' library(progressr)
 #' future::plan(multisession)
 #'
 #' \donttest{
-#' ## Run analysis ("reps" is extremely small, because this is an example)
+#' # Run analysis ("reps" is extremely small, because this is an example)
 #' with_progress({
 #'   out1 <- powRICLPM(
 #'     target_power = 0.8,
@@ -249,11 +248,10 @@ powRICLPM <- function(target_power,
 #' @return No return value, called for side effects (i.e., saving .txt file with Mplus syntax to \code{save_path}).
 #'
 #' @examples
-#' # Create Mplus syntax for power analysis across range of sample sizes
-#' ## Define population parameters for lagged effects
+#' # Define population parameters for lagged effects
 #' Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 #'
-#' ## Create and save Mplus model syntax
+#' # Create and save Mplus model syntax
 #' powRICLPM_Mplus(
 #'   sample_size = c(400, 500),
 #'   time_points = 3,
@@ -262,8 +260,13 @@ powRICLPM <- function(target_power,
 #'   Phi = Phi,
 #'   within_cor = 0.3,
 #'   reps = 10000,
-#'   seed = 1234
+#'   seed = 1234,
+#'   save_path = tempdir()
 #' )
+#'
+#' \dontshow{
+#' unlink(file.path(tempdir(), c("Mplus_N400_T3_ICC0.5.txt", "Mplus_N500_T3_ICC0.5.txt")))
+#' }
 #' @export
 powRICLPM_Mplus <- function(search_lower = NULL,
                             search_upper = NULL,
@@ -323,7 +326,7 @@ powRICLPM_Mplus <- function(search_lower = NULL,
   message(rlang::format_error_bullets(c(
     i = "Mplus model syntax created:"
   )))
-  cat("\n\n  Directory:", save_path)
+  cat("\n  Directory:", save_path)
   cat("\n  Sample size(s):", sample_size)
   cat("\n  Number of time points:", time_points)
   cat("\n  Proportion(s) random intercept variance:", ICC)

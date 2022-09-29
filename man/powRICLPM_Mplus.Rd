@@ -59,11 +59,10 @@ No return value, called for side effects (i.e., saving .txt file with Mplus synt
 \subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
 }
 \examples{
-# Create Mplus syntax for power analysis across range of sample sizes
-## Define population parameters for lagged effects
+# Define population parameters for lagged effects
 Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
 
-## Create and save Mplus model syntax
+# Create and save Mplus model syntax
 powRICLPM_Mplus(
   sample_size = c(400, 500),
   time_points = 3,
@@ -72,6 +71,11 @@ powRICLPM_Mplus(
   Phi = Phi,
   within_cor = 0.3,
   reps = 10000,
-  seed = 1234
+  seed = 1234,
+  save_path = tempdir()
 )
+
+\dontshow{
+unlink(file.path(tempdir(), c("Mplus_N400_T3_ICC0.5.txt", "Mplus_N500_T3_ICC0.5.txt")))
+}
 }
