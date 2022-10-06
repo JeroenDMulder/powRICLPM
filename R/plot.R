@@ -59,13 +59,13 @@ autoplot_powRICLPM <- function(object, parameter) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
+#'
 #' # Visualize power for "wB2~wA1" across all simulation conditions
-#' plot(out1, parameter = "wB2~wA1")
+#' plot(power_preliminary, parameter = "wB2~wA1")
 #'
 #' # Error: No parameter specified
-#' plot(out1)
-#' }
+#' try(plot(power_preliminary))
 plot.powRICLPM <- function(x, y, ..., parameter = NULL) {
   autoplot_powRICLPM(x, parameter = parameter)
 }

@@ -1,3 +1,19 @@
+## Resubmission 5
+This is a resubmission. In this version I have:
+
+* Deleted the trailing spaces from the description field.
+
+* Included a small data file in the inst/extdata subfolder for use in examples of `summary.powRICLPM()`, `plot.powRICLPM()`, and `give()`. The examples for these functions have now been unwrapped and can be run.  
+
+### R CMD check results
+
+There are 2 NOTES, which can be safely ignored:
+
+* The terms "CLPM" is not misspelled. Moreover, the "(possibly) invalid DOI" is not invalid: The paper it refers to, Mulder (2022), is currently in press but has already been given this DOI. 
+
+* ONLY on win-building: The terms "autoregressive" and "bivariate" are not misspelled. 
+
+
 ## Resubmission 4
 This is a resubmission. In this version I have:
 
@@ -9,11 +25,13 @@ This is a resubmission. In this version I have:
 
 * The example of `powRICLPM_Mplus()` now writes to tempdir(), and the created files are cleaned up afterwards. 
 
-There are 3 NOTES, which can be safely ignored:
+### R CMD check results
 
-* The term "CLPM" is not misspelled. 
+There are 2 NOTES, which can be safely ignored:
 
-* The "(possibly) invalid DOI" is not invalid. As mentioned above, the paper it refers to, Mulder (2022), is currently in press but has already been given this DOI. 
+* The term "CLPM" is not misspelled. Moreover, the "(possibly) invalid DOI" is not invalid. As mentioned above, the paper it refers to, Mulder (2022), is currently in press but has already been given this DOI. 
+
+* ONLY on Fedora Linux (via R-hub): "checking HTML version of manual ... NOTE Skipping checking HTML validation: no command 'tidy' found." I cannot change that `tidy` is not on the path, or update `tidy` on the external Fedora Linux server.
 
 
 ## Resubmission 3
@@ -36,6 +54,7 @@ There were 2 NOTEs, which can be safely ignored:
 * "CLPM" and "powRICLPM" are not misspelled words in DESCRIPTION.
 
 * The "(possibly) invalid DOI" refers to the paper detailing the method as implemented in this package. It is currently in press, but once published is available at the included doi.
+
 
 ## Resubmission 1
 This is a resubmission. In this version I have:

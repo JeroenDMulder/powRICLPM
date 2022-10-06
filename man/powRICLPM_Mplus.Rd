@@ -48,7 +48,7 @@ powRICLPM_Mplus(
 \item{constraints}{(optional) A character string, specifying the type of constraints that should be imposed on the estimation model (see "Details").}
 }
 \value{
-No return value, called for side effects (i.e., saving .txt file with Mplus syntax to \code{save_path}).
+No return value, called for side effects.
 }
 \description{
 \code{powRICLPM_Mplus()} creates and saves (a) syntax file(s) for performing a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM) in Mplus. Mplus model syntax can be created across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the naming conventions of parameters, and b) the various constraints that can be imposed on the model.

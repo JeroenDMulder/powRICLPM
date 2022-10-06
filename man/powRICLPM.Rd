@@ -122,9 +122,9 @@ library(progressr)
 future::plan(multisession)
 
 \donttest{
-# Run analysis ("reps" is extremely small, because this is an example)
+# Run analysis ("reps" is small, because this is an example)
 with_progress({
-  out1 <- powRICLPM(
+  power_preliminary <- powRICLPM(
     target_power = 0.8,
     search_lower = 500,
     search_upper = 1000,
@@ -134,7 +134,7 @@ with_progress({
     RI_cor = 0.3,
     Phi = Phi,
     within_cor = 0.3,
-    reps = 5,
+    reps = 100,
     seed = 1234
   )
 })

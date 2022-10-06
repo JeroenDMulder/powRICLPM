@@ -30,11 +30,11 @@ The following information can be extracted from the \code{powRICLPM} object:
 }
 }
 \examples{
-\dontrun{
+load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
+
 # Return data frame with number of estimation problems per experimental condition
-give(out1, "estimation_problems")
+give(power_preliminary, "estimation_problems")
 
 # Return data frame with performance measures for "wB2~wA1" per experimental condition
-give(out1, "results", parameter = "wB2~wA1")
-}
+give(power_preliminary, "results", parameter = "wB2~wA1")
 }

@@ -21,16 +21,17 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
+#'
 #' # Get setup of powRICLPM analysis and convergence issues
-#' summary(out1)
+#' summary(power_preliminary)
 #'
 #' # Performance measures for "wB2~wA1" parameter across experimental conditions
-#' summary(out1, parameter = "wB2~wA1")
+#' summary(power_preliminary, parameter = "wB2~wA1")
 #'
 #' # Performance measures for all parameters, for specific experimental condition
-#' summary(out1, sample_size = 600, time_points = 4, ICC = .5)
-#' }
+#' summary(power_preliminary, sample_size = 600, time_points = 4, ICC = .5)
+#'
 #' @method summary powRICLPM
 #' @export
 summary.powRICLPM <- function(object,
