@@ -3,7 +3,7 @@
     Code
       summary(out1)
     Output
-      powRICLPM (0.1.0) simulated power for 2 experimental conditions:
+      powRICLPM (0.1.0.9000) simulated power for 2 experimental conditions:
       
        Sample size    Time points   ICC   Errors   Non-convergence    Inadmissible results
       -------------  ------------  ----  -------  -----------------  ---------------------
@@ -27,7 +27,7 @@
     Code
       summary(out1, names = TRUE)
     Output
-      powRICLPM (0.1.0) simulated power for 2 experimental conditions:
+      powRICLPM (0.1.0.9000) simulated power for 2 experimental conditions:
       
        Sample size    Time points   ICC   Errors   Non-convergence    Inadmissible results
       -------------  ------------  ----  -------  -----------------  ---------------------
