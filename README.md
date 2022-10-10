@@ -58,7 +58,14 @@ There are four sources of `powRICLPM` documentation:
 
 ## Installation
 
-You can install the development version of `powRICLPM` from GitHub with:
+You can install the latest release of `powRICLPM` from CRAN by running
+
+``` r
+install.packages("powRICLPM")
+```
+
+To install the development version of `powRICLPM` (i.e., including the
+latest bug fixes and new features), you can run
 
 ``` r
 install.packages("devtools")
