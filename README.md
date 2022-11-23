@@ -14,8 +14,9 @@ status](https://www.r-pkg.org/badges/version/powRICLPM)](https://CRAN.R-project.
 
 `powRICLPM` is an `R` package that performs a power analysis for the
 random intercept cross-lagged panel model (RI-CLPM) in a simple and
-user-friendly way. It implements the strategy as proposed by Mulder (in
-press). Its main functionalities include:
+user-friendly way. It implements the strategy as proposed by [Mulder
+(2022)](https://doi.org/10.1080/10705511.2022.2122467). Its main
+functionalities include:
 
 -   [Setting up and performing a basic power
     analysis](https://jeroendmulder.github.io/powRICLPM/articles/start.html):
@@ -23,33 +24,35 @@ press). Its main functionalities include:
     as other performance measures, such as bias, mean square error,
     etc.) for all parameters in the RI-CLPM given a specific sample
     size, number of repeated measures, and proportion of between-unit
-    variance (among other things). This can be done across multiple
-    experimental conditions simultaneously (i.e., across varying numbers
-    of repeated measures, proportions of between-unit variance, etc.).
+    variance (among other things). The power analysis can be performed
+    across multiple experimental conditions simultaneously (i.e., with
+    varying numbers of repeated measures, proportions of between-unit
+    variance, etc.).
 -   [Extending the basic power analysis
     setup](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html):
-    This includes the option to perform bounded estimation, impose
-    various (stationarity) constraints over time on parameters of the
-    estimation model, and include the estimation of measurement error.
+    Extend the basic power analysis to include the use of bounded
+    estimation, various (stationarity) constraints over time on
+    parameters of the estimation model, and/or the estimation of
+    measurement error.
 -   [Create Mplus model
     syntax](https://jeroendmulder.github.io/powRICLPM/articles/mplus.html):
-    Create syntax for performing a RI-CLPM power analysis using Mplus.
+    Create syntax for performing RI-CLPM power analyses using Mplus.
 
 ## Documentation
 
-There are four sources of `powRICLPM` documentation:
+There are four sources of documentation for `powRICLPM`:
 
 -   The rationale for the power analysis strategy implemented here can
-    be found in Mulder (in press).
+    be found in [Mulder
+    (2022)](https://doi.org/10.1080/10705511.2022.2122467).
 -   Every user-facing function in the package is documented, and the
     documentation can be accessed by running `?function_name` in the R
-    console, e.g., `?powRICLPM`. These function references contain
-    explanations on how to use the functions, as well as technical
-    details.
--   There are four main vignettes (accessible via the ‘Vignettes’ tab),
+    console (e.g., `?powRICLPM`). Here, you can find explanations on how
+    to use the functions, as well as technical details.
+-   There are four main vignettes accessible via the ‘Vignettes’ tab,
     describing functionalities and analysis options of this package more
-    generally. The ‘Example’ vignette serves as the supplementary
-    material to Mulder (in press), and contains the R code for an
+    generally. The ‘Example’ vignette serves as the online supplementary
+    material to Mulder (2022), and contains the R code for an
     illustrative example using the `powRICLPM` package.
 -   The
     [FAQ](https://jeroendmulder.github.io/powRICLPM/articles/FAQ.html)
@@ -58,26 +61,28 @@ There are four sources of `powRICLPM` documentation:
 
 ## Installation
 
-You can install the latest release of `powRICLPM` from CRAN by running
-
-``` r
-install.packages("powRICLPM")
-```
-
-To install the development version of `powRICLPM` (i.e., including the
-latest bug fixes and new features), you can run
+To install the development version of `powRICLPM`, including the latest
+bug fixes and new features, run:
 
 ``` r
 install.packages("devtools")
 devtools::install_github("jeroendmulder/powRICLPM")
 ```
 
+To install the latest release of `powRICLPM` from CRAN, run:
+
+``` r
+install.packages("powRICLPM")
+```
+
 ## Citing `powRICLPM`
 
 You can cite the R-package with the following citation:
 
-> Mulder, J.D., (in press). *Power analysis for the random intercept
-> cross-lagged panel model using the powRICLPM R-package*
+> Mulder, J.D., (2022). *Power analysis for the random intercept
+> cross-lagged panel model using the powRICLPM R-package*. Structural
+> Equation Modeling: A Multidisciplinary Journal.
+> <https://doi.org/10.1080/10705511.2022.2122467>
 
 ## Contact
 

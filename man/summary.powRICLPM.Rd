@@ -41,15 +41,17 @@ S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and ou
 }
 }
 \examples{
-load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
+\dontshow{
+load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+}
 
 # Get setup of powRICLPM analysis and convergence issues
-summary(power_preliminary)
+summary(out_preliminary)
 
 # Performance measures for "wB2~wA1" parameter across experimental conditions
-summary(power_preliminary, parameter = "wB2~wA1")
+summary(out_preliminary, parameter = "wB2~wA1")
 
 # Performance measures for all parameters, for specific experimental condition
-summary(power_preliminary, sample_size = 600, time_points = 4, ICC = .5)
+summary(out_preliminary, sample_size = 600, time_points = 4, ICC = .5)
 
 }

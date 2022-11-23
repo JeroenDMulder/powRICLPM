@@ -90,7 +90,7 @@
 #' \donttest{
 #' # Run analysis ("reps" is small, because this is an example)
 #' with_progress({
-#'   power_preliminary <- powRICLPM(
+#'   out_preliminary <- powRICLPM(
 #'     target_power = 0.8,
 #'     search_lower = 500,
 #'     search_upper = 1000,
@@ -154,7 +154,7 @@ powRICLPM <- function(target_power,
   reps <- check_reps(reps)
   bootstrap_reps <- check_reps(bootstrap_reps)
   seed <- check_seed(seed)
-  constraints <- check_constraints(constraints)
+  constraints <- check_constraints(constraints, estimate_ME)
   bounds <- check_bounds(bounds, constraints)
   estimator <- check_estimator(estimator, skewness, kurtosis)
   save_path <- check_save_path(save_path)
@@ -290,7 +290,7 @@ powRICLPM_Mplus <- function(search_lower = NULL,
   reps <- check_reps(reps)
   seed <- check_seed(seed)
   save_path <- check_save(save_path)
-  constraints <- check_constraints(constraints)
+  constraints <- check_constraints(constraints, estimate_ME = FALSE)
 
   # Compute population parameter values for data generation
   Psi <- compute_Psi(Phi, wSigma)

@@ -4,12 +4,12 @@
 \alias{plot.powRICLPM}
 \title{Plot results from \code{powRICLPM} object}
 \usage{
-\method{plot}{powRICLPM}(x, y, ..., parameter = NULL)
+\method{plot}{powRICLPM}(x, y = "power", ..., parameter = NULL)
 }
 \arguments{
 \item{x}{A \code{powRICLPM} object.}
 
-\item{y}{(don't use)}
+\item{y}{(optional) A \code{character} string, specifying which outcome is plotted on the y-axis (see "Details").}
 
 \item{...}{(don't use)}
 
@@ -19,19 +19,37 @@
 A \code{ggplot2} object.
 }
 \description{
-Visualizes (using \pkg{ggplot2}) the estimated power across all experimental conditions within the \code{powRICLPM} object, \emph{for a specific parameter}. The plots display the relation between sample size (x-axis) and power (y-axis), grouped by the number of time points, and wrapped by the proportion of between-unit variance.
+Visualizes (using \pkg{ggplot2}) the results from a \code{powRICLPM} analysis, for a specific parameter, across all experimental conditions. By default, sample size is plotted on the x-axis, power on the y-axis, and results are grouped by the number of time points and wrapped by the proportion of between-unit variance. Optionally, the \code{y} argument can be used to change the variable on the y-axis to other outcomes from the \code{powRICLPM} analysis.
 }
 \details{
-\subsection{Manually creating plots}{\code{plot.powRICLPM()} creates arguably the most obvious plot in the context of power analysis: The relation between power and sample size. However, \code{powRICLPM} computes several other metrics (e.g., accuracy, coverage rate, etc.) that researchers might want to plot. To this end, I suggest that users use \code{give()} to collect other metrics, across all experimental conditions, for a specific parameter, into a data frame first. Then, users can use any plotting function they like to create their own manual plot. See "Details" of \code{\link{give}()} for a list of measures that are computed by the function.}
+\subsection{y-axis options}{The following outcomes can be plotted on the y-axis:
+
+\itemize{
+  \item \code{average}: The average estimate.
+  \item \code{MSE}: The mean square error.
+  \item \code{coverage}: The coverage rate
+  \item \code{accuracy}: The average width of the confidence interval.
+  \item \code{SD}: Standard deviation of parameter estimates.
+  \item \code{SEAvg}: Average standard error.
+  \item \code{bias}: The absolute difference between the average estimate and population value.
+}
+}
 }
 \examples{
-load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
+\dontshow{
+load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+}
+# Visualize power for "wB2~wA1" across simulation conditions
+plot(out_preliminary, parameter = "wB2~wA1")
 
-# Visualize power for "wB2~wA1" across all simulation conditions
-plot(power_preliminary, parameter = "wB2~wA1")
+# Visualize bias for "wB2~wA1" across simulation conditions
+plot(out_preliminary, y = "bias", parameter = "wB2~wA1")
+
+# Visualize coverage rate for "wB2~wA1" across simulation conditions
+plot(out_preliminary, y = "coverage", parameter = "wB2~wA1")
 
 # Error: No parameter specified
-try(plot(power_preliminary))
+try(plot(out_preliminary))
 }
 \seealso{
 \itemize{

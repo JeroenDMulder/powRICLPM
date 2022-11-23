@@ -73,7 +73,7 @@ test_that("powRICLPM() works", {
   # Run tests
   expect_equal(out3$session$estimate_ME, TRUE)
   expect_equal(
-    c("A1~~A1", "A2~~A2", "B1~~B1", "B2~~B2") %in% out3$conditions[[1]]$estimates$Par,
+    c("A1~~A1", "A2~~A2", "B1~~B1", "B2~~B2") %in% out3$conditions[[1]]$estimates$parameter,
     c(T, T, T, T)
   )
 })
@@ -129,91 +129,4 @@ test_that("bounded estimation in powRICLPM() works", {
 
   # Test that bounded estimation works
   expect_true(sum(out1$conditions[[1]]$not_converged) > sum(out2$conditions[[1]]$not_converged))
-})
-
-test_that("constrained estimation model in powRICLPM() works", {
-  # Create valid powRICLPM() input
-  Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
-  wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
-
-  out1 <- powRICLPM(
-    target_power = 0.8,
-    sample_size = 300,
-    time_points = 3,
-    ICC = 0.5,
-    RI_cor = 0.3,
-    Phi = Phi,
-    within_cor = 0.3,
-    reps = 2,
-    seed = 123456,
-    bounds = FALSE,
-    constraints = "lagged"
-  )
-
-  expect_equal(
-    out1$conditions[[1]]$results$avg[which(out1$conditions[[1]]$results$par == "wB2~wA1")],
-    out1$conditions[[1]]$results$avg[which(out1$conditions[[1]]$results$par == "wB3~wA2")]
-  )
-
-  out2 <- powRICLPM(
-    target_power = 0.8,
-    sample_size = 300,
-    time_points = 3,
-    ICC = 0.5,
-    RI_cor = 0.3,
-    Phi = Phi,
-    within_cor = 0.3,
-    reps = 2,
-    seed = 123456,
-    bounds = FALSE,
-    constraints = "residuals"
-  )
-
-  expect_equal(
-    out2$conditions[[1]]$results$avg[which(out2$conditions[[1]]$results$par == "wA2~~wA2")],
-    out2$conditions[[1]]$results$avg[which(out2$conditions[[1]]$results$par == "wA3~~wA3")]
-  )
-
-  out3 <- powRICLPM(
-    target_power = 0.8,
-    sample_size = 300,
-    time_points = 3,
-    ICC = 0.5,
-    RI_cor = 0.3,
-    Phi = Phi,
-    within_cor = 0.3,
-    reps = 2,
-    seed = 123456,
-    bounds = FALSE,
-    constraints = "within"
-  )
-
-  expect_equal(
-    out3$conditions[[1]]$results$avg[which(out3$conditions[[1]]$results$par == "wB2~wA1")],
-    out3$conditions[[1]]$results$avg[which(out3$conditions[[1]]$results$par == "wB3~wA2")]
-  )
-  expect_equal(
-    out3$conditions[[1]]$results$avg[which(out3$conditions[[1]]$results$par == "wA2~~wA2")],
-    out3$conditions[[1]]$results$avg[which(out3$conditions[[1]]$results$par == "wA3~~wA3")]
-  )
-
-  out4 <- powRICLPM(
-    target_power = 0.8,
-    sample_size = 300,
-    time_points = 3,
-    ICC = 0.5,
-    RI_cor = 0.3,
-    Phi = Phi,
-    within_cor = 0.3,
-    reps = 2,
-    seed = 123456,
-    bounds = FALSE,
-    constraints = "stationarity"
-  )
-
-  expect_equal(
-    out4$conditions[[1]]$results$avg[which(out4$conditions[[1]]$results$par == "wB2~wA1")],
-    out4$conditions[[1]]$results$avg[which(out4$conditions[[1]]$results$par == "wB3~wA2")],
-    tolerance = 1e06
-  )
 })

@@ -158,15 +158,15 @@ run_condition <- function(condition,
     apply(coefs, 1, min, na.rm = TRUE)
   })
   avg <- rowMeans(coefs, na.rm = TRUE)
-  stdDev <- apply(coefs, 1, stats::sd, na.rm = TRUE)
+  SD <- apply(coefs, 1, stats::sd, na.rm = TRUE)
   SEAvg <- rowMeans(SEs, na.rm = TRUE)
   MSE <- rowMeans((coefs - PV)^2, na.rm = TRUE)
-  acc <- rowSums(acc_r, na.rm = TRUE) / converged_reps
-  pwr <- rowSums(sigs, na.rm = TRUE) / converged_reps
-  cvr <- rowSums(cvr_r, na.rm = TRUE) / converged_reps
+  accuracy <- rowSums(acc_r, na.rm = TRUE) / converged_reps
+  power <- rowSums(sigs, na.rm = TRUE) / converged_reps
+  coverage <- rowSums(cvr_r, na.rm = TRUE) / converged_reps
 
   # Quantify uncertainty around Pow using bootstrapping
-  Pow_uncertainty <- t(
+  power_uncertainty <- t(
     apply(sigs, 1, quantify_uncertainty,
       bootstrap_reps = bootstrap_reps,
       converged_reps = converged_reps
@@ -175,16 +175,19 @@ run_condition <- function(condition,
 
   # Structure results
   condition$estimates <- data.frame(
-    Par = par,
-    PV = PV,
-    Avg = avg,
-    Min = min,
-    stdDev, SEAvg, MSE,
-    Acc = acc,
-    Cov = cvr,
-    Pow = pwr
+    parameter = par,
+    population_value = PV,
+    average = avg,
+    minimum = min,
+    SD, SEAvg, MSE,
+    accuracy = accuracy,
+    coverage = coverage,
+    power = power
   )
-  condition$uncertainty <- data.frame(par, Pow2.5 = Pow_uncertainty[, "2.5%"], Pow97.5 = Pow_uncertainty[, "97.5%"])
+  condition$uncertainty <- data.frame(
+    parameter = par,
+    power2.5 = power_uncertainty[, "2.5%"],
+    power97.5 = power_uncertainty[, "97.5%"])
   condition$errors <- errors
   condition$not_converged <- not_converged
   condition$inadmissible <- inadmissible

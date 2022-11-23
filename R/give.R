@@ -3,7 +3,7 @@
 #' Extract information stored within a \code{powRICLPM} object (internally used by \code{\link{print.powRICLPM}} and \code{\link{summary.powRICLPM}}). See "Details" for which pieces of information can be extracted. The information is presented by condition (i.e., sample size, number of time points, and ICC).
 #'
 #' @param from A \code{powRICLPM} object
-#' @param what A character string denoting the information to extract, either "conditions", "estimation_problems", "results", or "names".
+#' @param what A character string, denoting the information to extract, either "conditions", "estimation_problems", "results", or "names".
 #' @param parameter (optional) When \code{what = "results"}, a character string denoting the parameter to extract the results for.
 #'
 #' @details
@@ -12,7 +12,7 @@
 #' \itemize{
 #'   \item \code{conditions}: A \code{data.frame} with the different experimental conditions per row, where each condition is defined by a unique combination of sample size, number of time points and ICC.
 #'   \item \code{estimation_problems}: The proportion of fatal errors, inadmissible values, or non-converged estimations (columns) per experimental conditions (row).
-#'   \item \code{results}: The average estimate (\code{Avg}), minimum estimate (\code{Min}), standard deviation of parameter estimates (\code{stdDev}), the average standard error (\code{SEavg}), the mean square error (\code{MSE}), the average width of the confidence interval (\code{Acc}), the coverage rate (\code{Cov}), and the proportion of times the \emph{p}-value was lower than the significance criterion (\code{Pow}). It requires setting the \code{parameter = "..."} argument.
+#'   \item \code{results}: The average estimate (\code{average}), minimum estimate (\code{minimum}), standard deviation of parameter estimates (\code{SD}), the average standard error (\code{SEavg}), the mean square error (\code{MSE}), the average width of the confidence interval (\code{accuracy}), the coverage rate (\code{coverage}), and the proportion of times the \emph{p}-value was lower than the significance criterion (\code{power}). It requires setting the \code{parameter = "..."} argument.
 #'   \item \code{names}: The parameter names in the condition with the least parameters (i.e., parameter names that apply to each experimental condition).
 #' }
 #'
@@ -20,13 +20,17 @@
 #' @export
 #'
 #' @examples
-#' load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
-#'
+#' \dontshow{
+#' load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+#' }
 #' # Return data frame with number of estimation problems per experimental condition
-#' give(power_preliminary, "estimation_problems")
+#' give(out_preliminary, "estimation_problems")
 #'
 #' # Return data frame with performance measures for "wB2~wA1" per experimental condition
-#' give(power_preliminary, "results", parameter = "wB2~wA1")
+#' give(out_preliminary, "results", parameter = "wB2~wA1")
+#'
+#' # Return character vector with parameter names
+#' give(out_preliminary, "names")
 give <- function(from, what, parameter = NULL) {
   check_object(from)
   check_give(what)
@@ -108,7 +112,7 @@ give_results <- function(object, parameter = NULL) {
       sample_size = condition$sample_size,
       time_points = condition$time_points,
       ICC = condition$ICC,
-      round(condition$estimates[condition$estimates$Par == parameter, -1],
+      round(condition$estimates[condition$estimates$parameter == parameter, -1],
         digits = 3
       )
     )
@@ -125,20 +129,28 @@ give_results <- function(object, parameter = NULL) {
 #' @noRd
 give_names <- function(object) {
   condition_length <- purrr::map_int(object$conditions, function(condition) {
-    length(condition$estimates$Par)
+    length(condition$estimates$parameter)
   })
-  object$conditions[[which.min(condition_length)]]$estimates$Par
+  object$conditions[[which.min(condition_length)]]$estimates$parameter
 }
 
 
 
+#' Extract uncertainty of power estimates
+#'
+#' \code{give_uncertainty()} extracts and returns the 95% bootstrap intervals around the power estimates, across all experimental conditions.
+#'
+#' @param object A \code{powRICLPM} object.
+#' @inheritParams powRICLPM
+#'
+#' @noRd
 give_uncertainty <- function(object, parameter) {
   d <- purrr::map_dfr(object$conditions, function(condition) {
     data.frame(
       sample_size = condition$sample_size,
       time_points = condition$time_points,
       ICC = condition$ICC,
-      condition$uncertainty[which(condition$uncertainty$par == parameter), -1]
+      condition$uncertainty[which(condition$uncertainty$parameter == parameter), -1]
     )
   })
   return(d)

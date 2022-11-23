@@ -33,7 +33,7 @@ navbar:
       href: articles/extensions.html
     - text: Using Mplus
       href: articles/mplus.html
-    - text: Example
+    - text: R code Mulder (2022)
       href: articles/Mulder2022.html
   - text: News
     href: news/index.html

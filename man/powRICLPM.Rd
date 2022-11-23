@@ -124,7 +124,7 @@ future::plan(multisession)
 \donttest{
 # Run analysis ("reps" is small, because this is an example)
 with_progress({
-  power_preliminary <- powRICLPM(
+  out_preliminary <- powRICLPM(
     target_power = 0.8,
     search_lower = 500,
     search_upper = 1000,

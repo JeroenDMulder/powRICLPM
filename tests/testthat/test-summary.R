@@ -18,5 +18,4 @@ test_that("powRICLPM_summary() works", {
 
   expect_snapshot(summary(out1))
   expect_snapshot(summary(out1, parameter = "wB2~wA1"))
-  expect_snapshot(summary(out1, names = TRUE))
 })

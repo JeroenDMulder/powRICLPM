@@ -93,12 +93,6 @@ test_that("check_seed() works", {
   expect_error(check_seed(1234.5))
 })
 
-# Test check_parameter_given() ----
-test_that("check_parameter_given() works", {
-  expect_equal(check_parameter_given("wB2~wA1"), "wB2~wA1")
-  expect_error(check_parameter_given(NULL))
-})
-
 # Test check_reps() ----
 test_that("check_reps() works", {
   expect_equal(check_reps(1000), 1000)
@@ -156,11 +150,13 @@ test_that("check_estimate_ME() works", {
 
 # Test check_constraints() ----
 test_that("check_constraints() works", {
-  expect_error(check_constraints(1))
-  expect_error(check_constraints("a"))
-  expect_error(check_constraints(TRUE))
-  expect_error(check_constraints(c("none", "ME")))
-  expect_equal(check_constraints("lagged"), "lagged")
+  expect_error(check_constraints(1, estimate_ME = F))
+  expect_error(check_constraints("a", estimate_ME = F))
+  expect_error(check_constraints(TRUE, estimate_ME = F))
+  expect_error(check_constraints(c("none", "ME"), estimate_ME = F))
+  expect_error(check_constraints("ME", estimate_ME = F))
+  expect_equal(check_constraints("lagged", estimate_ME = F), "lagged")
+  expect_equal(check_constraints("ME", estimate_ME = T), "ME")
 })
 
 # Test check_estimator() ----

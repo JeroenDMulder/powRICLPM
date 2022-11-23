@@ -392,118 +392,16 @@ check_parameter_argument <- function(x) {
 #' @noRd
 check_parameter_available <- function(parameter, object) {
   condition_length <- purrr::map_int(object$conditions, function(x) {
-    length(x$estimates$Par)
+    length(x$estimates$parameter)
   })
-  names_pars <- object$conditions[[which.min(condition_length)]]$estimates$Par
+  names_pars <- object$conditions[[which.min(condition_length)]]$estimates$parameter
   if (!parameter %in% names_pars) {
     stop(rlang::format_error_bullets(c(
-      "`parameter` is not valid:",
-      i = "`parameter` should be a parameter name in the experimental condition with the least amount of parameters.",
-      x = "Perhaps use `give(object, what = 'names')` to get an overview of parameter names in the `powRICLPM` object."
+      x = "`parameter` is not available across all experimental conditions.",
+      i = "Perhaps use `give(object, what = 'names')` to get an overview of parameter names in the `powRICLPM` object."
     )))
   }
   return(parameter)
-}
-
-#' Check \code{parameter} argument
-#'
-#' \code{check_parameter()} tests if a parameter was specified.
-#'
-#' @param x A character string.
-#'
-#' @noRd
-check_parameter_given <- function(parameter, object) {
-  if (is.null(parameter)) {
-    stop(rlang::format_error_bullets(c(
-      "No `parameter` was specified:",
-      i = "`plot()` needs to know which specific parameter to create a plot for."
-    )))
-  }
-  return(parameter)
-}
-
-#' Check \code{sample_size} in \code{summary.powRICLPM()}
-#'
-#' \code{check_N_summary()} tests if the specified sample size \code{n} is in the \code{powRICLPM} object.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param n An integer.
-#'
-#' @noRd
-check_N_summary <- function(object, sample_size) {
-  if (length(sample_size) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`sample_size` must be a single number:",
-      x = paste0("Your `sample_size` is of length ", length(sample_size), ".")
-    )))
-  }
-  sample_size_unique <- unique(purrr::map_dbl(object$condition, function(x) {
-    x$sample_size
-  }))
-  if (!sample_size %in% sample_size_unique) {
-    stop(rlang::format_error_bullets(c(
-      "`sample_size` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
-      i = "The sample size you've indicated is not included in any experimental condition.",
-      x = "Perhaps you meant any of the following sample sizes?",
-      sample_size_unique
-    )))
-  }
-}
-
-#' Check \code{time_points} in \code{summary.powRICLPM()}
-#'
-#' \code{check_T_summary()} tests if the specified sample size \code{time_points} is in the \code{powRICLPM} object.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param time_points An integer.
-#'
-#' @noRd
-check_T_summary <- function(object, time_points) {
-  if (length(time_points) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`time_points` must be a single number:",
-      x = paste0("Your `time_points` is of length ", length(time_points), ".")
-    )))
-  }
-  t_unique <- unique(purrr::map_dbl(object$condition, function(x) {
-    x$time_points
-  }))
-  if (!time_points %in% t_unique) {
-    stop(rlang::format_error_bullets(c(
-      "`time_points` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
-      i = "The `time_points` you've indicated is not included in any experimental condition.",
-      x = "Perhaps you meant any of the following number of time points?",
-      t_unique
-    )))
-  }
-}
-
-#' Check \code{ICC} in \code{summary.powRICLPM()}
-#'
-#' \code{check_ICC_summary()} tests if the specified sample size \code{ICC} is in the \code{powRICLPM} object.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param ICC A double.
-#'
-#' @noRd
-check_ICC_summary <- function(object, ICC) {
-  if (length(ICC) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`ICC` must be a single number:",
-      x = paste0("Your `ICC` is of length ", length(ICC), ".")
-    )))
-  }
-  ICC_unique <- unique(purrr::map_dbl(object$condition, function(x) {
-    x$ICC
-  }))
-  if (!ICC %in% ICC_unique) {
-    stop(rlang::format_error_bullets(c(
-      "`ICC` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
-      i = "The `ICC` you've indicated is not included in any experimental condition.",
-      x = "Perhaps you meant any of the following ICCs?",
-      ICC_unique
-    )))
-  }
 }
 
 #' Check \code{reps} argument
@@ -599,50 +497,6 @@ check_bounds <- function(bounds, constraints) {
   return(bounds)
 }
 
-#' Check \code{what} argument
-#'
-#' \code{check_give} checks the \code{what} argument of \code{give()} by testing if it is a character string of length 1.
-#'
-#' @param what A character string of length 1.
-#'
-#' @noRd
-check_give <- function(what) {
-  if (!is.character(what)) {
-    stop(rlang::format_error_bullets(c(
-      "`what` must be a character string:",
-      x = paste0("Your `what` is a `", typeof(what), "`.")
-    )))
-  }
-  if (length(what) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`what` must be of length 1:",
-      x = paste0("Your `what` contains ", length(what), " elements.")
-    )))
-  }
-}
-
-#' Check arguments for \code{give(what = "results")}
-#'
-#' \code{check_give_results} checks that the \code{parameter} argument is correctly specified when results are extracted using \code{give(what = "results")}.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param parameter A character string.
-#'
-#' @noRd
-check_give_results <- function(object, parameter) {
-  if (!is.null(parameter)) {
-    check_parameter_argument(parameter)
-    check_parameter_available(parameter, object)
-  } else if (!is.null(object$session$parameter)) {
-    parameter <- object$session$parameter
-  } else {
-    stop(rlang::format_error_bullets(c(
-      "`give(what = 'results')` must know which parameter to extract results for:",
-      x = "You've not supplied a `parameter` argument, nor set `parameter` when running `powRICLPM()`."
-    )))
-  }
-}
-
 #' Check \code{reliability} argument
 #'
 #' \code{check_reliability()} checks if the \code{reliability} argument is a valid reliability coefficient.
@@ -702,17 +556,23 @@ check_estimate_ME <- function(estimate_ME) {
 #' @inheritParams powRICLPM
 #'
 #' @noRd
-check_constraints <- function(constraints) {
+check_constraints <- function(constraints, estimate_ME) {
   if (length(constraints) > 1) {
     stop(rlang::format_error_bullets(c(
       "You can only specify a single set of constraints at the time:",
       x = paste0("You specified ", length(constraints), " constraints.")
     )))
   }
-  if (!constraints %in% c("none", "lagged", "residuals", "within", "stationarity")) {
+  if (!constraints %in% c("none", "lagged", "residuals", "within", "stationarity", "ME")) {
     stop(rlang::format_error_bullets(c(
       "`constraints` must be 'none', 'lagged', 'residuals', 'within', 'stationarity', or 'ME':",
       x = paste0("Your `constraints` is ", constraints, ".")
+    )))
+  }
+  if (constraints == "ME" & !estimate_ME) {
+    stop(rlang::format_error_bullets(c(
+      "`constraints = 'ME' is only possible when `estimate_ME = TRUE`",
+      x = "Your `estimate_ME` is FALSE."
     )))
   }
   return(constraints)

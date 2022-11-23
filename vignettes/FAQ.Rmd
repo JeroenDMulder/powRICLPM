@@ -39,6 +39,8 @@ To verify this, a small simulation study was performed using Mplus (model syntax
 All in all, while the inclusion of multiple indicators complicates the RI-CLPM power analysis, it can be generally stated that the separation of measurement error and true score variance through the extension with multiple indicators is beneficial for the power to detect lagged effects. As measurements, especially in the social and behavioral sciences are prone to include measurement error, this extension may be well-worth considering from a power point-of-view.
 :::
 
+---
+
 ::: {onclick="showHide('faq2')" style="cursor: pointer; font-weight:bold"}
 The multiple indicator RI-CLPM
 :::

@@ -21,16 +21,18 @@
 #' }
 #'
 #' @examples
-#' load(system.file("extdata", "power_preliminary.Rds", package = "powRICLPM"))
+#' \dontshow{
+#' load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+#' }
 #'
 #' # Get setup of powRICLPM analysis and convergence issues
-#' summary(power_preliminary)
+#' summary(out_preliminary)
 #'
 #' # Performance measures for "wB2~wA1" parameter across experimental conditions
-#' summary(power_preliminary, parameter = "wB2~wA1")
+#' summary(out_preliminary, parameter = "wB2~wA1")
 #'
 #' # Performance measures for all parameters, for specific experimental condition
-#' summary(power_preliminary, sample_size = 600, time_points = 4, ICC = .5)
+#' summary(out_preliminary, sample_size = 600, time_points = 4, ICC = .5)
 #'
 #' @method summary powRICLPM
 #' @export
@@ -87,7 +89,7 @@ summary_condition <- function(object,
     )
   )
   df_e <- data.frame(
-    c("Errors:", "Non-convergences:", "Inadmissible results:"),
+    c("Errors:", "Nonconvergence:", "Inadmissible results:"),
     c(sum(condition$errors), sum(condition$not_converged), sum(condition$inadmissible))
   )
 
@@ -98,8 +100,9 @@ summary_condition <- function(object,
       condition$estimates,
       format = "simple",
       digits = 3,
-      col.names = c("Par", "Pop val", "Avg", "Min", "stdDev", "SEAvg", "MSE", "Acc", "Cov", "Pow"),
-      align = "lrrrrrrrr"
+      col.names = c("Parameter", "Population value", "Avg", "Min", "SD", "SE Avg", "MSE", "Accuracy", "Coverage", "Power"),
+      align = "lrrrrrrrr",
+      escape = FALSE
     )
   )
   cat("\nEstimation problems:")
@@ -141,8 +144,8 @@ summary_parameter <- function(object, parameter) {
       format = "simple",
       col.names = c(
         "N", "T", "ICC",
-        "Err", "N-C", "Inadm",
-        "Pop val", "Avg", "Min", "stdDev", "SEAvg", "MSE", "Accy", "Cov", "Pow"
+        "Err", "NC", "IR",
+        "PV", "Avg", "Min", "SD", "SE Avg", "MSE", "Accuracy", "Coverage", "Power"
       )
     )
   )
