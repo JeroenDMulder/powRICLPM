@@ -6,11 +6,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-default navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,25 +19,22 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
-  <a class="nav-link" href="../articles/start.html">Get started</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
-    <a class="dropdown-item" href="../articles/start.html">Get started</a>
-    <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
-    <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
-    <a class="dropdown-item" href="../articles/Mulder2022.html">Example</a>
-  </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">News</a>
+  <a class="nav-link" href="../articles/powRICLPM.html">Get started</a>
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
+    <a class="dropdown-item" href="../articles/FAQ.html">FAQ</a>
+    <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
+    <a class="dropdown-item" href="../articles/Mulder2022.html">Online supplementary materials - R code Mulder (2022)</a>
+  </div>
+</li>
 <li class="nav-item">
-  <a class="nav-link" href="../articles/FAQ.html">FAQ</a>
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -104,6 +101,12 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>No return value, called for side effects.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>summary.powRICLPM</code> provides a different summary of the <code>powRICLPM</code> object, depending on the additional arguments that are set:</p><ul><li><p>When <code>sample_size = ...</code>, <code>time_points = ...</code>, and <code>ICC = ...</code> are set: Estimation information and results for all parameters of the experimental condition denoted by <code>sample_size</code>, <code>time_points</code>, and <code>ICC</code>.</p></li>
 <li><p>When <code>parameter = "..."</code> is set: Estimation information and results for a specific parameter across all experimental conditions.</p></li>
@@ -112,40 +115,150 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example - Same starting point as example from ?powRICLPM()</span></span></span>
-<span class="r-in"><span><span class="co"># Define population parameters for lagged effects and within-component correlations</span></span></span>
-<span class="r-in"><span><span class="va">Phi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">wSigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">.3</span>, <span class="fl">.3</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"out_preliminary.Rds"</span>, package <span class="op">=</span> <span class="st">"powRICLPM"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Setup parallel computing (multicore, speeding up the analysis)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr" class="external-link">furrr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Get setup of powRICLPM analysis and convergence issues</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out_preliminary</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> powRICLPM (0.1.0.9000) simulated power for 36 experimental conditions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Sample size    Time points   ICC   Errors   Non-convergence    Inadmissible results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------  ------------  ----  -------  -----------------  ---------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      500                  3   0.4        0          0                              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      600                  3   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      700                  3   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      800                  3   0.4        0          0                              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      900                  3   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1000                  3   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      500                  4   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      600                  4   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      700                  4   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      800                  4   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      900                  4   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1000                  4   0.4        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      500                  3   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      600                  3   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      700                  3   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      800                  3   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      900                  3   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1000                  3   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      500                  4   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      600                  4   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      700                  4   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      800                  4   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      900                  4   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1000                  4   0.5        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      500                  3   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      600                  3   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      700                  3   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      800                  3   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      900                  3   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1000                  3   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      500                  4   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      600                  4   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      700                  4   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      800                  4   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      900                  4   0.6        0          0                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1000                  4   0.6        0          0                              0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Run the analysis</span></span></span>
-<span class="r-in"><span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="powRICLPM.html">powRICLPM</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  target_power <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
-<span class="r-in"><span>  search_lower <span class="op">=</span> <span class="fl">500</span>,</span></span>
-<span class="r-in"><span>  search_upper <span class="op">=</span> <span class="fl">1000</span>,</span></span>
-<span class="r-in"><span>  search_step <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  time_points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  ICC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  RI_cor <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
-<span class="r-in"><span>  Phi <span class="op">=</span> <span class="va">Phi</span>,</span></span>
-<span class="r-in"><span>  wSigma <span class="op">=</span> <span class="va">wSigma</span>,</span></span>
-<span class="r-in"><span>  reps <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  seed <span class="op">=</span> <span class="fl">123456</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Performance measures for "wB2~wA1" parameter across experimental conditions</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out_preliminary</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Results for wB2~wA1 across conditions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     N    T   ICC   Err   NC   IR    PV     Avg      Min      SD   SE Avg     MSE   Accuracy   Coverage   Power</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -----  ---  ----  ----  ---  ---  ----  ------  -------  ------  -------  ------  ---------  ---------  ------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   500    3   0.4     0    0    1   0.2   0.208    0.026   0.076    0.079   0.006      0.307       0.96    0.74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   600    3   0.4     0    0    0   0.2   0.205    0.004   0.071    0.073   0.005      0.286       0.96    0.82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   700    3   0.4     0    0    0   0.2   0.193   -0.005   0.063    0.069   0.004      0.271       0.96    0.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   800    3   0.4     0    0    1   0.2   0.201    0.060   0.063    0.063   0.004      0.246       0.94    0.82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   900    3   0.4     0    0    0   0.2   0.194    0.036   0.062    0.060   0.004      0.235       0.94    0.86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1000    3   0.4     0    0    0   0.2   0.200    0.042   0.059    0.056   0.003      0.220       0.94    0.92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   500    4   0.4     0    0    0   0.2   0.200    0.063   0.059    0.063   0.003      0.245       0.96    0.90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   600    4   0.4     0    0    0   0.2   0.203    0.067   0.057    0.057   0.003      0.225       0.94    0.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   700    4   0.4     0    0    0   0.2   0.201    0.099   0.049    0.053   0.002      0.206       0.97    1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   800    4   0.4     0    0    0   0.2   0.204    0.097   0.045    0.049   0.002      0.192       0.97    0.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   900    4   0.4     0    0    0   0.2   0.200    0.101   0.044    0.046   0.002      0.180       0.95    0.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1000    4   0.4     0    0    0   0.2   0.201    0.079   0.048    0.044   0.002      0.171       0.90    0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   500    3   0.5     0    0    0   0.2   0.207    0.040   0.085    0.088   0.007      0.343       0.96    0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   600    3   0.5     0    0    0   0.2   0.195   -0.030   0.078    0.080   0.006      0.314       0.95    0.72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   700    3   0.5     0    0    0   0.2   0.205   -0.030   0.078    0.073   0.006      0.286       0.94    0.78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   800    3   0.5     0    0    0   0.2   0.207   -0.012   0.071    0.069   0.005      0.270       0.94    0.86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   900    3   0.5     0    0    0   0.2   0.194   -0.034   0.074    0.066   0.005      0.257       0.92    0.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1000    3   0.5     0    0    0   0.2   0.200    0.007   0.063    0.062   0.004      0.244       0.95    0.89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   500    4   0.5     0    0    0   0.2   0.203    0.024   0.071    0.065   0.005      0.256       0.90    0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   600    4   0.5     0    0    0   0.2   0.191    0.043   0.059    0.060   0.004      0.236       0.93    0.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   700    4   0.5     0    0    0   0.2   0.203    0.053   0.057    0.056   0.003      0.219       0.94    0.97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   800    4   0.5     0    0    0   0.2   0.202    0.115   0.045    0.053   0.002      0.207       0.97    1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   900    4   0.5     0    0    0   0.2   0.194    0.096   0.047    0.049   0.002      0.192       0.96    0.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1000    4   0.5     0    0    0   0.2   0.200    0.120   0.042    0.047   0.002      0.183       0.98    1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   500    3   0.6     0    0    0   0.2   0.189   -0.061   0.094    0.098   0.009      0.386       0.95    0.48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   600    3   0.6     0    0    0   0.2   0.189   -0.024   0.088    0.087   0.008      0.343       0.94    0.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   700    3   0.6     0    0    0   0.2   0.194    0.010   0.080    0.083   0.006      0.325       0.96    0.70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   800    3   0.6     0    0    0   0.2   0.200    0.060   0.071    0.077   0.005      0.301       0.98    0.74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   900    3   0.6     0    0    0   0.2   0.193   -0.004   0.073    0.072   0.005      0.280       0.96    0.77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1000    3   0.6     0    0    0   0.2   0.197   -0.060   0.075    0.069   0.006      0.270       0.94    0.80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   500    4   0.6     0    0    0   0.2   0.198    0.030   0.067    0.071   0.004      0.277       0.96    0.82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   600    4   0.6     0    0    0   0.2   0.197    0.014   0.067    0.066   0.004      0.258       0.95    0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   700    4   0.6     0    0    0   0.2   0.194    0.070   0.058    0.060   0.003      0.236       0.95    0.91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   800    4   0.6     0    0    0   0.2   0.203    0.054   0.057    0.057   0.003      0.223       0.94    0.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   900    4   0.6     0    0    0   0.2   0.200    0.075   0.051    0.053   0.003      0.207       0.97    0.97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1000    4   0.6     0    0    0   0.2   0.195    0.079   0.051    0.050   0.003      0.196       0.94    0.96</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># General results (i.e., setup of powRICLPM analysis)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Performance measures for all parameters, for specific experimental condition</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out_preliminary</span>, sample_size <span class="op">=</span> <span class="fl">600</span>, time_points <span class="op">=</span> <span class="fl">4</span>, ICC <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Results:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameter     Population value     Avg      Min      SD   SE Avg     MSE   Accuracy   Coverage  Power </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -----------  -----------------  ------  -------  ------  -------  ------  ---------  ---------  ------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RI_A~~RI_A               1.000   0.984    0.767   0.100    0.107   0.010      0.418       0.97  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RI_B~~RI_B               1.000   1.002    0.804   0.090    0.099   0.008      0.390       0.99  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RI_A~~RI_B               0.300   0.302    0.154   0.071    0.080   0.005      0.312       0.99  0.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA2~wA1                  0.400   0.398    0.262   0.065    0.065   0.004      0.256       0.97  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA2~wB1                  0.100   0.103   -0.026   0.062    0.059   0.004      0.232       0.94  0.39  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB2~wA1                  0.200   0.191    0.043   0.059    0.060   0.004      0.236       0.93  0.94  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB2~wB1                  0.300   0.299    0.122   0.065    0.066   0.004      0.257       0.94  0.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA3~wA2                  0.400   0.393    0.209   0.069    0.066   0.005      0.260       0.95  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA3~wB2                  0.100   0.102   -0.109   0.063    0.059   0.004      0.231       0.96  0.45  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB3~wA2                  0.200   0.193    0.068   0.057    0.062   0.003      0.244       0.97  0.89  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB3~wB2                  0.300   0.294    0.101   0.061    0.066   0.004      0.260       0.97  0.98  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA4~wA3                  0.400   0.393    0.263   0.055    0.060   0.003      0.237       0.99  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA4~wB3                  0.100   0.094   -0.069   0.057    0.055   0.003      0.216       0.97  0.46  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB4~wA3                  0.200   0.200    0.016   0.063    0.059   0.004      0.229       0.94  0.92  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB4~wB3                  0.300   0.300    0.147   0.052    0.060   0.003      0.236       0.96  0.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA1~~wA1                 1.000   1.012    0.784   0.097    0.102   0.010      0.401       0.95  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB1~~wB1                 1.000   0.986    0.729   0.102    0.095   0.010      0.373       0.92  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA1~~wB1                 0.300   0.307    0.117   0.071    0.076   0.005      0.297       0.95  0.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA2~~wA2                 0.806   0.801    0.650   0.069    0.064   0.005      0.252       0.93  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA3~~wA3                 0.806   0.793    0.622   0.073    0.062   0.005      0.244       0.89  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA4~~wA4                 0.806   0.800    0.664   0.049    0.058   0.002      0.227       0.97  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB2~~wB2                 0.834   0.826    0.675   0.068    0.068   0.005      0.267       0.94  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB3~~wB3                 0.834   0.833    0.633   0.069    0.067   0.005      0.263       0.95  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wB4~~wB4                 0.834   0.831    0.696   0.061    0.061   0.004      0.240       0.97  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA2~~wB2                 0.148   0.150    0.037   0.050    0.047   0.002      0.185       0.95  0.85  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA3~~wB3                 0.148   0.140    0.040   0.047    0.046   0.002      0.181       0.95  0.89  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wA4~~wB4                 0.148   0.147    0.046   0.040    0.043   0.002      0.167       0.98  0.97  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimation problems:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------  ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Errors:                   0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Nonconvergence:           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Inadmissible results:     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------  ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Condition info:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------  ------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Skewness:                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Kurtosis:                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constraints:                none</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bounds:                    FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimate ME:               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Significance criterion:     0.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------  ------</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># General results and recommendation for specific parameter</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out</span>, parameter <span class="op">=</span> <span class="st">"wB2~wA1"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Summary for specific condition</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out</span>, sample_size <span class="op">=</span> <span class="fl">600</span>, time_points <span class="op">=</span> <span class="fl">4</span>, ICC <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -153,11 +266,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Jeroen Mulder.</p>
+  <p></p><p>Developed by Jeroen Mulder, Netherlands Organization for Scientific Research.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>powRICLPM</p>
 </div>
 
     </footer></div>

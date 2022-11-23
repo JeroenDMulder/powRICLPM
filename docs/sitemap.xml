@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/404.html</loc>
   </url>
   <url>
-    <loc>/articles/extensions.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/extensions.html</loc>
   </url>
   <url>
-    <loc>/articles/FAQ.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/FAQ.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/mplus.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/mplus.html</loc>
   </url>
   <url>
-    <loc>/articles/Mulder2022.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/Mulder2022.html</loc>
   </url>
   <url>
-    <loc>/articles/start.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/powRICLPM.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/articles/start.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/authors.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/index.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/reference/give.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/give.html</loc>
   </url>
   <url>
-    <loc>/reference/plot.powRICLPM.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/powRICLPM.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/plot.powRICLPM.html</loc>
   </url>
   <url>
-    <loc>/reference/powRICLPM_Mplus.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/powRICLPM.html</loc>
   </url>
   <url>
-    <loc>/reference/print.powRICLPM.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/powRICLPM_Mplus.html</loc>
   </url>
   <url>
-    <loc>/reference/summary.powRICLPM.html</loc>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/print.powRICLPM.html</loc>
+  </url>
+  <url>
+    <loc>https://jeroendmulder.github.io/powRICLPM/reference/summary.powRICLPM.html</loc>
   </url>
 </urlset>

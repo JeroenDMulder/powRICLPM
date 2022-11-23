@@ -22,11 +22,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-default navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,25 +36,22 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="../articles/start.html">Get started</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
-    <a class="dropdown-item" href="../articles/start.html">Get started</a>
-    <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
-    <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
-    <a class="dropdown-item" href="../articles/Mulder2022.html">Example</a>
-  </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">News</a>
+  <a class="nav-link" href="../articles/powRICLPM.html">Get started</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="active nav-item">
-  <a class="nav-link" href="../articles/FAQ.html">FAQ</a>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
+    <a class="dropdown-item" href="../articles/FAQ.html">FAQ</a>
+    <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
+    <a class="dropdown-item" href="../articles/Mulder2022.html">Online supplementary materials - R code Mulder (2022)</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -134,7 +131,7 @@ the cross-lagged effects were fixed at 0.2. All other population
 parameter values were kept the same as in the illustrative example in
 Mulder (under review), implying that the proportion of measurement error
 in the observed variables was <span class="math inline">\(20\%\)</span>.
-The simulated data sets were analysed using the MI-RICLPM that generated
+The simulated data sets were analyzed using the MI-RICLPM that generated
 the data (and separates out measurement error variance), and a basic
 RI-CLPM (assuming no measurement error, using only the first indicator).
 Results show that the power to detect non-zero lagged effects is indeed
@@ -148,10 +145,11 @@ autoregressive effects of 0.3).</p>
 the RI-CLPM power analysis, it can be generally stated that the
 separation of measurement error and true score variance through the
 extension with multiple indicators is beneficial for the power to detect
-lagged effects. As measurements, especially in the social and
-behavioural sciences are prone to include measurement error, this
-extension may be well-worth considering from a power point-of-view.</p>
+lagged effects. As measurements, especially in the social and behavioral
+sciences are prone to include measurement error, this extension may be
+well-worth considering from a power point-of-view.</p>
 </div>
+<hr>
 <div onclick="showHide('faq2')" style="cursor: pointer; font-weight:bold">
 <p>The multiple indicator RI-CLPM</p>
 </div>
@@ -182,12 +180,12 @@ Pornprasertmanit, Schoeman, and Rosseel (2021)</a>.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Jeroen Mulder.</p>
+<p>Developed by Jeroen Mulder, Netherlands Organization for Scientific Research.</p>
 </div>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>powRICLPM</p>
 </div>
 
     </footer>

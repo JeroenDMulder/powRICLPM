@@ -22,11 +22,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-default navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,25 +36,22 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="../articles/start.html">Get started</a>
-</li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
-    <a class="dropdown-item" href="../articles/start.html">Get started</a>
-    <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
-    <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
-    <a class="dropdown-item" href="../articles/Mulder2022.html">Example</a>
-  </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">News</a>
+  <a class="nav-link" href="../articles/powRICLPM.html">Get started</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
+    <a class="dropdown-item" href="../articles/FAQ.html">FAQ</a>
+    <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
+    <a class="dropdown-item" href="../articles/Mulder2022.html">Online supplementary materials - R code Mulder (2022)</a>
+  </div>
+</li>
 <li class="nav-item">
-  <a class="nav-link" href="../articles/FAQ.html">FAQ</a>
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -89,10 +86,11 @@
 
     
     
-<p>The basic power analysis as described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html" class="external-link">Getting
+<p>The basic power analysis as described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
 started</a> can be extended to using bounded estimation, estimation with
-constraints over time, and the inclusion of measurement error variances.
-These extensions are described below.</p>
+constraints over time, and the inclusion of measurement error variances
+in the generated data and estimation model. These extensions are
+described below.</p>
 <div class="section level2">
 <h2 id="bounded-estimation-with-lavaan">Bounded estimation with <code>lavaan</code><a class="anchor" aria-label="anchor" href="#bounded-estimation-with-lavaan"></a>
 </h2>
@@ -114,14 +112,14 @@ parameters.</p>
 <div class="section level2">
 <h2 id="constraints-over-time">Constraints over time<a class="anchor" aria-label="anchor" href="#constraints-over-time"></a>
 </h2>
-<p><code>powRICLPM</code> offers users the option to impose various
+<p><code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> offers users the option to impose various
 constraints over time on the estimation model through the
 <code>constraints</code> argument. This has statistical advantages as
 constraints over time reduce model complexity, thereby potentially
 reducing convergence issues and increasing power. Moreover, some
 researchers are interested in so called ‘stationarity’ constraints for
-theoretical reasons. Disadvantages of such constraints are that they
-assume certain parameters over time do not change. This might not be an
+theoretical reasons. A disadvantage of such constraints is that they
+assume certain parameters to be time-invariant. This might not be an
 assumption researchers are willing to make, especially in developmental
 contexts where you expect lagged effects might change over time (e.g.,
 the variable <code>wA</code> gets more important in driving
@@ -132,11 +130,11 @@ estimated over time.</p>
 <p>Constraint options include:</p>
 <ul>
 <li>
-<code>constraints = "lagged"</code>: All autoregressive and
-cross-lagged effects are constrained to be equal over time.</li>
+<code>constraints = "lagged"</code>: Autoregressive and cross-lagged
+effects are constrained to be equal over time.</li>
 <li>
-<code>constraints = "residuals</code>: The within-unit residual
-variances and covariance (from wave 2 onwards) are constrained to be
+<code>constraints = "residuals</code>: Within-unit residual
+variances and covariance (from wave 2 onward) are constrained to be
 equal over time.</li>
 <li>
 <code>constraints = "within"</code>: Both lagged effects and
@@ -151,29 +149,29 @@ at the first wave are fixed to 1, and that the residual variances are a
 function of the lagged effects, and correlation between
 within-components at the same wave. These constraints are deduced in the
 supplementary materials of <a href="https://jeroendmulder.github.io/RI-CLPM/faq.html#Standardization" class="external-link">Mulder
-and Hamaker (see the FAQ “How can I constrain the <em>standardized</em>
-parameters to be invariant over time?”)</a>.</li>
+and Hamaker (2021, see the FAQ “How can I constrain the
+<em>standardized</em> parameters to be invariant over time?”)</a>.</li>
 <li>
 <code>constraints = "ME"</code>: Constraints are imposed on the
-measurement error variances across time. This constraint is only
-possible when <code>est_ME = TRUE</code>.</li>
+measurement error variances across time (separately for each variable).
+This constraint is only possible when
+<code>estimate_ME = TRUE</code>.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="measurment-error">Measurment error<a class="anchor" aria-label="anchor" href="#measurment-error"></a>
+<h2 id="measurement-error">Measurement error<a class="anchor" aria-label="anchor" href="#measurement-error"></a>
 </h2>
 <p>While it is generally advisable to include measurement error when
 analyzing psychological data, the RI-CLPM does not include it. Adding
-measurement error to the model would result in the bivariate Trait State
-Error (TSE) model by <a href="https://doi.org/10.1037/10409-008" class="external-link">Kenny
-and Zautra (1995)</a>, and requires at least 4 waves of data to be
-identified. Users can add measurement error variances to the estimation
-model by setting the <code>est_ME</code> argument to
-<code>est_ME = TRUE</code>. Measurement error can be added to the
+measurement error to the model would result in the bivariate stable
+trait autoregressive trait state (STARTS) model by <a href="https://doi.org/10.1037/10409-008" class="external-link">Kenny and Zautra (2001)</a>,
+and requires at least 4 waves of data to be identified. Users can add
+measurement error variances to the estimation model by specifying
+<code>estimate_ME = TRUE</code>. Measurement error can be added to the
 simulated data using the <code>reliability</code> argument.</p>
-<p>Note, however, that this model (the bivariate TSE) has been shown to
-be prone to empirical under-identification, often requiring upwards of 8
-waves of data and sample sizes larger than 500.</p>
+<p>Note, however, that the STARTS model has been shown to be prone to
+empirical under-identification, often requiring upwards of 8 waves of
+data and sample sizes larger than 500.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -183,12 +181,12 @@ waves of data and sample sizes larger than 500.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Jeroen Mulder.</p>
+<p>Developed by Jeroen Mulder, Netherlands Organization for Scientific Research.</p>
 </div>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>powRICLPM</p>
 </div>
 
     </footer>

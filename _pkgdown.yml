@@ -1,5 +1,7 @@
 destination: docs
 
+url: https://jeroendmulder.github.io/powRICLPM
+
 template:
   bootstrap: 5
   bslib:
@@ -18,26 +20,14 @@ authors:
   href: https://orcid.org/0000-0002-5553-0856
 
 development:
-  mode: auto
+  mode: release
 
 navbar:
-  type: default
-  left:
-  - text: Get started
-    href: articles/start.html
-  - text: Vignettes
-    menu:
-    - text: Get started
-      href: articles/start.html
-    - text: Extensions
-      href: articles/extensions.html
-    - text: Using Mplus
-      href: articles/mplus.html
-    - text: R code Mulder (2022)
-      href: articles/Mulder2022.html
-  - text: News
-    href: news/index.html
-  - text: Reference
-    href: reference/index.html
-  - text: FAQ
-    href: articles/FAQ.html
+  structure:
+    left:   [intro, reference, articles, news]
+    right:  [search, github]
+
+footer:
+  structure:
+    left:   developed_by
+    right:  package

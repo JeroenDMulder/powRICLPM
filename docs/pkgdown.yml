@@ -6,6 +6,9 @@ articles:
   FAQ: FAQ.html
   mplus: mplus.html
   Mulder2022: Mulder2022.html
-  start: start.html
-last_built: 2022-09-07T07:37Z
+  powRICLPM: powRICLPM.html
+last_built: 2022-11-23T12:55Z
+urls:
+  reference: https://jeroendmulder.github.io/powRICLPM/reference
+  article: https://jeroendmulder.github.io/powRICLPM/articles
 
