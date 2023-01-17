@@ -48,6 +48,9 @@ plot(out_preliminary, y = "bias", parameter = "wB2~wA1")
 # Visualize coverage rate for "wB2~wA1" across simulation conditions
 plot(out_preliminary, y = "coverage", parameter = "wB2~wA1")
 
+# Visualize MSE for autoregressive effect across simulation conditions
+plot(out_preliminary, y = "MSE", parameter = "wA2~wA1")
+
 # Error: No parameter specified
 try(plot(out_preliminary))
 }

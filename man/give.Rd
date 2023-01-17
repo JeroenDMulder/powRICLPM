@@ -38,4 +38,7 @@ give(out_preliminary, "estimation_problems")
 
 # Return data frame with performance measures for "wB2~wA1" per experimental condition
 give(out_preliminary, "results", parameter = "wB2~wA1")
+
+# Return character vector with parameter names
+give(out_preliminary, "names")
 }
