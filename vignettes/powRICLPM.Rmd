@@ -7,17 +7,17 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette details how you can set up and execute a basic power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the `powRICLPM` package. Throughout, an illustrating example will be used in which we wish to detect a small cross-lagged effect $\beta_{2}$ (defined here as the effect of $a_{1}^{*}$ to $b_{2}^{*}$, where $a_{1}^{*}$ and $b_{2}^{*}$ denote the latent within-unit components of $a_{1}$ and $b_{2}$, respectively) of 0.2 (standardized). For the design of our power analysis we follow the steps in the strategy as described in Mulder (2022). The basic power analysis described here can be extended with various options, as described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
+This vignette details how you can set up and execute a basic power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the `powRICLPM` package. Throughout, an illustrating example will be used in which we wish to detect a small cross-lagged effect $\beta_{2}$ (defined here as the effect of $a_{1}^{*}$ to $b_{2}^{*}$, where $a_{1}^{*}$ and $b_{2}^{*}$ denote the latent within-unit components of $a_{1}$ and $b_{2}$, respectively) of 0.2 (standardized). For the design of our power analysis we follow the steps in the strategy as described in [Mulder (2022)](https://doi.org/10.1080/10705511.2022.2122467). Various extensions are available for this basic power analysis, and are described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
 
 ## Step 1: Determine experimental conditions
 Before performing the power analysis, you must first determine the *experimental conditions* of interest. Experimental conditions (or: simulation conditions) are defined by characteristics of the study design that can impact statistical power. This includes, among others, characteristics like the *sample size* and the *number of repeated measures*. Decide on the number of repeated measures that will be used in the simulations, as well as the range of sample sizes over which you want to simulate the power. 
 
-For this example, we take a sample size range from 100 to 1000 first, increasing with steps of 100. Let the numbers of repeated measures range from 3 to 5. If these experimental conditions do not lead to the desired amount of power for detecting the small cross-lagged effect, the ranges can be extended. 
+For this example, we take a sample size range from 100 to 1000 first, increasing with steps of 100. Let the numbers of repeated measures range from 3 to 5. If these experimental conditions do not lead to the desired amount of power for detecting the small cross-lagged effect, the ranges can be extended later. 
 
 ## Step 2: Choose population parameter values
 Next, determine population parameter values for generating data from the RI-CLPM. This requires the specification of:
 
-- `Phi`: Standardized autoregressive and cross-lagged effects for the within-unit components of the model. These values are collected in a matrix with columns representing predictors and rows representing outcomes.
+- `Phi`: Standardized autoregressive and cross-lagged effects for the within-unit components of the model. These values are collected in a matrix, *with columns representing predictors and rows representing outcomes*.
 - `within_cor`: A correlation for the within-unit components.
 - `ICC`: The proportion of variance at the between-unit level (relative to the total variance).
 - `RI_cor`: The correlation between the random intercepts.
@@ -31,6 +31,8 @@ within_cor <- 0.3
 ICC <- 0.5
 RI_cor <- 0.3
 ```
+
+If you are unsure if you have specified the `Phi` matrix as intended, you can use the `check_Phi()` function to give you a summary of how the effects in your `Phi` are interpreted. 
 
 ## Steps 3-5: Perform the power analysis
 Steps 3 to 5 are automated by the `powRICLPM()` function. As input, you must provide:

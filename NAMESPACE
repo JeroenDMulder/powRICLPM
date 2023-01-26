@@ -3,6 +3,7 @@
 S3method(plot,powRICLPM)
 S3method(print,powRICLPM)
 S3method(summary,powRICLPM)
+export(check_Phi)
 export(give)
 export(powRICLPM)
 export(powRICLPM_Mplus)

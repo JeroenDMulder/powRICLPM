@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,20 +38,19 @@
 <li class="nav-item">
   <a class="nav-link" href="../articles/powRICLPM.html">Get started</a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
-    <a class="dropdown-item" href="../articles/FAQ.html">FAQ</a>
     <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
-    <a class="dropdown-item" href="../articles/Mulder2022.html">Online supplementary materials - R code Mulder (2022)</a>
+    <a class="dropdown-item" href="../Mulder2022.html">Online supplementary materials Mulder (2022)</a>
   </div>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
+  <a class="nav-link" href="../news/index.html">News</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/FAQ.html">FAQ</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -60,8 +59,8 @@
 
       <ul class="navbar-nav">
 <li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/JeroenDMulder/powRICLPM/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a class="external-link nav-link" href="https://github.com/jeroendmulder/powRICLPM">
+    <span class="fa fa-brands fa-github"></span>
      
   </a>
 </li>
@@ -100,8 +99,9 @@ syntax for multiple experimental conditions simultaneously (although you
 would then still need run each script separately in Mplus itself). The
 function works similarly to <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> in that it
 implements the procedure for computing population parameter values as
-proposed by Mulder and Hamaker (under review). As such, let’s use the
-same illustrating example as explained in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
+proposed by <a href="https://doi.org/10.1080/10705511.2022.2122467" class="external-link">Mulder (2022)</a>.
+As such, let’s use the same illustrating example as explained in the
+Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Get
 started</a>.</p>
 <div class="section level2">
 <h2 id="steps-1-and-2-experimental-conditions-and-population-parameter-values">Steps 1 and 2: Experimental conditions and population parameter
@@ -112,10 +112,11 @@ standardized cross-lagged effect of <span class="math inline">\(0.2\)</span> for
 (with incremental steps of 50) for an RI-CLPM with 3, 4 and 5 repeated
 measures. In total, this results in <span class="math inline">\(19
 \times 3 = 57\)</span> experimental conditions. Moreover, following the
-example in the <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
+example in the <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Get
 started</a> Vignette, our population parameter values are:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Phi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="co"># The .2 refers to our standardized cross-lagged effect of interest</span></span>
+<code class="sourceCode R"><span><span class="va">Phi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> </span>
+<span><span class="co"># The .2 refers to our standardized cross-lagged effect of interest</span></span>
 <span><span class="va">ICC</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
 <span><span class="va">RI_cor</span> <span class="op">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div>
 </div>
@@ -152,6 +153,9 @@ the Mplus input file to.</li>
 <span>                reps <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>                seed <span class="op">=</span> <span class="fl">123456</span>,</span>
 <span>                save_path <span class="op">=</span> <span class="st">"./saved"</span><span class="op">)</span></span></code></pre></div>
+<p>Optionally, you can specify the <code>constraints</code> argument to
+extend the basic power analysis setup. This option is further described
+in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
 <p>The <code><a href="../reference/powRICLPM_Mplus.html">powRICLPM_Mplus()</a></code> creates an Mplus input file (or
 multiple files when multiple experimental conditions are specified) and
 writes it to the specified directory. The file contains the Mplus model
@@ -162,9 +166,9 @@ information about Monte Carlo simulations in Mplus can be found at <a href="http
 <h2 id="step-6-summarize-results">Step 6: Summarize results<a class="anchor" aria-label="anchor" href="#step-6-summarize-results"></a>
 </h2>
 <p>To get output, run each Mplus model syntax file in Mplus. Each time,
-a .out (a text file) is created summarizing the results of the Mplus
-power analysis. A good source for interpreting this output in the
-context of a MONTECARLO study is <a href="https://doi.org/10.1207/S15328007SEM0904_8" class="external-link">Muthén and Muthén
+an output file is created summarizing the results of the Mplus power
+analysis. A good source for interpreting this output in the context of a
+MONTECARLO study is <a href="https://doi.org/10.1207/S15328007SEM0904_8" class="external-link">Muthén and Muthén
 (2002)</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

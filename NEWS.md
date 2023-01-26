@@ -1,12 +1,20 @@
 # powRICLPM (development version)
 
-This file tracks changes to the package.
+## Minor improvements
+
+* Now includes the `check_Phi()` function, which users can use to check if they have specified their `Phi` matrix of lagged-effects as intended. 
+* `plot()` now allows other performance measures, such as bias, MSE, coverage, to be plotted through its `y` argument.
+
+## Bug fixes
+
+* Mistakes in the model syntax of the estimation model when imposing stationarity constraints (using `constraints = "stationarity"`) have now been corrected. 
+
 
 # powRICLPM 0.1.0
 
 ## New features 
 
-* `powRICLPM` can now save the generated data sets by specifying a path with the `save_dat = ""` argument
+* `powRICLPM` can now save the generated data sets by specifying a path with the `save_dat` argument
 
 ## Minor improvements and fixes
 

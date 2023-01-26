@@ -55,14 +55,14 @@ test_that("check_within_cor() works", {
 })
 
 # Test check_Phi() ----
-test_that("check_Phi() works", {
+test_that("check_Phi_intern() works", {
   # Create sample matrices
   m1 <- matrix(c(.3, .2, .15, .2), ncol = 2, byrow = TRUE)
   m2 <- matrix(c(.8, .5, .4, .9), ncol = 2, byrow = TRUE)
 
-  expect_equal(check_Phi(m1), m1)
-  expect_error(check_Phi("m1"))
-  expect_error(check_Phi(m2))
+  expect_equal(check_Phi_intern(m1), m1)
+  expect_error(check_Phi_intern("m1"))
+  expect_error(check_Phi_intern(m2))
 })
 
 # Test check_skewness() and check_kurtosis() ----

@@ -10,6 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![CRAN
 status](https://www.r-pkg.org/badges/version/powRICLPM)](https://CRAN.R-project.org/package=powRICLPM)
 [![R-CMD-check](https://github.com/JeroenDMulder/powRICLPM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JeroenDMulder/powRICLPM/actions/workflows/R-CMD-check.yaml)
+<a href="https://www.r-pkg.org/pkg/powerly"><img src="https://cranlogs.r-pkg.org/badges/grand-total/powerly" alt="CRAN RStudio mirror downloads"/></a>
 <!-- badges: end -->
 
 `powRICLPM` is an `R` package that performs a power analysis for the
@@ -42,8 +43,8 @@ functionalities include:
 
 There are four sources of documentation for `powRICLPM`:
 
--   The rationale for the power analysis strategy implemented here can
-    be found in [Mulder
+-   The rationale for the power analysis strategy underlying this
+    package can be found in [Mulder
     (2022)](https://doi.org/10.1080/10705511.2022.2122467).
 -   Every user-facing function in the package is documented, and the
     documentation can be accessed by running `?function_name` in the R
@@ -52,8 +53,10 @@ There are four sources of documentation for `powRICLPM`:
 -   There are four main vignettes accessible via the ‘Vignettes’ tab,
     describing functionalities and analysis options of this package more
     generally. The ‘Example’ vignette serves as the online supplementary
-    material to Mulder (2022), and contains the R code for an
-    illustrative example using the `powRICLPM` package.
+    material to [Mulder
+    (2022)](https://doi.org/10.1080/10705511.2022.2122467), and contains
+    the R code for an illustrative example using the `powRICLPM`
+    package.
 -   The
     [FAQ](https://jeroendmulder.github.io/powRICLPM/articles/FAQ.html)
     contains answers to frequently asked question that reach me via

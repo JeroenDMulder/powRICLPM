@@ -221,7 +221,7 @@ check_within_cor <- function(x) {
 #' @param x A square matrix.
 #'
 #' @noRd
-check_Phi <- function(x) {
+check_Phi_intern <- function(x) {
   if (!is.matrix(x)) {
     stop(rlang::format_error_bullets(c(
       "`Phi` must be a matrix:",

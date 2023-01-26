@@ -23,9 +23,24 @@ development:
   mode: release
 
 navbar:
-  structure:
-    left:   [intro, reference, articles, news]
-    right:  [search, github]
+  left:
+    - text: "Get started"
+      href: articles/powRICLPM.html
+    - text: "Articles"
+      menu:
+        - text: "Extensions"
+          href: articles/extensions.html
+        - text: "Using Mplus"
+          href: articles/mplus.html
+        - text: "Online supplementary materials Mulder (2022)"
+          href: Mulder2022.html
+    - text: "News"
+      href: news/index.html
+    - text: "FAQ"
+      href: articles/FAQ.html
+  right:
+    - icon: fa-brands fa-github
+      href: https://github.com/jeroendmulder/powRICLPM
 
 footer:
   structure:

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,27 +21,26 @@
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../articles/powRICLPM.html">Get started</a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
-    <a class="dropdown-item" href="../articles/FAQ.html">FAQ</a>
     <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
-    <a class="dropdown-item" href="../articles/Mulder2022.html">Online supplementary materials - R code Mulder (2022)</a>
+    <a class="dropdown-item" href="../Mulder2022.html">Online supplementary materials Mulder (2022)</a>
   </div>
 </li>
 <li class="active nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
+  <a class="nav-link" href="../news/index.html">News</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/FAQ.html">FAQ</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
       <ul class="navbar-nav"><li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/JeroenDMulder/powRICLPM/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a class="external-link nav-link" href="https://github.com/jeroendmulder/powRICLPM">
+    <span class="fa fa-brands fa-github"></span>
      
   </a>
 </li>
@@ -58,14 +57,23 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="powriclpm-development-version">powRICLPM (development version)<a class="anchor" aria-label="anchor" href="#powriclpm-development-version"></a></h2>
-<p>This file tracks changes to the package.</p>
+<div class="section level3">
+<h3 id="minor-improvements-development-version">Minor improvements<a class="anchor" aria-label="anchor" href="#minor-improvements-development-version"></a></h3>
+<ul><li>Now includes the <code><a href="../reference/check_Phi.html">check_Phi()</a></code> function, which users can use to check if they have specified their <code>Phi</code> matrix of lagged-effects as intended.</li>
+<li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> now allows other performance measures, such as bias, MSE, coverage, to be plotted through its <code>y</code> argument.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Mistakes in the model syntax of the estimation model when imposing stationarity constraints (using <code>constraints = "stationarity"</code>) have now been corrected.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="powriclpm-010">powRICLPM 0.1.0<a class="anchor" aria-label="anchor" href="#powriclpm-010"></a></h2><p class="text-muted">CRAN release: 2022-10-07</p>
 <div class="section level3">
 <h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
 <ul><li>
-<code>powRICLPM</code> can now save the generated data sets by specifying a path with the <code>save_dat = ""</code> argument</li>
+<code>powRICLPM</code> can now save the generated data sets by specifying a path with the <code>save_dat</code> argument</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-improvements-and-fixes-0-1-0">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-0-1-0"></a></h3>

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,20 +38,19 @@
 <li class="active nav-item">
   <a class="nav-link" href="../articles/powRICLPM.html">Get started</a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/extensions.html">Extensions</a>
-    <a class="dropdown-item" href="../articles/FAQ.html">FAQ</a>
     <a class="dropdown-item" href="../articles/mplus.html">Using Mplus</a>
-    <a class="dropdown-item" href="../articles/Mulder2022.html">Online supplementary materials - R code Mulder (2022)</a>
+    <a class="dropdown-item" href="../Mulder2022.html">Online supplementary materials Mulder (2022)</a>
   </div>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
+  <a class="nav-link" href="../news/index.html">News</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/FAQ.html">FAQ</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -60,8 +59,8 @@
 
       <ul class="navbar-nav">
 <li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/JeroenDMulder/powRICLPM/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a class="external-link nav-link" href="https://github.com/jeroendmulder/powRICLPM">
+    <span class="fa fa-brands fa-github"></span>
      
   </a>
 </li>
@@ -94,9 +93,9 @@ cross-lagged effect <span class="math inline">\(\beta_{2}\)</span>
 (defined here as the effect of <span class="math inline">\(a_{1}^{*}\)</span> to <span class="math inline">\(b_{2}^{*}\)</span>, where <span class="math inline">\(a_{1}^{*}\)</span> and <span class="math inline">\(b_{2}^{*}\)</span> denote the latent within-unit
 components of <span class="math inline">\(a_{1}\)</span> and <span class="math inline">\(b_{2}\)</span>, respectively) of 0.2
 (standardized). For the design of our power analysis we follow the steps
-in the strategy as described in Mulder (2022). The basic power analysis
-described here can be extended with various options, as described in the
-Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
+in the strategy as described in <a href="https://doi.org/10.1080/10705511.2022.2122467" class="external-link">Mulder (2022)</a>.
+Various extensions are available for this basic power analysis, and are
+described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
 <div class="section level2">
 <h2 id="step-1-determine-experimental-conditions">Step 1: Determine experimental conditions<a class="anchor" aria-label="anchor" href="#step-1-determine-experimental-conditions"></a>
 </h2>
@@ -112,7 +111,7 @@ over which you want to simulate the power.</p>
 increasing with steps of 100. Let the numbers of repeated measures range
 from 3 to 5. If these experimental conditions do not lead to the desired
 amount of power for detecting the small cross-lagged effect, the ranges
-can be extended.</p>
+can be extended later.</p>
 </div>
 <div class="section level2">
 <h2 id="step-2-choose-population-parameter-values">Step 2: Choose population parameter values<a class="anchor" aria-label="anchor" href="#step-2-choose-population-parameter-values"></a>
@@ -123,8 +122,8 @@ the RI-CLPM. This requires the specification of:</p>
 <li>
 <code>Phi</code>: Standardized autoregressive and cross-lagged
 effects for the within-unit components of the model. These values are
-collected in a matrix with columns representing predictors and rows
-representing outcomes.</li>
+collected in a matrix, <em>with columns representing predictors and rows
+representing outcomes</em>.</li>
 <li>
 <code>within_cor</code>: A correlation for the within-unit
 components.</li>
@@ -142,6 +141,10 @@ intercepts.</li>
 <span><span class="va">within_cor</span> <span class="op">&lt;-</span> <span class="fl">0.3</span></span>
 <span><span class="va">ICC</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
 <span><span class="va">RI_cor</span> <span class="op">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div>
+<p>If you are unsure if you have specified the <code>Phi</code> matrix
+as intended, you can use the <code><a href="../reference/check_Phi.html">check_Phi()</a></code> function to give
+you a summary of how the effects in your <code>Phi</code> are
+interpreted.</p>
 </div>
 <div class="section level2">
 <h2 id="steps-3-5-perform-the-power-analysis">Steps 3-5: Perform the power analysis<a class="anchor" aria-label="anchor" href="#steps-3-5-perform-the-power-analysis"></a>
