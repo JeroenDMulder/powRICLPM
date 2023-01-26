@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![CRAN
 status](https://www.r-pkg.org/badges/version/powRICLPM)](https://CRAN.R-project.org/package=powRICLPM)
 [![R-CMD-check](https://github.com/JeroenDMulder/powRICLPM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JeroenDMulder/powRICLPM/actions/workflows/R-CMD-check.yaml)
-<a href="https://www.r-pkg.org/pkg/powerly"><img src="https://cranlogs.r-pkg.org/badges/grand-total/powerly" alt="CRAN RStudio mirror downloads"/></a>
+<a href="https://www.r-pkg.org/pkg/powRICLPM"><img src="https://cranlogs.r-pkg.org/badges/grand-total/powRICLPM" alt="CRAN RStudio mirror downloads"/></a>
 <!-- badges: end -->
 
 `powRICLPM` is an `R` package that performs a power analysis for the
