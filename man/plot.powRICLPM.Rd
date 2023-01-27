@@ -37,7 +37,7 @@ Visualizes (using \pkg{ggplot2}) the results from a \code{powRICLPM} analysis, f
 }
 \examples{
 \dontshow{
-load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+load(system.file("extdata", "out_preliminary.RData", package = "powRICLPM"))
 }
 # Visualize power for "wB2~wA1" across simulation conditions
 plot(out_preliminary, parameter = "wB2~wA1")

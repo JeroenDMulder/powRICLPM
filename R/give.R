@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' \dontshow{
-#' load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+#' load(system.file("extdata", "out_preliminary.RData", package = "powRICLPM"))
 #' }
 #' # Return data frame with number of estimation problems per experimental condition
 #' give(out_preliminary, "estimation_problems")

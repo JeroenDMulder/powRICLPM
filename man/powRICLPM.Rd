@@ -127,10 +127,10 @@ with_progress({
   out_preliminary <- powRICLPM(
     target_power = 0.8,
     search_lower = 500,
-    search_upper = 1000,
+    search_upper = 800,
     search_step = 100,
     time_points = c(3, 4),
-    ICC = c(0.4, 0.5, 0.6),
+    ICC = c(0.4, 0.6),
     RI_cor = 0.3,
     Phi = Phi,
     within_cor = 0.3,

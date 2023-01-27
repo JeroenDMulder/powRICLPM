@@ -22,7 +22,7 @@
 #'
 #' @examples
 #' \dontshow{
-#' load(system.file("extdata", "out_preliminary.Rds", package = "powRICLPM"))
+#' load(system.file("extdata", "out_preliminary.RData", package = "powRICLPM"))
 #' }
 #'
 #' # Get setup of powRICLPM analysis and convergence issues
@@ -32,7 +32,7 @@
 #' summary(out_preliminary, parameter = "wB2~wA1")
 #'
 #' # Performance measures for all parameters, for specific experimental condition
-#' summary(out_preliminary, sample_size = 600, time_points = 4, ICC = .5)
+#' summary(out_preliminary, sample_size = 600, time_points = 4, ICC = .4)
 #'
 #' @method summary powRICLPM
 #' @export
