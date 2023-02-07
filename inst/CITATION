@@ -1,9 +1,9 @@
 citHeader("To cite powRICLPM in publications use:")
 
-citEntry(
-  entry    = "Article",
+bibentry(
+  bibtype  = "Article",
   title    = "Power analysis for the random intercept cross-lagged panel model using the powRICLPM R-package",
-  author   = personList(as.person("Jeroen D. Mulder")),
+  author   = person("Jeroen D. Mulder"),
   journal  = "Structural Equation Modeling: A Multidisciplinary Journal",
   year     = "2022",
   url      = "https://doi.org/10.1080/10705511.2022.2122467",
