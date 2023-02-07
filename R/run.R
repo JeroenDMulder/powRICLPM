@@ -40,7 +40,7 @@
 #' @importFrom lavaan simulateData lavInspect parameterEstimates lavaan
 #' @noRd
 run_condition <- function(condition,
-                          progress,
+                          p,
                           bounds,
                           estimator,
                           reps,
@@ -59,12 +59,14 @@ run_condition <- function(condition,
 
   # Memory allocation
   coefs <- SEs <- cvr_r <- acc_r <- matrix(NA, nrow = n_pars, ncol = reps)
-  sigs <- cover <- matrix(FALSE, nrow = n_pars, ncol = reps)
+  sigs <- matrix(FALSE, nrow = n_pars, ncol = reps)
   errors <- not_converged <- inadmissible <- rep(FALSE, times = reps)
 
   # Create folder for saving simulated data to
   if (!is.null(save_path)) {
-    save_path_aux <- file.path(save_path, paste0("data_N", condition$sample_size, "_T", condition$time_points, "_RIvar", condition$RI_var))
+    save_path_aux <- file.path(save_path,
+      paste0("data_N", condition$sample_size, "_T", condition$time_points, "_RIvar", condition$RI_var)
+    )
     dir.create(save_path_aux)
   }
 
@@ -168,8 +170,8 @@ run_condition <- function(condition,
   # Quantify uncertainty around Pow using bootstrapping
   power_uncertainty <- t(
     apply(sigs, 1, quantify_uncertainty,
-      bootstrap_reps = bootstrap_reps,
-      converged_reps = converged_reps
+          bootstrap_reps = bootstrap_reps,
+          converged_reps = converged_reps
     )
   )
 
@@ -187,13 +189,14 @@ run_condition <- function(condition,
   condition$uncertainty <- data.frame(
     parameter = par,
     power2.5 = power_uncertainty[, "2.5%"],
-    power97.5 = power_uncertainty[, "97.5%"])
+    power97.5 = power_uncertainty[, "97.5%"]
+  )
   condition$errors <- errors
   condition$not_converged <- not_converged
   condition$inadmissible <- inadmissible
 
   # Signal progress bar
-  progress()
+  p()
 
   return(condition)
 }

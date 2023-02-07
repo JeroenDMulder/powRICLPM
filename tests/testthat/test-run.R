@@ -36,7 +36,7 @@ test_that("run() works", {
     # Run run_condition()
     out1 <- run_condition(
       condition = setup1$conditions[[1]],
-      progress = p,
+      p = p,
       bounds = FALSE,
       estimator = "ML",
       reps = 10,
@@ -100,7 +100,7 @@ test_that("run() works for bivariate STARTS model", {
     # Run run_condition()
     out2 <- run_condition(
       condition = setup2$conditions[[1]],
-      progress = p,
+      p = p,
       bounds = FALSE,
       estimator = "ML",
       reps = 10,

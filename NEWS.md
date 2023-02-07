@@ -1,4 +1,4 @@
-# powRICLPM (development version)
+# powRICLPM 0.1.1
 
 ## Minor improvements
 
@@ -8,7 +8,6 @@
 ## Bug fixes
 
 * Mistakes in the model syntax of the estimation model when imposing stationarity constraints (using `constraints = "stationarity"`) have now been corrected. 
-
 
 # powRICLPM 0.1.0
 

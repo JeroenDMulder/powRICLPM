@@ -1,7 +1,7 @@
 Package: powRICLPM
 Title: Perform Power Analysis for the Random Intercept Cross-Lagged Panel
     Model
-Version: 0.1.0.9001
+Version: 0.1.1
 Date: 2023-01-26
 Authors@R: c(
     person("Jeroen", "Mulder", , "j.d.mulder@uu.nl", role = c("aut", "cre"),

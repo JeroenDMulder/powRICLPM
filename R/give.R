@@ -150,7 +150,7 @@ give_uncertainty <- function(object, parameter) {
       sample_size = condition$sample_size,
       time_points = condition$time_points,
       ICC = condition$ICC,
-      condition$uncertainty[which(condition$uncertainty$parameter == parameter), -1]
+      condition$uncertainty[which(condition$estimates$parameter == parameter), ]
     )
   })
   return(d)

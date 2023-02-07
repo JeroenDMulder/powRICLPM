@@ -59,7 +59,7 @@
 #' A progress bar displaying the status of the power analysis has been implemented using \pkg{progressr}. By default, a simple progress bar will be shown. For more information on how to control this progress bar and several other notification options (e.g., auditory notifications), see \url{https://progressr.futureverse.org}.}
 #'
 #' @return
-#' A \code{list} containing a \code{conditions} and \code{session} element. \code{condition} itself is a \code{list} of experimental conditions, where each element is again a \code{list} containing the input and output of the power analysis for that particular experimental condition. \code{session} is a \code{list} containing information common to all experimental conditions.
+#' An object of class `powRICLPM` \code{list} containing a \code{conditions} and \code{session} element. \code{condition} itself is a \code{list} of experimental conditions, where each element is again a \code{list} containing the input and output of the power analysis for that particular experimental condition. \code{session} is a \code{list} containing information common to all experimental conditions.
 #'
 #' @author Jeroen D. Mulder \email{j.d.mulder@@uu.nl}
 #'
@@ -88,7 +88,7 @@
 #' future::plan(multisession)
 #'
 #' \donttest{
-#' # Run analysis ("reps" is small, because this is an example)
+#' # Run analysis (`reps` is small, because this is an example)
 #' with_progress({
 #'   out_preliminary <- powRICLPM(
 #'     target_power = 0.8,
@@ -206,12 +206,12 @@ powRICLPM <- function(target_power,
   )))
 
   # Prepare progress bar
-  p <- progressr::progressor(along = object$conditions)
+  p <- progressr::progressor(steps = length(object$conditions))
 
   # Run Monte Carlo simulation for each condition
   object$conditions <- furrr::future_map(object$conditions,
     run_condition,
-    progress = p,
+    p = p,
     bounds = bounds,
     estimator = estimator,
     reps = reps,

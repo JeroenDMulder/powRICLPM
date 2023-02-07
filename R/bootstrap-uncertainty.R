@@ -1,8 +1,8 @@
-#' Quantify uncertainty using bootstrapping
+#' Quantify uncertainty power estimate using bootstrapping
 #'
-#' @param measure A numeric vector of estimates.
-#' @param bootstrap_reps A numeric, denoting the number of bootstrap samples to draw.
-#' @param converged_reps A numberic, denoting the number of valid estimates.
+#' @param measure A `numeric` vector of estimates.
+#' @param bootstrap_reps A `numeric`, denoting the number of bootstrap samples to draw.
+#' @param converged_reps A `numeric`, denoting the number of valid estimates.
 #'
 #' @noRd
 quantify_uncertainty <- function(measure, bootstrap_reps = 1000, converged_reps) {
