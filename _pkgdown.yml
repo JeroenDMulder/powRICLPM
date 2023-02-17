@@ -33,7 +33,7 @@ navbar:
         - text: "Using Mplus"
           href: articles/mplus.html
         - text: "Online supplementary materials Mulder (2022)"
-          href: Mulder2022.html
+          href: articles/Mulder2022.html
     - text: "News"
       href: news/index.html
     - text: "FAQ"
