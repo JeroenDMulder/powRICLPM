@@ -2,7 +2,7 @@
 % Please edit documentation in R/user-help.R
 \name{check_Phi}
 \alias{check_Phi}
-\title{Check interpretation `Phi` argument}
+\title{Check Interpretation \code{Phi} Argument}
 \usage{
 check_Phi(Phi)
 }
@@ -13,7 +13,7 @@ check_Phi(Phi)
 No return value, called for side effects.
 }
 \description{
-Write a textual interpretation of the values in `Phi`. This can be used to check if `Phi` has been correctly specified.
+Write a textual interpretation of the values in \code{Phi}. This can be used to check if \code{Phi} has been correctly specified.
 }
 \examples{
 # Correctly specified `Phi`

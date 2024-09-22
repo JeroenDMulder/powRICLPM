@@ -1,4 +1,4 @@
-#' Check interpretation `Phi` argument
+#' Check Interpretation `Phi` Argument
 #'
 #' Write a textual interpretation of the values in `Phi`. This can be used to check if `Phi` has been correctly specified.
 #'

@@ -1,0 +1,25 @@
+---
+title: "Measurement Error"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{impact-measurement-error}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(powRICLPM)
+```
+
+
+
+
+# Impact of Unmodeled Measurement Error 
+

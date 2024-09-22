@@ -1,66 +1,43 @@
 #' @title
-#' Create Mplus model syntax for RICLPM power analysis
+#' Create Mplus Syntax for RI-CLPM Power Analysis
 #'
 #' @description
 #' \code{create_Mplus()} creates Mplus model syntax for a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM).
 #'
-#' @param input A list with elements representing input for the Monte Carlo power analysis. See "Details" for the required elements in \code{input}.
-#'
-#' @details
-#' \subsection{\code{Input}}{The \code{input} argument must contain the following elements:
-#' \itemize{
-#'   \item \code{sample_size}: The sample size.
-#'   \item \code{time_points}: The number of time points.
-#'   \item \code{ICC}: The proportion of between-unit variance.
-#'   \item \code{RI_var}: The random intercept variance.
-#'   \item \code{RI_cov}: The covariance between the random intercepts.
-#'   \item \code{Phi}: A matrix of standardized autoregressive and cross-lagged effects.
-#'   \item \code{wSigma}: A correlation matrix for the within-components.
-#'   \item \code{Psi}: Residual variance-covariance matrix for the within-components.
-#'   \item \code{reps}: Number of replications.
-#'   \item \code{seed}: An integer of length 1.
-#'   \item \code{save_path}: The directory (data) to save Mplus model syntax to.
-#'   \item \code{constraints}: The constraints imposed on the estimation model.}}
+#' @param condition A list, containing values for factors that define an experimental condition (i.e., sample size, number of time points, ICC, and reliability), as well as population values for parameters that depend on these (e.g., the random intercept variances, and covariance between them is a function of `ICC`).
 #'
 #' \subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
 #'
-#' @return NULL
+#' @return The `condition` list, extended with a Mplus syntax for Monte Carlo power analysis.
 #'
 #' @noRd
-create_Mplus <- function(input) {
-
-  # Number of variables
-  input$k <- 2
+create_Mplus <- function(condition, reps, seed) {
 
   # Generate default variable names
-  name_var <- LETTERS[1:input$k]
+  name_var <- LETTERS[1:2]
 
   # Create matrix of names for observed variable, within, and between components
-  input$name_obs <- suppressMessages(
-    purrr::map_dfc(name_var, paste0, 1:input$time_points)
-  )
-  input$name_within <- suppressMessages(
-    purrr::map_dfc(name_var, function(x) {
-      paste0("w", x, 1:input$time_points)
-    })
-  )
-  input$name_RI <- paste0("RI_", name_var)
+  name_obs <- sapply(name_var, paste0, 1:condition[["time_points"]])
+  name_within <- sapply(name_var, function(x) {
+    paste0("w", x, 1:condition[["time_points"]])
+  })
+  name_RI <- paste0("RI_", name_var)
 
   # Create TITLE:, ANALYSIS:, MONTECARLO:
-  PREAMBLE <- Mplus_pre(input)
+  PREAMBLE <- Mplus_pre(condition, name_obs, reps = reps, seed = seed)
 
   # Create MODEL POPULATION:
   Mplus_population <- rbind(
-    Mplus_RI(input),
-    Mplus_RI_var(input),
-    Mplus_RI_cov(input),
-    Mplus_within(input),
-    Mplus_lagged(input),
-    Mplus_within_var1(input),
-    Mplus_within_cov1(input),
-    Mplus_within_var2(input),
-    Mplus_within_cov2(input),
-    Mplus_ME(input),
+    Mplus_RI(condition, name_obs, name_RI),
+    Mplus_RI_var(condition, estimation = FALSE, name_RI),
+    Mplus_RI_cov(condition, estimation = FALSE, name_RI),
+    Mplus_within(condition, name_obs, name_within),
+    Mplus_lagged(condition, estimation = FALSE, name_within),
+    Mplus_within_var1(condition, estimation = FALSE, name_within),
+    Mplus_within_cov1(condition, estimation = FALSE, name_within),
+    Mplus_within_var2(condition, estimation = FALSE, name_within),
+    Mplus_within_cov2(condition, estimation = FALSE, name_within),
+    Mplus_pop_ME(condition, name_obs),
     stringsAsFactors = F
   )
 
@@ -81,16 +58,16 @@ create_Mplus <- function(input) {
 
   # Create MODEL:
   Mplus_estimation <- rbind(
-    Mplus_RI(input),
-    Mplus_RI_var(input, estimation = TRUE),
-    Mplus_RI_cov(input, estimation = TRUE),
-    Mplus_within(input),
-    Mplus_lagged(input, estimation = TRUE),
-    Mplus_within_var1(input, estimation = TRUE),
-    Mplus_within_cov1(input, estimation = TRUE),
-    Mplus_within_var2(input, estimation = TRUE),
-    Mplus_within_cov2(input, estimation = TRUE),
-    Mplus_ME(input),
+    Mplus_RI(condition, name_obs, name_RI),
+    Mplus_RI_var(condition, estimation = TRUE, name_RI),
+    Mplus_RI_cov(condition, estimation = TRUE, name_RI),
+    Mplus_within(condition, name_obs, name_within),
+    Mplus_lagged(condition, estimation = TRUE, name_within),
+    Mplus_within_var1(condition, estimation = TRUE, name_within),
+    Mplus_within_cov1(condition, estimation = TRUE, name_within),
+    Mplus_within_var2(condition, estimation = TRUE, name_within),
+    Mplus_within_cov2(condition, estimation = TRUE, name_within),
+    Mplus_estimate_ME(condition, name_obs = name_obs),
     stringsAsFactors = FALSE
   )
 
@@ -115,12 +92,12 @@ create_Mplus <- function(input) {
   # Delete rownames
   row.names(Mplus_population) <- row.names(Mplus_estimation) <- NULL
 
-  if (input$constraints == "stationarity") {
+  if (condition$constraints == "stationarity") {
     # Create MODEL CONSTRAINT:
     Mplus_constraint <- rbind(
-      Mplus_new(input),
-      Mplus_within_cor(input),
-      Mplus_stationarity(input),
+      Mplus_new(condition),
+      Mplus_within_cor(condition),
+      Mplus_stationarity(condition),
       stringsAsFactors = FALSE
     )
     # Add Mplus command end
@@ -158,36 +135,43 @@ create_Mplus <- function(input) {
     collapse = "\n"
   )
 
-  # Save Mplus model syntax
-  cat(Mplus_syntax,
-    file = file.path(
-      input$save_path,
-      paste0(
-        "Mplus_N", input$sample_size,
-        "_T", input$time_points,
-        "_ICC", input$ICC, ".txt"
-      )
-    )
+  # Create condition list with extra element space
+  list(
+    sample_size = condition[["sample_size"]],
+    time_points = condition[["time_points"]],
+    ICC = condition[["ICC"]],
+    reliability = condition[["reliability"]],
+    RI_var = condition[["RI_var"]],
+    RI_cov = condition[["RI_cov"]],
+    Mplus_synt = Mplus_syntax,
+    estimate_ME = condition[["estimate_ME"]],
+    skewness = condition[["skewness"]],
+    kurtosis = condition[["kurtosis"]],
+    significance_criterion = condition[["significance_criterion"]],
+    estimates = NA,
+    MCSEs = NA,
+    reps = NA,
+    condition_id = condition[["condition_id"]]
   )
-  invisible()
+
 }
 
-
-
-Mplus_pre <- function(input) {
+Mplus_pre <- function(condition, name_obs, reps, seed) {
   # Create TITLE command
   TITLE <- paste0(
-    "TITLE:\n  Power analysis RICLPM with N = ", input$sample_size,
-    ", T = ", input$time_points,
-    ", ICC = ", input$ICC, "\n\n"
+    "TITLE:\n  Power analysis RI-CLPM with N = ", condition$sample_size,
+    ", T = ", condition$time_points,
+    ", ICC = ", condition$ICC,
+    ", reliability = ", condition$reliability, "\n\n"
   )
 
   # Create MONTECARLO command
   MONTECARLO <- paste0(
-    "MONTECARLO:\n  NAMES = ", paste(unlist(input$name_obs), collapse = " "),
-    ";\n  NOBSERVATIONS = ", input$sample_size,
-    ";\n  NREPS = ", input$reps,
-    ";\n  SEED = ", input$seed, ";\n\n"
+    "MONTECARLO:\n  NAMES = ", paste(unlist(name_obs), collapse = " "),
+    ";\n  NOBSERVATIONS = ", condition$sample_size,
+    ";\n  NREPS = ", reps,
+    ";\n  SEED = ", seed,
+    ";\n\n"
   )
 
   # Create ANALYSIS command
@@ -196,41 +180,41 @@ Mplus_pre <- function(input) {
   return(paste0(TITLE, MONTECARLO, ANALYSIS))
 }
 
-Mplus_RI <- function(input) {
-  lhs <- rep(input$name_RI, each = input$time_points)
+Mplus_RI <- function(condition, name_obs, name_RI) {
+  lhs <- rep(name_RI, each = condition$time_points)
   op <- " BY "
   con <- "@1"
-  rhs <- c(unlist(input$name_obs))
+  rhs <- c(unlist(name_obs))
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_RI_var <- function(input, estimation = FALSE) {
-  lhs <- input$name_RI
-  op <- rhs <- rep("", times = input$k)
+Mplus_RI_var <- function(condition, estimation = FALSE, name_RI) {
+  lhs <- name_RI
+  op <- rhs <- rep("", times = 2)
   if (estimation) {
-    con <- rep(paste0("*", input$RI_var), times = input$k)
+    con <- rep(paste0("*", condition$RI_var), times = 2)
   } else {
-    con <- rep(paste0("@", input$RI_var), times = input$k)
+    con <- rep(paste0("@", condition$RI_var), times = 2)
   }
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_RI_cov <- function(input, estimation = FALSE) {
+Mplus_RI_cov <- function(condition, estimation = FALSE, name_RI) {
 
   # Create combinations of random intercept factors
-  combn_RI <- t(utils::combn(input$name_RI, 2))
+  combn_RI <- t(utils::combn(name_RI, 2))
 
   # Create syntax (parameter table) elements
   lhs <- combn_RI[, 1]
   op <- rep(" WITH ", times = nrow(combn_RI))
   if (estimation) {
-    con <- paste0("*", input$RI_cov)
+    con <- paste0("*", condition$RI_cov)
   } else {
-    con <- paste0("@", input$RI_cov)
+    con <- paste0("@", condition$RI_cov)
   }
   rhs <- combn_RI[, 2]
   return(cbind.data.frame(lhs, op, rhs, con,
@@ -238,112 +222,126 @@ Mplus_RI_cov <- function(input, estimation = FALSE) {
   ))
 }
 
-Mplus_within <- function(input) {
-  lhs <- c(unlist(input$name_within))
-  op <- rep(" BY ", times = length(input$name_within))
-  con <- rep("@1", times = length(input$name_within))
-  rhs <- c(unlist(input$name_obs))
+Mplus_within <- function(condition, name_obs, name_within) {
+  lhs <- c(unlist(name_within))
+  op <- rep(" BY ", times = length(name_within))
+  con <- rep("@1", times = length(name_within))
+  rhs <- c(unlist(name_obs))
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_lagged <- function(input, estimation = FALSE) {
+Mplus_lagged <- function(condition, estimation = FALSE, name_within) {
   # Create vector with outcomes
-  lhs <- rep(c(t(input$name_within))[-(1:input$k)], each = input$k)
+  lhs <- rep(c(t(name_within))[-(1:2)], each = 2)
   op <- " ON "
 
   if (estimation) { # Estimation
-    if (input$constraints == "none" ||
-      input$constraints == "residuals") { # Freely estimate
-      con <- paste0("*", rep(c(input$Phi), times = (input$time_points - 1)))
-    } else if (input$constraints == "lagged" ||
-      input$constraints == "within" ||
-      input$constraints == "stationarity") { # Constrain over time
+    if (
+      condition$constraints == "none" ||
+      condition$constraints == "residuals" ||
+      condition$constraints == "ME"
+    ) { # Freely estimate
+      con <- paste0("*", rep(unlist(condition$Phi), times = (condition$time_points - 1)))
+    } else if (condition$constraints == "lagged" ||
+      condition$constraints == "within" ||
+      condition$constraints == "stationarity") { # Constrain over time
       con <- c("(alpha)", "(beta)", "(delta)", "(gamma)")
     }
   } else {
-    con <- paste0("@", rep(c(input$Phi), times = (input$time_points - 1)))
+    con <- paste0("@", rep(unlist(condition$Phi), times = (condition$time_points - 1)))
   }
 
   # Create vector with predictors
-  rhs <- c(apply(input$name_within[-input$time_points, ], 1, rep, times = input$k))
+  rhs <- c(apply(name_within[-condition$time_points, ], 1, rep, times = 2))
 
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_within_var1 <- function(input, estimation = FALSE) {
-  lhs <- t(input$name_within[1, ])
+Mplus_within_var1 <- function(condition, estimation = FALSE, name_within) {
+  lhs <- name_within[1, ]
   op <- rhs <- ""
   if (estimation) { # Estimation
-    if (input$constraints == "stationarity") { # Label but freely estimate
+    if (condition$constraints == "stationarity") { # Label but freely estimate
       con <- c("(varA1)", "(varB1)")
-    } else if (input$constraints == "none" ||
-      input$constraints == "lagged" ||
-      input$constraints == "residuals" ||
-      input$constraints == "within") {
-      con <- rep("*1", times = input$k)
+    } else if (
+      condition$constraints == "none" ||
+      condition$constraints == "lagged" ||
+      condition$constraints == "residuals" ||
+      condition$constraints == "within" ||
+      condition$constraints == "ME"
+    ) {
+      con <- rep("*1", times = 2)
     }
   } else { # Data generation
-    con <- rep("@1", times = input$k)
+    con <- rep("@1", times = 2)
   }
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_within_cov1 <- function(input, estimation = F) {
-  lhs <- unlist(input$name_within[1, 1])
-  rhs <- unlist(input$name_within[1, 2])
-  op <- rep(" WITH ", times = 1)
+Mplus_within_cov1 <- function(condition, estimation = FALSE, name_within) {
+  lhs <- unlist(name_within[1, 1])
+  rhs <- unlist(name_within[1, 2])
+  op <- " WITH "
 
   if (estimation) {
-    if (input$constraints == "stationarity") { # Label but freely estimate
+    if (condition$constraints == "stationarity") { # Label but freely estimate
       con <- "(cor1)"
-    } else if (input$constraints == "none" ||
-      input$constraints == "lagged" ||
-      input$constraints == "residuals" ||
-      input$constraints == "within") { # Freely estimate
-      con <- paste0("*", c(input$wSigma[lower.tri(input$wSigma)]))
+    } else if (
+      condition$constraints == "none" ||
+      condition$constraints == "lagged" ||
+      condition$constraints == "residuals" ||
+      condition$constraints == "within" ||
+      condition$constraints == "ME"
+    ) { # Freely estimate
+      con <- paste0("*", condition$within_cor)
     }
   } else { # Data generation
-    con <- paste0("@", c(input$wSigma[lower.tri(input$wSigma)]))
+    con <- paste0("@", condition$within_cor)
   }
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_within_var2 <- function(input, estimation = FALSE) {
-  lhs <- c(unlist(input$name_within[-1, ]))
+Mplus_within_var2 <- function(condition, estimation = FALSE, name_within) {
+  lhs <- c(unlist(name_within[-1, ]))
   op <- rhs <- ""
 
   if (estimation) { # Estimation
-    if (input$constraints == "none" ||
-      input$constraints == "lagged") { # Freely estimate
-      con <- rep(paste0("*", diag(input$Psi)), each = input$time_points - 1)
-    } else if (input$constraints == "residuals" ||
-      input$constraints == "within") { # Constrain over time
-      con <- rep(paste0("(rvar", LETTERS[1:input$k], ")"), each = input$time_points - 1)
-    } else if (input$constraints == "stationarity") {
+    if (
+      condition$constraints == "none" ||
+      condition$constraints == "lagged" ||
+      condition$constraints == "ME"
+    ) { # Freely estimate
+      con <- rep(paste0("*", diag(condition$Psi[[1]])), each = condition$time_points - 1)
+    } else if (
+      condition$constraints == "residuals" ||
+      condition$constraints == "within"
+    ) { # Constrain over time
+      con <- rep(paste0("(rvar", LETTERS[1:2], ")"), each = condition$time_points - 1)
+    } else if (condition$constraints == "stationarity") {
       con <- c(
-        paste0("(rvarA", 2:input$time_points, ")"),
-        paste0("(rvarB", 2:input$time_points, ")")
+        paste0("(rvarA", 2:condition$time_points, ")"),
+        paste0("(rvarB", 2:condition$time_points, ")")
       )
     }
   } else { # Data generation
-    con <- rep(paste0("@", diag(input$Psi)), each = input$time_points - 1)
+    con <- rep(paste0("@", diag(condition$Psi[[1]])), each = condition$time_points - 1)
   }
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_within_cov2 <- function(input, estimation = FALSE) {
+Mplus_within_cov2 <- function(condition, estimation = FALSE, name_within) {
   # Create within-component combinations
-  combn_within <- t(apply(input$name_within[-1, ], 1, utils::combn, m = 2))
+  combn_within <- t(apply(name_within[-1, ], 1, utils::combn, m = 2))
 
   # Create syntax (parameter table) elements
   lhs <- combn_within[, 1]
@@ -351,18 +349,21 @@ Mplus_within_cov2 <- function(input, estimation = FALSE) {
   op <- rep(" WITH ", times = nrow(combn_within))
 
   # Select residual covariances
-  resCov <- c(input$Psi[lower.tri(input$Psi)])
+  resCov <- c(condition$Psi[[1]][lower.tri(condition$Psi[[1]])])
 
   # Estimation
   if (estimation) {
-    if (input$constraints == "none" ||
-      input$constraints == "lagged") { # Freely estimate
+    if (
+      condition$constraints == "none" ||
+      condition$constraints == "lagged" ||
+      condition$constraints == "ME"
+    ) { # Freely estimate
       con <- paste0("*", resCov)
-    } else if (input$constraints == "residuals" ||
-      input$constraints == "within") { # Constrain over time
+    } else if (condition$constraints == "residuals" ||
+      condition$constraints == "within") { # Constrain over time
       con <- "(rcov)"
-    } else if (input$constraints == "stationarity") {
-      con <- paste0("(rcov", 2:input$time_points, ")")
+    } else if (condition$constraints == "stationarity") {
+      con <- paste0("(rcov", 2:condition$time_points, ")")
     }
 
     # Data generation
@@ -374,29 +375,48 @@ Mplus_within_cov2 <- function(input, estimation = FALSE) {
   ))
 }
 
-Mplus_ME <- function(input) {
-  lhs <- c(unlist(input$name_obs))
+Mplus_pop_ME <- function(condition, name_obs) {
+  lhs <- c(unlist(name_obs))
   op <- rhs <- ""
-  con <- rep("@0", times = length(input$name_obs))
+  con <- paste0("@", condition[["ME_var"]])
   return(cbind.data.frame(lhs, op, rhs, con,
-    stringsAsFactors = FALSE
+                          stringsAsFactors = FALSE
   ))
 }
 
-Mplus_new <- function(input) {
-  lhs <- paste0("NEW(cor", 2:input$time_points, ")")
+Mplus_estimate_ME <- function(condition, name_obs) {
+  lhs <- c(unlist(name_obs))
+  op <- rhs <- ""
+  if (!condition[["estimate_ME"]]) {
+    con <- "@0"
+  } else if (
+    condition[["constraints"]] == "stationarity" ||
+    condition[["constraints"]] == "ME"
+  ) {
+    label <- rep(c("MEvarA", "MEvarB"), each = condition[["time_points"]])
+    con <- paste0("*", condition[["ME_var"]], " (", label, ")")
+  } else { # Freely estimate
+    con <- paste0("*", condition[["ME_var"]])
+  }
+  return(cbind.data.frame(lhs, op, rhs, con,
+                          stringsAsFactors = FALSE
+  ))
+}
+
+Mplus_new <- function(condition) {
+  lhs <- paste0("NEW(cor", 2:condition$time_points, ")")
   op <- rhs <- con <- ""
   return(cbind.data.frame(lhs, op, rhs, con,
     stringsAsFactors = FALSE
   ))
 }
 
-Mplus_within_cor <- function(input) {
-  lhs <- paste0("cor", 2:input$time_points)
+Mplus_within_cor <- function(condition) {
+  lhs <- paste0("cor", 2:condition$time_points)
   op <- " = "
-  rhs1 <- paste0("alpha*delta + beta*gamma + alpha*gamma*cor", 1:(input$time_points - 1))
-  rhs2 <- paste0(" + beta*delta*cor", 1:(input$time_points - 1))
-  rhs3 <- paste0(" + rcov", 2:input$time_points)
+  rhs1 <- paste0("alpha*delta + beta*gamma + alpha*gamma*cor", 1:(condition$time_points - 1))
+  rhs2 <- paste0(" + beta*delta*cor", 1:(condition$time_points - 1))
+  rhs3 <- paste0(" + rcov", 2:condition$time_points)
   rhs <- paste0(rhs1, rhs2, rhs3)
   con <- ""
   return(cbind.data.frame(lhs, op, rhs, con,
@@ -404,15 +424,15 @@ Mplus_within_cor <- function(input) {
   ))
 }
 
-Mplus_stationarity <- function(input) {
+Mplus_stationarity <- function(condition) {
   lhs <- c(
-    paste0("rvarA", 2:input$time_points),
-    paste0("rvarB", 2:input$time_points)
+    paste0("rvarA", 2:condition$time_points),
+    paste0("rvarB", 2:condition$time_points)
   )
   op <- "="
   rhs <- c(
-    paste0("1 - (alpha^2 + beta^2 + 2*alpha*beta*cor", 1:(input$time_points - 1), ")"),
-    paste0("1 - (delta^2 + gamma^2 + 2*delta*gamma*cor", 1:(input$time_points - 1), ")")
+    paste0("1 - (alpha^2 + beta^2 + 2*alpha*beta*cor", 1:(condition$time_points - 1), ")"),
+    paste0("1 - (delta^2 + gamma^2 + 2*delta*gamma*cor", 1:(condition$time_points - 1), ")")
   )
   con <- ""
   return(cbind.data.frame(lhs, op, rhs, con,

@@ -1,126 +1,72 @@
-#' Set up \code{powRICLPM} analysis
+#' Set Up \code{powRICLPM} Analysis
 #'
-#' \code{setup()} restructures the arguments of \code{powRICLPM()} in a list, such that it can be used by \code{run()}, performing a Monte Carlo power analysis for each experimental condition.
+#' \code{create_conditions()} restructures the arguments of \code{powRICLPM()} in a list, such that it can be used by \code{run_condition_MonteCarlo()}, performing a Monte Carlo power analysis for each experimental condition.
 #'
 #' @inheritParams powRICLPM
 #'
 #' @noRd
-setup <- function(target_power,
-                  sample_size,
-                  time_points,
-                  ICC,
-                  RI_cor,
-                  Phi,
-                  wSigma,
-                  Psi,
-                  reliability,
-                  skewness,
-                  kurtosis,
-                  estimate_ME,
-                  alpha,
-                  reps,
-                  bootstrap_reps,
-                  seed,
-                  constraints,
-                  bounds,
-                  estimator,
-                  save_path) {
+create_conditions <- function(
+  target_power,
+  sample_size,
+  time_points,
+  ICC,
+  RI_cor,
+  Phi,
+  within_cor,
+  Psi,
+  reliability,
+  skewness,
+  kurtosis,
+  estimate_ME,
+  significance_criterion,
+  reps,
+  bootstrap_reps,
+  seed,
+  constraints,
+  bounds,
+  estimator,
+  save_path,
+  software
+) {
 
-  # Create experimental conditions
-  params <- expand.grid(
+  # Create data.frame with rows as experimental conditions
+  conditions <- expand.grid(
     sample_size = sample_size,
     time_points = time_points,
     ICC = ICC,
     RI_cor = RI_cor,
-    reliability = reliability
-  )
-  params$RI_var <- purrr::map_dbl(params$ICC, compute_RI_var)
-  params$RI_cov <- purrr::map2_dbl(params$RI_cor, params$RI_var, compute_RI_cov)
-  params$ME_var <- purrr::map2_dbl(params$RI_var, params$reliability, compute_ME_var)
-
-  # Create lavaan syntax for generating data
-  conds <- lapply(
-    X = asplit(params, MARGIN = 1), # List of rows
-    FUN = create_lavaan,
-    Phi = Phi,
-    wSigma = wSigma,
-    Psi = Psi,
+    within_cor = within_cor,
+    reliability = reliability,
     constraints = constraints,
-    estimate_ME = estimate_ME,
     skewness = skewness,
     kurtosis = kurtosis,
-    alpha = alpha
+    significance_criterion = significance_criterion,
+    estimate_ME = estimate_ME
   )
 
-  # Create powRICLPM object, combining conditions and general session info
-  object <- list(
-    conditions = conds,
-    session = list(
-      Psi = Psi,
-      reliability = reliability,
-      estimate_ME = estimate_ME,
-      reps = reps,
-      bootstrap_reps = bootstrap_reps,
-      target_power = target_power,
-      constraints = constraints,
-      bounds = bounds,
-      estimator = estimator,
-      save_path = save_path,
-      version = utils::packageVersion("powRICLPM")
-    )
-  )
-  rm(params, conds)
-  return(object)
-}
+  # Add matrix input to conditions
+  conditions$Phi <- replicate(nrow(conditions), Phi, simplify = FALSE)
+  conditions$Psi <- replicate(nrow(conditions), Psi, simplify = FALSE)
 
-#' Set up \code{powRICLPM} analysis for Mplus
-#'
-#' \code{setup_Mplus()} restructures the arguments of \code{powRICLPM_Mplus()} in a list, such that we can generate Mplus syntax for a Monte Carlo power analysis.
-#'
-#' @inheritParams powRICLPM
-#'
-#' @noRd
-setup_Mplus <- function(sample_size,
-                        time_points,
-                        ICC,
-                        RI_cor,
-                        Phi,
-                        wSigma,
-                        Psi,
-                        reps,
-                        seed,
-                        save_path,
-                        constraints) {
+  # Compute and add additional parameters per condition
+  conditions$condition_id <- 1:nrow(conditions)
+  conditions$RI_var <- sapply(conditions$ICC, compute_RI_var)
+  conditions$RI_cov <- mapply(compute_RI_cov, conditions$RI_cor, conditions$RI_var)
+  conditions$ME_var <- mapply(compute_ME_var, conditions$RI_var, conditions$reliability)
 
-  # Create sample_size, time_points, and ICC elements for powRICLPM condition list
-  grid <- expand.grid(
-    sample_size = sample_size,
-    time_points = time_points,
-    ICC = ICC,
-    RI_cor = RI_cor
-  )
+  # Create list of conditions
+  conditions <- split(conditions, seq(nrow(conditions)))
 
-  # Compute RI_var and RI_cor based on ICC in each condition
-  grid$RI_var <- purrr::map_dbl(grid$ICC, compute_RI_var)
-  grid$RI_cov <- purrr::map2_dbl(grid$RI_cor, grid$RI_var, compute_RI_cov)
+  # Create syntax per condition
+  if (software == "lavaan") {
+    conditions <- lapply(conditions, create_lavaan)
+  } else if (software == "Mplus") {
+    conditions <- lapply(conditions, create_Mplus, reps = reps , seed = seed)
+    lapply(conditions, save_condition_Mplus, save_path)
+  }
 
-  # Create list with each element containing info for a single condition
-  conditions <- purrr::pmap(
-    list(
-      sample_size = grid$sample_size,
-      time_points = grid$time_points,
-      ICC = grid$ICC,
-      RI_var = grid$RI_var,
-      RI_cov = grid$RI_cov,
-      Phi = list(Phi),
-      wSigma = list(wSigma),
-      Psi = list(Psi),
-      reps = reps,
-      seed = seed,
-      save_path = save_path,
-      constraints = constraints
-    ),
-    list
-  )
   return(conditions)
+
 }
+
+

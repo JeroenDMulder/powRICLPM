@@ -10,7 +10,7 @@ template:
     btn-border-radius: 0.25rem
 
 home:
-  title: Power analysis for the RI-CLPM
+  title: Power Analysis for the RI-CLPM and STARTS Model
   links:
   - text: Learn more
     href: https://doi.org/10.1080/10705511.2020.1784738
@@ -32,8 +32,12 @@ navbar:
           href: articles/extensions.html
         - text: "Using Mplus"
           href: articles/mplus.html
-        - text: "Online supplementary materials Mulder (2022)"
-          href: articles/Mulder2022.html
+        - text: "Online Supplementary Materials Mulder (2023)"
+          href: articles/mulder_power_2023.html
+        - text: -------
+        - text: "Special Topics"
+        - text: RI-CLPM & Measurement Error
+          href: articles/measurement_error.html
     - text: "News"
       href: news/index.html
     - text: "FAQ"

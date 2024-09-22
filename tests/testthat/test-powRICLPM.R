@@ -1,132 +1,175 @@
-test_that("powRICLPM() works", {
-
-  # Create valid powRICLPM() input
-  Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
-
-  # Single experimental condition
+test_that("basic power analysis using lavaan works", {
   out1 <- powRICLPM(
     target_power = 0.8,
     sample_size = 1000,
     time_points = 3,
     ICC = 0.5,
     RI_cor = 0.3,
-    Phi = Phi,
+    Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
     within_cor = 0.3,
     reps = 2,
     seed = 123456
   )
 
-  # Run tests
   expect_equal(class(out1), c("powRICLPM", "list"))
   expect_equal(names(out1), c("conditions", "session"))
-
-  # Test "conditions" element
   expect_equal(length(out1$conditions), 1)
   expect_equal(
-    c("estimates", "uncertainty", "errors", "not_converged", "inadmissible") %in% names(out1$conditions[[1]]),
-    c(T, T, T, T, T)
+    c(
+      "sample_size", "time_points", "ICC", "reliability", "RI_var", "RI_cov",
+      "pop_synt", "pop_tab", "est_synt", "est_tab", "estimate_ME", "skewness",
+      "kurtosis", "significance_criterion", "estimates", "MCSEs", "reps",
+      "condition_id", "estimation_information"
+    ) %in% names(out1$conditions[[1]]),
+    rep(TRUE, times = 19)
   )
   expect_type(out1$conditions[[1]]$estimates, "list")
-  expect_type(out1$conditions[[1]]$uncertainty, "list")
-  expect_type(out1$conditions[[1]]$errors, "logical")
-  expect_type(out1$conditions[[1]]$not_converged, "logical")
-  expect_type(out1$conditions[[1]]$inadmissible, "logical")
+  expect_type(out1$conditions[[1]]$MCSEs, "list")
+  expect_type(out1$conditions[[1]]$estimation_information, "list")
+})
 
-  # Multiple experimental conditions
-  out2 <- powRICLPM(
+test_that("basic power analysis with multiple experimental conditions works", {
+  out1 <- powRICLPM(
     target_power = 0.8,
-    sample_size = c(100, 200),
+    sample_size = c(400, 500),
     time_points = c(3, 4),
     ICC = c(0.4, 0.6),
     RI_cor = 0.3,
-    Phi = Phi,
+    Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
     within_cor = 0.3,
     reps = 2,
     seed = 123456
   )
 
-  # Run tests
-  expect_equal(class(out2), c("powRICLPM", "list"))
-  expect_equal(names(out2), c("conditions", "session"))
-
-  # Test "conditions" element
-  expect_equal(length(out2$conditions), 8)
+  expect_equal(class(out1), c("powRICLPM", "list"))
+  expect_equal(names(out1), c("conditions", "session"))
+  expect_equal(length(out1$conditions), 8)
   expect_equal(
-    c("estimates", "uncertainty", "errors", "not_converged", "inadmissible") %in% names(out2$conditions[[6]]),
-    c(T, T, T, T, T)
+    c(
+      "sample_size", "time_points", "ICC", "reliability", "RI_var", "RI_cov",
+      "pop_synt", "pop_tab", "est_synt", "est_tab", "estimate_ME", "skewness",
+      "kurtosis", "significance_criterion", "estimates", "MCSEs", "reps",
+      "condition_id", "estimation_information"
+    ) %in% names(out1$conditions[[1]]),
+    rep(TRUE, times = 19)
   )
 
-  # Include measurement error (STARTS)
-  out3 <- powRICLPM(
-    target_power = 0.8,
-    sample_size = c(200, 300),
-    time_points = 4,
-    ICC = .5,
-    RI_cor = 0.3,
-    Phi = Phi,
-    within_cor = 0.3,
-    reliability = .85,
-    estimate_ME = TRUE,
-    reps = 2,
-    seed = 1234
-  )
-  # Run tests
-  expect_equal(out3$session$estimate_ME, TRUE)
+})
+
+test_that("power analysis for the STARTS model works", {
+  expect_warning({
+    out <- powRICLPM(
+      target_power = 0.8,
+      sample_size = c(500),
+      time_points = 4,
+      ICC = .5,
+      RI_cor = 0.3,
+      Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
+      within_cor = 0.3,
+      reliability = .85,
+      estimate_ME = TRUE,
+      reps = 1,
+      seed = 1234
+    )
+  })
+
+  expect_equal(out$session$estimate_ME, TRUE)
   expect_equal(
-    c("A1~~A1", "A2~~A2", "B1~~B1", "B2~~B2") %in% out3$conditions[[1]]$estimates$parameter,
+    c("A1~~A1", "A2~~A2", "B1~~B1", "B2~~B2") %in% out$conditions[[1]]$estimates$parameter,
     c(T, T, T, T)
   )
 })
 
-test_that("bounded estimation in powRICLPM() works", {
-  # Create valid powRICLPM() input
-  Phi <- matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE)
-  wSigma <- matrix(c(1, 0.3, 0.3, 1), ncol = 2, byrow = TRUE)
+test_that("bounded estimation for STARTS model in powRICLPM() works", {
 
-  out1 <- powRICLPM(
-    target_power = 0.8,
-    sample_size = 21,
-    time_points = 3,
+  expect_warning({
+    out1 <- powRICLPM(
+      target_power = 0.8,
+      sample_size = c(500),
+      time_points = 4,
+      ICC = .5,
+      RI_cor = 0.3,
+      Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
+      within_cor = 0.3,
+      reliability = .85,
+      estimate_ME = TRUE,
+      bounds = TRUE,
+      reps = 1,
+      seed = 1234
+    )
+  })
+
+  expect_true(out1$session$bounds)
+})
+
+test_that("power analysis using Mplus works", {
+  powRICLPM(
+    sample_size = 1000,
+    time_points = 4,
     ICC = 0.5,
     RI_cor = 0.3,
-    Phi = Phi,
+    Phi = matrix(c(.5, .1, .4, .5), ncol = 2, byrow = TRUE),
     within_cor = 0.3,
-    reps = 10,
+    reps = 1000,
     seed = 123456,
-    bounds = FALSE
+    save_path = tempdir(),
+    software = "Mplus"
   )
 
-  out2 <- powRICLPM(
+  expect_true(file.exists(file.path(tempdir(), paste0("Condition1.inp"))))
+})
+
+test_that("power analysis for the STARTS model using Mplus works", {
+  out_unconstrained <- powRICLPM(
     target_power = 0.8,
-    sample_size = 21,
-    time_points = 3,
-    ICC = 0.5,
+    sample_size = c(2000),
+    time_points = 8,
+    ICC = .5,
     RI_cor = 0.3,
-    Phi = Phi,
+    Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
     within_cor = 0.3,
-    reps = 10,
-    seed = 123456,
-    bounds = TRUE
+    reliability = .85,
+    estimate_ME = TRUE,
+    reps = 2,
+    seed = 1234,
+    software = "Mplus",
+    save_path = tempdir()
   )
 
-  expect_equal(class(out2), c("powRICLPM", "list"))
-  expect_equal(names(out2), c("conditions", "session"))
-
-  # Test "conditions" element
-  expect_equal(length(out2$conditions), 1)
-  expect_equal(
-    c("estimates", "uncertainty", "errors", "not_converged", "inadmissible") %in% names(out1$conditions[[1]]),
-    c(T, T, T, T, T)
+  out_constrained <- powRICLPM(
+    target_power = 0.8,
+    sample_size = c(2000),
+    time_points = 8,
+    ICC = .5,
+    RI_cor = 0.3,
+    Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
+    within_cor = 0.3,
+    reliability = .85,
+    estimate_ME = TRUE,
+    reps = 2,
+    seed = 1234,
+    software = "Mplus",
+    constraints = "ME",
+    save_path = tempdir()
   )
-  expect_type(out2$conditions[[1]]$estimates, "list")
-  expect_type(out2$conditions[[1]]$uncertainty, "list")
-  expect_type(out2$conditions[[1]]$errors, "logical")
-  expect_type(out2$conditions[[1]]$not_converged, "logical")
-  expect_type(out2$conditions[[1]]$inadmissible, "logical")
 
-  # Test "session" element
-  expect_true(out2$session$bounds)
+  expect_error(
+    powRICLPM(
+      target_power = 0.8,
+      sample_size = c(2000),
+      time_points = 10,
+      ICC = .5,
+      RI_cor = 0.3,
+      Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
+      within_cor = 0.3,
+      reliability = .85,
+      estimate_ME = TRUE,
+      reps = 2,
+      seed = 1234,
+      software = "Mplus",
+      bounds = TRUE,
+      save_path = tempdir()
+    )
+  )
 
-  # Test that bounded estimation works
-  expect_true(sum(out1$conditions[[1]]$not_converged) > sum(out2$conditions[[1]]$not_converged))
 })

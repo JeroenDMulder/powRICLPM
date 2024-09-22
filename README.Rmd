@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: "./vignettes/references.bib"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -16,26 +17,25 @@ knitr::opts_chunk$set(
 # powRICLPM
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/powRICLPM)](https://CRAN.R-project.org/package=powRICLPM)
 [![R-CMD-check](https://github.com/JeroenDMulder/powRICLPM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JeroenDMulder/powRICLPM/actions/workflows/R-CMD-check.yaml)
  <a href="https://www.r-pkg.org/pkg/powRICLPM"><img src="https://cranlogs.r-pkg.org/badges/grand-total/powRICLPM" alt="CRAN RStudio mirror downloads"/></a>
 <!-- badges: end -->
 
 
-`powRICLPM` is an `R` package that performs a power analysis for the random intercept cross-lagged panel model (RI-CLPM) in a simple and user-friendly way. It implements the strategy as proposed by [Mulder (2022)](https://doi.org/10.1080/10705511.2022.2122467). Its main functionalities include:  
+`powRICLPM` is an R package that aids researchers with performing a power analysis for the random intercept cross-lagged panel model (RI-CLPM) by @hamaker_critique_2015, and the Stable Trait Autoregressive Trait State Model (STARTS) by @kenny_trait-state-error_1995 and @kenny_trait-state_2001. It implements the strategy as proposed by @mulder_power_2023. Its main functionalities include:  
 
-- [Setting up and performing a basic power analysis](https://jeroendmulder.github.io/powRICLPM/articles/start.html): Obtain the power to reject the null-hypothesis of no effect (as well as other performance measures, such as bias, mean square error, etc.) for all parameters in the RI-CLPM given a specific sample size, number of repeated measures, and proportion of between-unit variance (among other things). The power analysis can be performed across multiple experimental conditions simultaneously (i.e., with varying numbers of repeated measures, proportions of between-unit variance, etc.).
-- [Extending the basic power analysis setup](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html): Extend the basic power analysis to include the use of bounded estimation, various (stationarity) constraints over time on parameters of the estimation model, and/or the estimation of measurement error. 
-- [Create Mplus model syntax](https://jeroendmulder.github.io/powRICLPM/articles/mplus.html): Create syntax for performing RI-CLPM power analyses using Mplus.  
+- [**Basic power analysis**](https://jeroendmulder.github.io/powRICLPM/articles/start.html): Use Monte Carlo simulations to compute the power to reject the null-hypothesis (as well as other performance measures such as bias, mean square error) for all parameters in the RI-CLPM and STARTS, for a specific experimental condition. A condition is defined by its sample size, number of repeated measures, proportion of between-unit variance, and reliability of the indicators. `powRICLPM` can perform power analyses across multiple experimental conditions simultaneously, and report the results back in a user-friendly manner.
+- [**Extensions**](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html): The basic power analysis setup can be extended to include the use of bounded estimation, various (stationarity) constraints over time on parameters of the estimation model, the generation of nonnormal data, among other things.
+- [**Mplus**](https://jeroendmulder.github.io/powRICLPM/articles/mplus.html): When Mplus is installed, `powRICLPM` can create Mplus syntax, and run the power analyses in Mplus. 
 
 ## Documentation
 
 There are four sources of documentation for `powRICLPM`:
 
-- The rationale for the power analysis strategy underlying this package can be found in [Mulder (2022)](https://doi.org/10.1080/10705511.2022.2122467).
+- The rationale for the power analysis strategy underlying this package can be found in @mulder_power_2023.
 - Every user-facing function in the package is documented, and the documentation can be accessed by running `?function_name` in the R console (e.g., `?powRICLPM`). Here, you can find explanations on how to use the functions, as well as technical details.
-- There are four main vignettes accessible via the ‘Vignettes’ tab, describing functionalities and analysis options of this package more generally. The ‘Example’ vignette serves as the online supplementary material to [Mulder (2022)](https://doi.org/10.1080/10705511.2022.2122467), and contains the R code for an illustrative example using the `powRICLPM` package.
+- More elaborate descriptions of this package's functionality and analysis options are described in vignettes. These are accessible via the 'Vignettes' tab in the menu, or via R using `vignette(package = "powRICLPM")`. 
 - The [FAQ](https://jeroendmulder.github.io/powRICLPM/articles/FAQ.html) contains answers to frequently asked question that reach me via email.
 
 ## Installation
@@ -58,7 +58,7 @@ install.packages("powRICLPM")
 
 You can cite the R-package with the following citation:
 
-> Mulder, J.D., (2022). *Power analysis for the random intercept cross-lagged panel model using the powRICLPM R-package*. Structural Equation Modeling: A Multidisciplinary Journal. https://doi.org/10.1080/10705511.2022.2122467 
+> Mulder, J.D., (2023). Power analysis for the random intercept cross-lagged panel model using the powRICLPM R-package. *Structural Equation Modeling: A Multidisciplinary Journal, 30*(4), 645-658. https://doi.org/10.1080/10705511.2022.2122467 
 
 ## Contact
 
@@ -66,3 +66,5 @@ If you have ideas, comments, or issues you would like to raise, please get in to
 
 * Issues and ideas can be raised on GitHub via [https://github.com/jeroendmulder/powRICLPM](https://github.com/jeroendmulder/powRICLPM)
 * Pull request can be created on GitHub via [https://github.com/jeroendmulder/powRICLPM/pulls](https://github.com/jeroendmulder/powRICLPM/pulls)
+
+## References

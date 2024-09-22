@@ -2,80 +2,40 @@
 % Please edit documentation in R/powRICLPM.R
 \name{powRICLPM_Mplus}
 \alias{powRICLPM_Mplus}
-\title{Create Mplus syntax for RI-CLPM power analysis}
+\title{(superseded) Create Mplus Syntax for RI-CLPM Power Analysis}
 \usage{
-powRICLPM_Mplus(
-  search_lower = NULL,
-  search_upper = NULL,
-  search_step = 20,
-  sample_size = NULL,
-  time_points,
-  ICC,
-  RI_cor,
-  Phi,
-  within_cor,
-  reps = 1000,
-  seed = NA,
-  save_path = getwd(),
-  constraints = "none"
-)
+powRICLPM_Mplus(...)
 }
 \arguments{
-\item{search_lower}{A positive integer, denoting the lower bound of a range of sample sizes.}
-
-\item{search_upper}{A positive integer, denoting the upper bound of a range of sample sizes.}
-
-\item{search_step}{A positive integer, denoting an increment in sample size.}
-
-\item{sample_size}{(optional) An integer (vector), indicating specific sample sizes at which to evaluate power, rather than specifying a range using the \code{search_*} arguments.}
-
-\item{time_points}{An integer (vector) with elements at least larger than 3, indicating number of time points.}
-
-\item{ICC}{A \code{double} (vector) with elements between 0 and 1, denoting the proportion of (true score) variance at the between-unit level. When measurement error is included in the data generating model, ICC is computed as the variance of the random intercept factor divided by the true score variance (i.e., controlled for measurement error).}
-
-\item{RI_cor}{A \code{double} between 0 and 1, denoting the correlation between random intercepts.}
-
-\item{Phi}{A matrix, with standardized autoregressive effects (on the diagonal) and cross-lagged effects (off-diagonal) in the population. Columns represent predictors and rows represent outcomes.}
-
-\item{within_cor}{A \code{double} between 0 and 1, denoting the correlation between the within-unit components.}
-
-\item{reps}{A positive \code{integer}, denoting the number of Monte Carlo replications to be used during simulations.}
-
-\item{seed}{An \code{integer} of length 1. If multiple cores are used, a seed of length 1 will be used to generate a full L'Ecuyer-CMRG seed for all cores (see \code{\link[furrr]{furrr_options}}).}
-
-\item{save_path}{A \code{character} string, denoting the path to the folder to save the Mplus syntax files in (default: current working directory).}
-
-\item{constraints}{(optional) A character string, specifying the type of constraints that should be imposed on the estimation model (see "Details").}
-}
-\value{
-No return value, called for side effects.
+\item{...}{(don't use)}
 }
 \description{
-\code{powRICLPM_Mplus()} creates and saves (a) syntax file(s) for performing a Monte Carlo power analysis for the random intercept cross-lagged panel model (RI-CLPM) in Mplus. Mplus model syntax can be created across multiple experimental conditions simultaneously. Conditions are defined in terms of sample size, number of time points, and proportion of between-unit variance (ICC). See "Details" for information on a) the naming conventions of parameters, and b) the various constraints that can be imposed on the model.
+The function \code{powRICLPM_Mplus} has been superseded and is no longer available in the current version of the package.
 }
 \details{
-\subsection{Syntax generation}{Mplus model syntax is created in multiple steps: First, the \code{MODEL POPULATION} command syntax is created in which parameters are constrained to population values. Second, the \code{MODEL} command syntax is created for model estimation. Optionally, syntax for constraints on the estimation model, in the \code{MODEL CONSTRAINTS} command, is created next. Ultimately, the parameter tables are combined to form character vectors containing the Mplus syntax to be exported (see "Details" of \code{\link{powRICLPM}} for more information on the \code{constraints} options).}
-
-\subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
+The functionality previously provided by \code{powRICLPM_Mplus} has been replaced by \code{powRICLPM}, where you can now set \code{software = "Mplus"}.
 }
 \examples{
-# Define population parameters for lagged effects
-Phi <- matrix(c(.4, .1, .2, .3), ncol = 2, byrow = TRUE)
-
-# Create and save Mplus model syntax
-powRICLPM_Mplus(
-  sample_size = c(400, 500),
-  time_points = 3,
-  ICC = 0.5,
-  RI_cor = 0.3,
-  Phi = Phi,
-  within_cor = 0.3,
-  reps = 10000,
-  seed = 1234,
-  save_path = tempdir()
-)
-
-\dontshow{
-unlink(file.path(tempdir(), c("Mplus_N400_T3_ICC0.5.txt", "Mplus_N500_T3_ICC0.5.txt")))
+\dontrun{
+  # Use `software = "Mplus"` to setup power analysis for Mplus
+  out_preliminary <- powRICLPM(
+    target_power = 0.8,
+    search_lower = 500,
+    search_upper = 700,
+    search_step = 100,
+    time_points = c(3, 4),
+    ICC = c(0.4, 0.6),
+    reliability = c(1, 0.8),
+    RI_cor = 0.3,
+    Phi = Phi,
+    within_cor = 0.3,
+    reps = 1000,
+    seed = 1234,
+    software = "Mplus"
+  )
 }
 }
+\seealso{
+\code{\link[=powRICLPM]{powRICLPM()}}
+}
+\keyword{internal}

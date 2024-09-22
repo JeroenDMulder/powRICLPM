@@ -1,22 +1,20 @@
 Package: powRICLPM
-Title: Perform Power Analysis for the Random Intercept Cross-Lagged Panel
-    Model
-Version: 0.1.1
-Date: 2023-01-26
+Title: Perform Power Analysis for the RI-CLPM and STARTS Model
+Version: 0.1.1.9000
+Date: 2024-09-20
 Authors@R: c(
-    person("Jeroen", "Mulder", , "j.d.mulder@uu.nl", role = c("aut", "cre"),
+    person("Jeroen", "Mulder", , "j.d.mulder@uu.nl", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-5553-0856")),
     person("Netherlands Organization for Scientific Research", role = "fnd")
   )
 Maintainer: Jeroen Mulder <j.d.mulder@uu.nl>
-Description: Perform user-friendly power analyses for the bivariate random
-    intercept cross-lagged panel model (RI-CLPM). The strategy as proposed
-    by Mulder (2022) <doi:10.1080/10705511.2022.2122467> is implemented.
-    Extended power analysis options include the use of bounded estimation,
-    inclusion of measurement error in the data generating model and
-    estimation model (i.e., the stable trait autoregressive trait state,
-    STARTS, model), imposing various constraints over time on the
-    parameters of the estimation model, among others.
+Description: Perform user-friendly power analyses for the random
+    intercept cross-lagged panel model (RI-CLPM) and the bivariate stable trait 
+    autoregressive trait state (STARTS) model. The strategy as proposed by 
+    Mulder (2023) <doi:10.1080/10705511.2022.2122467> is implemented. Extensions 
+    include the use of parameter constraints over time, bounded estimation,
+    generation of skewed and kurtosed data, and the option to setup the power 
+    analysis for Mplus. 
 License: MIT + file LICENSE
 URL: https://jeroendmulder.github.io/powRICLPM/
 BugReports: https://github.com/JeroenDMulder/powRICLPM/issues/
@@ -25,14 +23,15 @@ Depends:
     stats,
     utils
 Imports: 
-    dplyr,
-    furrr,
-    future,
-    ggplot2,
+    cli,
+    future.apply,
     lavaan (>= 0.6.7),
+    lifecycle,
     progressr,
-    purrr,
-    rlang
+    rlang,
+    MplusAutomation,
+    ggplot2,
+    future
 Suggests: 
     knitr,
     rmarkdown,
@@ -42,4 +41,5 @@ VignetteBuilder:
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)

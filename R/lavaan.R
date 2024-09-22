@@ -1,29 +1,18 @@
 #' @title
-#' Create lavaan syntax for data generation and model estimation
+#' Create `lavaan` Syntax for Data Generation and Model Estimation
 #'
 #' @description
-#' \code{create_lavaan()} creates a \pkg{lavaan} parameter table and model syntax for data generation and estimation of the specified model.
+#' \code{create_lavaan()} creates a \pkg{lavaan} parameter table and model syntax for data generation and estimation of the specified random intercept cross-lagged panel model.
 #'
-#' @inheritParams powRICLPM
-#' @param RI_var Numeric value denoting the random intercept variance.
-#' @param RI_cov Numeric value denoting the covariance between the random intercepts.
-#' @param Psi Variance-covariance matrix of within-unit residuals from wave 2 onwards.
+#' @param condition A list, containing values for factors that define an experimental condition (i.e., sample size, number of time points, ICC, and reliability), as well as population values for parameters that depend on these (e.g., the random intercept variances, and covariance between them is a function of `ICC`).
 #'
-#' @return A list with contining information from a single experimental condition
+#' @return The `condition` list, extended with a `lavaan` population model table and syntax, and `lavaan` estimation model table and syntax.
 #'
 #' @details
 #' \subsection{Naming conventions}{Details on the naming conventions can be found in the "Details" section of \code{\link{powRICLPM}}.}
 #'
 #' @noRd
-create_lavaan <- function(condition,
-                          Phi = NULL,
-                          wSigma = NULL,
-                          Psi = NULL,
-                          constraints,
-                          estimate_ME = FALSE,
-                          skewness,
-                          kurtosis,
-                          alpha) {
+create_lavaan <- function(condition) {
 
   # Generate default variable names
   name_var <- LETTERS[1:2]
@@ -37,43 +26,20 @@ create_lavaan <- function(condition,
 
   # Create population parameter table
   pop_tab <- rbind(
-    lav_RI(condition = condition, name_RI, name_obs),
-    pop_RI_var(condition = condition, name_RI),
-    pop_RI_cor(condition = condition, name_RI),
-    pop_within(condition = condition, name_within, name_obs),
-    pop_lagged(condition = condition, name_within, Phi),
-    pop_within_var1(condition = condition, name_within),
-    pop_within_cov1(condition = condition, name_within, wSigma),
-    pop_within_var2(condition = condition, name_within, Psi),
-    pop_within_cov2(condition = condition, name_within, Psi),
-    pop_ME(condition = condition, name_obs)
+    lav_RI(condition, name_RI, name_obs),
+    pop_RI_var(condition, name_RI),
+    pop_RI_cor(condition, name_RI),
+    pop_within(condition, name_within, name_obs),
+    pop_lagged(condition, name_within),
+    pop_within_var1(condition, name_within),
+    pop_within_cov1(condition, name_within),
+    pop_within_var2(condition, name_within),
+    pop_within_cov2(condition, name_within),
+    pop_ME(condition, name_obs)
   )
   rownames(pop_tab) <- NULL
 
-  # Create estimation parameter table
-  est_tab <- rbind(
-    lav_RI(condition = condition, name_RI, name_obs),
-    est_RI_var(condition = condition, name_RI),
-    est_RI_cor(condition = condition, name_RI),
-    est_within(condition = condition, name_within, name_obs, constraints),
-    est_lagged(condition = condition, name_within, Phi, constraints),
-    est_within_var1(condition = condition, name_within, constraints),
-    est_within_cov1(condition = condition, name_within, wSigma, constraints),
-    est_within_var2(condition = condition, name_within, Psi, constraints),
-    est_within_cov2(condition = condition, name_within, Psi, constraints),
-    if (estimate_ME) {
-      estimate_ME(condition = condition, name_obs, constraints)
-    },
-    if (constraints == "stationarity") {
-      rbind(
-        lav_within_cor(condition = condition),
-        lav_stationarity(condition = condition)
-      )
-    }
-  )
-  rownames(est_tab) <- NULL
-
-  # Create lavaan syntax
+  # Create population model syntax
   pop_synt <- paste0( # Paste over parameters
     paste0( # Paste over columns
       pop_tab[, 1],
@@ -85,6 +51,30 @@ create_lavaan <- function(condition,
     collapse = "\n"
   )
 
+  # Create estimation parameter table
+  est_tab <- rbind(
+    lav_RI(condition, name_RI, name_obs),
+    est_RI_var(condition, name_RI),
+    est_RI_cor(condition, name_RI),
+    est_within(condition, name_within, name_obs),
+    est_lagged(condition, name_within),
+    est_within_var1(condition, name_within),
+    est_within_cov1(condition, name_within),
+    est_within_var2(condition, name_within),
+    est_within_cov2(condition, name_within),
+    if (condition[["estimate_ME"]]) {
+      create_estimate_ME(condition, name_obs)
+    },
+    if (condition[["constraints"]] == "stationarity") {
+      rbind(
+        lav_within_cor(condition),
+        lav_stationarity(condition)
+      )
+    }
+  )
+  rownames(est_tab) <- NULL
+
+  # Create estimation model syntax
   est_synt <- paste0( # Paste over parameters
     paste0( # Paste over columns
       est_tab[, 1],
@@ -101,21 +91,22 @@ create_lavaan <- function(condition,
     sample_size = condition[["sample_size"]],
     time_points = condition[["time_points"]],
     ICC = condition[["ICC"]],
+    reliability = condition[["reliability"]],
     RI_var = condition[["RI_var"]],
     RI_cov = condition[["RI_cov"]],
     pop_synt = pop_synt,
     pop_tab = pop_tab,
     est_synt = est_synt,
     est_tab = est_tab,
-    estimate_ME = estimate_ME,
-    skewness = skewness,
-    kurtosis = kurtosis,
-    alpha = alpha,
+    estimate_ME = condition[["estimate_ME"]],
+    skewness = condition[["skewness"]],
+    kurtosis = condition[["kurtosis"]],
+    significance_criterion = condition[["significance_criterion"]],
     estimates = NA,
-    uncertainty = NA,
-    errors = NA,
-    not_converged = NA,
-    inadmissible = NA
+    MCSEs = NA,
+    estimation_information = NA,
+    reps = NA,
+    condition_id = condition[["condition_id"]]
   )
 }
 
@@ -189,10 +180,10 @@ pop_within <- function(condition, name_within, name_obs) {
   ))
 }
 
-est_within <- function(condition, name_within, name_obs, constraints) {
+est_within <- function(condition, name_within, name_obs) {
   lhs <- c(name_within)
   op <- "=~"
-  if (constraints == "stationarity") {
+  if (condition[["constraints"]] == "stationarity") {
     pv <- "NA"
     free <- TRUE
   } else {
@@ -206,11 +197,11 @@ est_within <- function(condition, name_within, name_obs, constraints) {
   ))
 }
 
-pop_lagged <- function(condition, name_within, Phi) {
+pop_lagged <- function(condition, name_within) {
   lhs <- rep(c(t(name_within))[-(1:2)], each = 2)
   op <- "~"
   con <- "*"
-  pv <- c(t(Phi))
+  pv <- c(t(condition[["Phi"]][[1]]))
   free <- FALSE
   rhs <- c(apply(name_within[-condition[["time_points"]], ], 1, rep, times = 2))
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
@@ -218,15 +209,16 @@ pop_lagged <- function(condition, name_within, Phi) {
   ))
 }
 
-est_lagged <- function(condition, name_within, Phi, constraints) {
+est_lagged <- function(condition, name_within) {
   lhs <- rep(c(t(name_within))[-(1:2)], each = 2)
   op <- "~"
   con <- "*"
-  if (constraints == "lagged" || constraints == "within" ||
-    constraints == "stationarity") {
+  if (condition[["constraints"]] == "lagged" ||
+      condition[["constraints"]] == "within" ||
+      condition[["constraints"]] == "stationarity") {
     pv <- c("a", "b", "c", "d") # Labels for constraints
   } else {
-    pv <- paste0("start(", c(t(Phi)), ")")
+    pv <- paste0("start(", c(t(condition[["Phi"]][[1]])), ")")
   }
   free <- TRUE
   rhs <- c(apply(name_within[-condition[["time_points"]], ], 1, rep, times = 2))
@@ -246,11 +238,11 @@ pop_within_var1 <- function(condition, name_within) {
   ))
 }
 
-est_within_var1 <- function(condition, name_within, constraints) {
+est_within_var1 <- function(condition, name_within) {
   lhs <- rhs <- c(t(name_within[1, ]))
   op <- "~~"
   con <- "*"
-  if (constraints == "stationarity") {
+  if (condition[["constraints"]] == "stationarity") {
     pv <- "1"
     free <- FALSE
   } else {
@@ -262,27 +254,27 @@ est_within_var1 <- function(condition, name_within, constraints) {
   ))
 }
 
-pop_within_cov1 <- function(condition, name_within, wSigma) {
+pop_within_cov1 <- function(condition, name_within) {
   lhs <- name_within[1, "A"]
   rhs <- name_within[1, "B"]
   op <- "~~"
   con <- "*"
-  pv <- c(wSigma[lower.tri(wSigma)]) # Get covariances
+  pv <- c(condition[["within_cor"]]) # Get covariances
   free <- FALSE
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
     stringsAsFactors = FALSE
   ))
 }
 
-est_within_cov1 <- function(condition, name_within, wSigma, constraints) {
+est_within_cov1 <- function(condition, name_within) {
   lhs <- name_within[1, 1]
   rhs <- name_within[1, 2]
   op <- "~~"
   con <- "*"
-  if (constraints == "stationarity") { # Label
+  if (condition[["constraints"]] == "stationarity") { # Label
     pv <- "cor1"
   } else { # Freely estimate
-    pv <- paste0("start(", c(wSigma[lower.tri(wSigma)]), ")")
+    pv <- paste0("start(", c(condition[["within_cor"]]), ")")
   }
   free <- TRUE
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
@@ -290,30 +282,31 @@ est_within_cov1 <- function(condition, name_within, wSigma, constraints) {
   ))
 }
 
-pop_within_var2 <- function(condition, name_within, Psi) {
+pop_within_var2 <- function(condition, name_within) {
   lhs <- rhs <- c(name_within[-1, ])
   op <- "~~"
   con <- "*"
-  pv <- rep(diag(Psi), each = (condition[["time_points"]] - 1))
+  pv <- rep(diag(condition[["Psi"]][[1]]), each = (condition[["time_points"]] - 1))
   free <- FALSE
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
     stringsAsFactors = FALSE
   ))
 }
 
-est_within_var2 <- function(condition, name_within, Psi, constraints) {
+est_within_var2 <- function(condition, name_within) {
   lhs <- rhs <- c(name_within[-1, ])
   op <- "~~"
   con <- "*"
-  if (constraints == "residuals" || constraints == "within") { # Constrain over time
+  if (condition[["constraints"]] == "residuals" ||
+      condition[["constraints"]] == "within") { # Constrain over time
     pv <- rep(c("rvarA", "rvarB"), each = (condition[["time_points"]] - 1))
-  } else if (constraints == "stationarity") {
+  } else if (condition[["constraints"]] == "stationarity") {
     pv <- c(
       paste0("rvarA", 2:condition[["time_points"]]),
       paste0("rvarB", 2:condition[["time_points"]])
     )
   } else { # Freely estimate
-    pv <- paste0("start(", rep(diag(Psi), each = (condition[["time_points"]] - 1)), ")")
+    pv <- paste0("start(", rep(diag(condition[["Psi"]][[1]]), each = (condition[["time_points"]] - 1)), ")")
   }
   free <- TRUE
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
@@ -321,29 +314,30 @@ est_within_var2 <- function(condition, name_within, Psi, constraints) {
   ))
 }
 
-pop_within_cov2 <- function(condition, name_within, Psi) {
+pop_within_cov2 <- function(condition, name_within) {
   lhs <- name_within[-1, 1]
   rhs <- name_within[-1, 2]
   op <- "~~"
   con <- "*"
-  pv <- c(Psi[lower.tri(Psi)])
+  pv <- c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])])
   free <- FALSE
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
     stringsAsFactors = FALSE
   ))
 }
 
-est_within_cov2 <- function(condition, name_within, Psi, constraints) {
+est_within_cov2 <- function(condition, name_within) {
   lhs <- name_within[-1, 1]
   rhs <- name_within[-1, 2]
   op <- "~~"
   con <- "*"
-  if (constraints == "residuals" || constraints == "within") { # Constrain over time
+  if (condition[["constraints"]] == "residuals" ||
+      condition[["constraints"]] == "within") { # Constrain over time
     pv <- "rcov"
-  } else if (constraints == "stationarity") { # Label
+  } else if (condition[["constraints"]] == "stationarity") { # Label
     pv <- paste0("rcov", 2:condition[["time_points"]])
   } else { # Freely estimate
-    pv <- paste0("start(", c(Psi[lower.tri(Psi)]), ")")
+    pv <- paste0("start(", c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])]), ")")
   }
   free <- TRUE
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
@@ -362,11 +356,12 @@ pop_ME <- function(condition, name_obs) {
   ))
 }
 
-estimate_ME <- function(condition, name_obs, constraints) {
+create_estimate_ME <- function(condition, name_obs) {
   lhs <- rhs <- c(name_obs)
   op <- "~~"
   con <- "*"
-  if (constraints == "stationarity" || constraints == "ME") {
+  if (condition[["constraints"]] == "stationarity" ||
+      condition[["constraints"]] == "ME") {
     pv <- rep(c("MEvarA", "MEvarB"), each = condition[["time_points"]])
     free <- TRUE
   } else { # Freely estimate ME

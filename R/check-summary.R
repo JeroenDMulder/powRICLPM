@@ -1,83 +1,161 @@
-#' Check \code{sample_size} in \code{summary.powRICLPM()}
-#'
-#' \code{check_N_summary()} tests if the specified sample size \code{n} is in the \code{powRICLPM} object.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param n An integer.
-#'
-#' @noRd
-check_N_summary <- function(object, sample_size) {
+icheck_object_summary <- function(object, arg = rlang::caller_arg(object), call = rlang::caller_env()) {
+  if (!inherits(object, "powRICLPM")) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be of class 'powRICLPM'."
+      ),
+      call = call
+    )
+  }
+}
+
+
+icheck_sample_size_summary <- function(sample_size, object, arg = rlang::caller_arg(sample_size), call = rlang::caller_env()) {
+
   if (length(sample_size) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`sample_size` must be a single number:",
-      x = paste0("Your `sample_size` is of length ", length(sample_size), ".")
-    )))
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be a single number:",
+        "x" = "Your {.arg {arg}} is of length {length(sample_size)}."
+      ),
+      call = call
+    )
   }
-  sample_size_unique <- unique(purrr::map_dbl(object$condition, function(x) {
-    x$sample_size
-  }))
-  if (!sample_size %in% sample_size_unique) {
-    stop(rlang::format_error_bullets(c(
-      "`sample_size` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
-      i = "The sample size you've indicated is not included in any experimental condition.",
-      x = "Perhaps you meant any of the following sample sizes?",
-      sample_size_unique
-    )))
+
+  sample_sizes <- lapply(object$conditions, function(x) {x$sample_size})
+
+  if (!sample_size %in% sample_sizes) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that sample size:",
+        "i" = "The sample size you've indicated is not included in any experimental condition.",
+        "x" = "Perhaps you meant any of the following sample sizes?",
+        paste(unique(sample_sizes), collapse = ", ")
+      ),
+      call = call
+    )
   }
 }
 
-#' Check \code{time_points} in \code{summary.powRICLPM()}
-#'
-#' \code{check_T_summary()} tests if the specified sample size \code{time_points} is in the \code{powRICLPM} object.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param time_points An integer.
-#'
-#' @noRd
-check_T_summary <- function(object, time_points) {
+
+icheck_parameter_summary <- function(x, object, parameter, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if (length(x) > 1) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be a character string of length 1:",
+        "x" = "Your {.arg {arg}} is of length {length(sample_size)}."
+      ),
+      call = call
+    )
+  }
+
+  if (!is.character(x)) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be a character string:",
+        "x" = "Your {.arg {arg}} is of type {typeof(arg)}"
+      ),
+      call = call
+    )
+  }
+
+  number_of_parameters <- lapply(object$conditions, function(x) {length(x$estimates$parameter)})
+  names_parameters <- object$conditions[[which.min(number_of_parameters)]]$estimates$parameter
+
+  if (!x %in% names_parameters) {
+    cli::cli_abort(
+      c(
+        "Your {.arg {arg}} is not available across all experimental conditions.",
+        "i" = "Perhaps use `give(object, what = 'names')` to get an overview of parameter names in the `powRICLPM` object."
+      ),
+      call = call
+    )
+  }
+}
+
+
+
+icheck_time_points_summary <- function(time_points, object, arg = rlang::caller_arg(time_points), call = rlang::caller_env()) {
+
   if (length(time_points) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`time_points` must be a single number:",
-      x = paste0("Your `time_points` is of length ", length(time_points), ".")
-    )))
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be a single number:",
+        "x" = "Your {.arg {arg}} is of length {length(time_points)}."
+      ),
+      call = call
+    )
   }
-  t_unique <- unique(purrr::map_dbl(object$condition, function(x) {
-    x$time_points
-  }))
-  if (!time_points %in% t_unique) {
-    stop(rlang::format_error_bullets(c(
-      "`time_points` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
-      i = "The `time_points` you've indicated is not included in any experimental condition.",
-      x = "Perhaps you meant any of the following number of time points?",
-      t_unique
-    )))
+
+  time_points_object <- lapply(object$conditions, function(x) {x$time_points})
+
+  if (!time_points %in% time_points_object) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that number of time points:",
+        "i" = "The {.arg {arg}} you've indicated is not included in any experimental condition.",
+        "x" = "Perhaps you meant any of the following number of time points?",
+        paste(unique(time_points_object), collapse = ", ")
+      ),
+      call = call
+    )
   }
 }
 
-#' Check \code{ICC} in \code{summary.powRICLPM()}
-#'
-#' \code{check_ICC_summary()} tests if the specified sample size \code{ICC} is in the \code{powRICLPM} object.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @param ICC A double.
-#'
-#' @noRd
-check_ICC_summary <- function(object, ICC) {
+
+icheck_ICC_summary <- function(ICC, object, arg = rlang::caller_arg(ICC), call = rlang::caller_env()) {
   if (length(ICC) > 1) {
-    stop(rlang::format_error_bullets(c(
-      "`ICC` must be a single number:",
-      x = paste0("Your `ICC` is of length ", length(ICC), ".")
-    )))
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be a single number:",
+        "x" = "Your {.arg {arg}} is of length {length(ICC)}."
+      ),
+      call = call
+    )
   }
-  ICC_unique <- unique(purrr::map_dbl(object$condition, function(x) {
-    x$ICC
-  }))
-  if (!ICC %in% ICC_unique) {
-    stop(rlang::format_error_bullets(c(
-      "`ICC` must refer to an experimental condition in the `powRICLPM` object with that sample size:",
-      i = "The `ICC` you've indicated is not included in any experimental condition.",
-      x = "Perhaps you meant any of the following ICCs?",
-      ICC_unique
-    )))
+
+  ICCs <- lapply(object$conditions, function(x) {x$ICC})
+
+  if (!ICC %in% ICCs) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that ICC:",
+        "i" = "The {.arg {arg}} you've indicated is not included in any experimental condition.",
+        "x" = "Perhaps you meant any of the following ICCs?",
+        paste(unique(ICCs), collapse = ", ")
+      ),
+      call = call
+    )
   }
 }
+
+
+icheck_reliability_summary <- function(reliability, object, arg = rlang::caller_arg(reliability), call = rlang::caller_env()) {
+
+  if (length(reliability) > 1) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be a single number:",
+        "x" = "Your {.arg {arg}} is of length {length(reliability)}."
+      ),
+      call = call
+    )
+  }
+
+  reliabilities <- lapply(object$conditions, function(x) {x$reliability})
+
+  if (!reliability %in% reliabilities) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that reliability:",
+        "i" = "The reliability you've indicated is not included in any experimental condition.",
+        "x" = "Perhaps you meant any of the following reliabilities?",
+        paste(unique(reliabilities), collapse = ", ")
+      ),
+      call = call
+    )
+  }
+}
+
+

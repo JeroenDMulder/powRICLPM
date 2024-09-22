@@ -2,11 +2,8 @@ test_that("compute_Psi() works", {
   # Set lagged effects
   Phi <- matrix(c(.2, .15, .10, .3), ncol = 2, byrow = TRUE)
 
-  # Set variance-covariance of within-components
-  wSigma <- matrix(c(1, .3, .3, 1), ncol = 2, byrow = TRUE)
-
   # Compute residual (co)variances
-  output <- compute_Psi(Phi = Phi, wSigma = wSigma)
+  output <- compute_Psi(Phi = Phi, within_cor = 0.3)
 
   # Run tests
   expect_type(output, "double")

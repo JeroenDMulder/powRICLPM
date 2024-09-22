@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2022 Jeroen D. Mulder
+Copyright (c) 2024 Jeroen D. Mulder
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

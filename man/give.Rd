@@ -2,7 +2,7 @@
 % Please edit documentation in R/give.R
 \name{give}
 \alias{give}
-\title{Extract information from \code{powRICLPM} object}
+\title{Extract Information From \code{powRICLPM} Object}
 \usage{
 give(from, what, parameter = NULL)
 }
@@ -23,10 +23,10 @@ Extract information stored within a \code{powRICLPM} object (internally used by 
 The following information can be extracted from the \code{powRICLPM} object:
 
 \itemize{
-  \item \code{conditions}: A \code{data.frame} with the different experimental conditions per row, where each condition is defined by a unique combination of sample size, number of time points and ICC.
-  \item \code{estimation_problems}: The proportion of fatal errors, inadmissible values, or non-converged estimations (columns) per experimental conditions (row).
-  \item \code{results}: The average estimate (\code{average}), minimum estimate (\code{minimum}), standard deviation of parameter estimates (\code{SD}), the average standard error (\code{SEavg}), the mean square error (\code{MSE}), the average width of the confidence interval (\code{accuracy}), the coverage rate (\code{coverage}), and the proportion of times the \emph{p}-value was lower than the significance criterion (\code{power}). It requires setting the \code{parameter = "..."} argument.
-  \item \code{names}: The parameter names in the condition with the least parameters (i.e., parameter names that apply to each experimental condition).
+\item \code{conditions}: A \code{data.frame} with the different experimental conditions per row, where each condition is defined by a unique combination of sample size, number of time points and ICC.
+\item \code{estimation_problems}: The proportion of fatal errors, inadmissible values, or non-converged estimations (columns) per experimental conditions (row).
+\item \code{results}: The average estimate (\code{average}), minimum estimate (\code{minimum}), standard deviation of parameter estimates (\code{SD}), the average standard error (\code{SEavg}), the mean square error (\code{MSE}), the average width of the confidence interval (\code{accuracy}), the coverage rate (\code{coverage}), and the proportion of times the \emph{p}-value was lower than the significance criterion (\code{power}). It requires setting the \code{parameter = "..."} argument.
+\item \code{names}: The parameter names in the condition with the least parameters (i.e., parameter names that apply to each experimental condition).
 }
 }
 \examples{

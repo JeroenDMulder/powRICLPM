@@ -2,14 +2,14 @@
 % Please edit documentation in R/print.R
 \name{print.powRICLPM}
 \alias{print.powRICLPM}
-\title{Print \code{powRICLPM} object}
+\title{Print \code{powRICLPM} Object}
 \usage{
 \method{print}{powRICLPM}(x, ...)
 }
 \arguments{
 \item{x}{A \code{powRICLPM} object.}
 
-\item{...}{Argument not in use.}
+\item{...}{(don't use)}
 }
 \value{
 No return value, called for side effects.

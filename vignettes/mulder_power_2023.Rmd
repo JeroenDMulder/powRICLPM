@@ -1,0 +1,120 @@
+---
+title: "Online Supplementary Materials Mulder (2023)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Online Supplementary Materials Mulder (2023)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, eval = FALSE, echo=FALSE}
+library(powRICLPM)
+library(ggplot2)
+library(future)
+library(progressr)
+```
+
+This vignette is a supplement to "Power analysis for the random intercept cross-lagged panel model using the `powRICLPM` R-package" by @mulder_power_2023. It contains the R-code used for performing the power analysis that serves as the illustrative example. In total, there are 171 experimental conditions (19 sample sizes $\times$ 3 numbers of repeated measures $\times$ 3 proportions of between person variance). The analysis is partitioned into two parts to reduce total computation time: A preliminary analysis part, and a validation part. 
+
+## Preliminary analysis
+First, a Monte Carlo power analysis is performed over all 171 experimental conditions using a limited number of replications (`reps = 100`). These preliminary results serve as a basis for selecting those experimental conditions that show promising results (i.e., that meet the desired power- and accuracy levels). These conditions are then validated using a large number of replications (`reps = 2000`) in the next step. 
+
+The R-code for the preliminary analysis can be found below:
+```{r preliminary-analysis, eval = FALSE}
+# Matrix of standardized lagged effects
+Phi <- matrix(c(0.20, 0.10, 0.15, 0.30), byrow = FALSE, ncol = 2)
+# powRICLPM automatically computes Psi based on Phi and within_cor
+
+# Setup parallel processing to speed up computations
+plan(multisession, workers = 6)
+
+# Perform preliminary power analysis (with progress bar)
+with_progress({
+  out_preliminary <- powRICLPM(
+    target_power = 0.8,
+    search_lower = 200,
+    search_upper = 2000,
+    search_step = 100,
+    time_points = c(3, 4, 5),
+    ICC = c(0.3, 0.5, 0.7),
+    RI_cor = 0.35,
+    Phi = Phi,
+    within_cor = 0.26,
+    reps = 5,
+    seed = 123456
+  )
+})
+
+# Tabular summary of results
+summary(out_preliminary)
+summary(out_preliminary, sample_size = 200, time_points = 3, ICC = 0.3, reliability = 1)
+res_wB2wA1 <- give(out_preliminary, what = "results", parameter = "wB2~wA1")
+
+# Visualize power
+p <- plot(x = out_preliminary, parameter = "wB2~wA1")
+
+# Tailor visualization for Mulder (under review)
+p <- p +
+  labs(color = "Number of time points") +
+  scale_x_continuous(
+    name = "Sample size",
+    breaks = seq(200, 2000, 200),
+    guide = guide_axis(n.dodge = 2)
+  ) +
+  ggplot2::ylab("Power") + 
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "Time points", nrow = 1),
+    shape = ggplot2::guide_legend(title = "Reliability", nrow = 1), 
+    fill = "none"
+  ) +
+  theme(legend.position = "bottom", text = element_text(size = 8))
+p
+ggsave("C:\\Users\\5879167\\surfdrive\\Research\\RICLPM - Power\\Mulder2023_preliminary_power.png", plot = p, height = 6, width = 7)
+```
+
+## Validation
+The preliminary results suggest that at least 4 time-points and a sample size upwards of a 1000 are required in the condition with the most advantageous proportion of between-unit variance (where proportion of between-unit variance is 0.3). For conditions with a 0.7 proportion of between-unit variance, sample sizes of approximately 1500 are needed with 5 repeated measures, whereas sample sizes upwards of 1700 are needed for 4 repeated measures. Based on these results, the following experimental conditions for validation are selected: The range of sample sizes is reduced to 900 to 1800, and experimental conditions with 3 repeated measures are omitted. This results in a total of 10 sample sizes $\times$ 2 numbers of repeated measures $\times$ 3 proportions of between-unit variance, totaling 60 experimental conditions for validation.
+
+```{r validation, eval = FALSE}
+# Setup parallel processing to speed up computations
+plan(multisession, workers = 6)
+
+# Perform preliminary power analysis (with progress bar)
+with_progress({
+  out_validation <- powRICLPM(
+    target_power = 0.8,
+    search_lower = 900,
+    search_upper = 1800,
+    search_step = 100,
+    time_points = c(4, 5),
+    ICC = c(0.3, 0.5, 0.7),
+    RI_cor = 0.35, 
+    Phi = Phi,
+    within_cor = 0.26,
+    reps = 2000, 
+    seed = 123456
+  )
+})
+
+# Tabular summary of results
+summary(out_validation, parameter = "wB2~wA1")
+res_wB2wA1 <- give(out_validation, what = "results", parameter = "wB2~wA1")
+
+# Visualize power
+p2 <- plot(out_validation, parameter = "wB2~wA1")
+
+# Tailor visualization of power for Mulder (2022)
+p2 <- p2 + 
+  labs(color = "Number of time points") +
+  scale_x_continuous(
+    name = "Sample size",
+    breaks = seq(900, 1800, 100),
+    guide = guide_axis(n.dodge = 2)) +
+  scale_color_manual(values = c("#00BA38", "#619CFF")) +
+  theme(legend.position = "bottom", text = element_text(size = 8))
+p2
+ggsave("Mulder2022_validation_power.png", height = 5, width = 7)
+```
+
+
+

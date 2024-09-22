@@ -2,9 +2,17 @@
 % Please edit documentation in R/plot.R
 \name{plot.powRICLPM}
 \alias{plot.powRICLPM}
-\title{Plot results from \code{powRICLPM} object}
+\title{Plot Results From \code{powRICLPM} Object}
 \usage{
-\method{plot}{powRICLPM}(x, y = "power", ..., parameter = NULL)
+\method{plot}{powRICLPM}(
+  x,
+  y = "power",
+  ...,
+  parameter = NULL,
+  color_by = "time_points",
+  shape_by = "reliability",
+  facet_by = "ICC"
+)
 }
 \arguments{
 \item{x}{A \code{powRICLPM} object.}
@@ -13,25 +21,40 @@
 
 \item{...}{(don't use)}
 
-\item{parameter}{Character string of length denoting the parameter to visualize the results for.}
+\item{parameter}{Character string of length 1, denoting the parameter to visualize the results for.}
+
+\item{color_by}{Character string of length 1, denoting what variable to map to color (see "Details").}
+
+\item{shape_by}{Character string of length 1, denoting what variable to map to point shapes (see "Details").}
+
+\item{facet_by}{Character string of length 1, denoting what variable to facet by (see "Details").}
 }
 \value{
 A \code{ggplot2} object.
 }
 \description{
-Visualizes (using \pkg{ggplot2}) the results from a \code{powRICLPM} analysis, for a specific parameter, across all experimental conditions. By default, sample size is plotted on the x-axis, power on the y-axis, and results are grouped by the number of time points and wrapped by the proportion of between-unit variance. Optionally, the \code{y} argument can be used to change the variable on the y-axis to other outcomes from the \code{powRICLPM} analysis.
+Visualizes (using \pkg{ggplot2}) the results from a \code{powRICLPM} analysis, for a specific parameter, across all experimental conditions. By default, sample size is plotted on the x-axis, power on the y-axis, with results colored by the number of time points, wrapped by the proportion of between-unit variance, and shaped by the reliability. Optionally, other variables can be mapped to the y-axis, x-axis, color, shape, and facets.
 }
 \details{
-\subsection{y-axis options}{The following outcomes can be plotted on the y-axis:
+\subsection{Mapping Options}{The following outcomes can be plotted on the y-axis:
 
 \itemize{
-  \item \code{average}: The average estimate.
-  \item \code{MSE}: The mean square error.
-  \item \code{coverage}: The coverage rate
-  \item \code{accuracy}: The average width of the confidence interval.
-  \item \code{SD}: Standard deviation of parameter estimates.
-  \item \code{SEAvg}: Average standard error.
-  \item \code{bias}: The absolute difference between the average estimate and population value.
+\item \code{average}: The average estimate.
+\item \code{MSE}: The mean square error.
+\item \code{coverage}: The coverage rate
+\item \code{accuracy}: The average width of the confidence interval.
+\item \code{SD}: Standard deviation of parameter estimates.
+\item \code{SEAvg}: Average standard error.
+\item \code{bias}: The absolute difference between the average estimate and population value.
+}
+
+The following variables can be mapped to color, shape, and facet:
+
+\itemize{
+\item \code{sample_size}: Sample size.
+\item \code{time_points}: Time points.
+\item \code{ICC}: Intraclass correlation (ICC).
+\item \code{reliability}: Item-reliablity.
 }
 }
 }
@@ -56,6 +79,6 @@ try(plot(out_preliminary))
 }
 \seealso{
 \itemize{
-  \code{\link{give}}: Extract information (e.g., performance measures) for a specific parameter, across all experimental conditions. This function is used internally in \code{plot.powRICLPM}.
+\code{\link{give}}: Extract information (e.g., performance measures) for a specific parameter, across all experimental conditions. This function is used internally by \code{plot.powRICLPM}.
 }
 }

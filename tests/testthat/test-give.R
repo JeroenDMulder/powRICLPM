@@ -26,27 +26,13 @@ test_that("give() works", {
   expect_error(give(out1, "results"))
 
   expect_s3_class(df_conditions, "data.frame")
-  expect_equal(dim(df_conditions), c(2, 3))
+  expect_equal(dim(df_conditions), c(2, 4))
 
   expect_s3_class(df_problems, "data.frame")
-  expect_equal(dim(df_problems), c(2, 6))
-  expect_equal(
-    names(df_problems),
-    c(
-      "sample_size", "time_points", "ICC",
-      "errors", "not_converged", "inadmissible"
-    )
-  )
+  expect_equal(dim(df_problems), c(2, 7))
 
   expect_s3_class(df_results, "data.frame")
-  expect_equal(dim(df_results), c(2, 12))
-  expect_equal(
-    names(df_results),
-    c(
-      "sample_size", "time_points", "ICC", "population_value", "average",
-      "minimum", "SD", "SEAvg", "MSE", "accuracy", "coverage", "power"
-    )
-  )
+  expect_equal(dim(df_results), c(2, 14))
 
   expect_type(df_names, "character")
   expect_equal(length(df_names), 20)

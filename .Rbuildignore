@@ -10,3 +10,6 @@ tikzDictionary$
 ^\.github$
 ^revdep$
 ^CRAN-SUBMISSION$
+^R/draft\.R$
+^Mplus Run Models\.log$
+^references\.bib$

@@ -1,4 +1,4 @@
-#' Extract information from \code{powRICLPM} object
+#' Extract Information From \code{powRICLPM} Object
 #'
 #' Extract information stored within a \code{powRICLPM} object (internally used by \code{\link{print.powRICLPM}} and \code{\link{summary.powRICLPM}}). See "Details" for which pieces of information can be extracted. The information is presented by condition (i.e., sample size, number of time points, and ICC).
 #'
@@ -32,126 +32,113 @@
 #' # Return character vector with parameter names
 #' give(out_preliminary, "names")
 give <- function(from, what, parameter = NULL) {
-  check_object(from)
-  check_give(what)
-  if (what == "conditions" || what == "sample_size" ||
-    what == "time_points" || what == "ICC") {
-    give_conditions(object = from)
+
+  # Input checking
+  icheck_object_summary(from)
+  icheck_what_give(what)
+
+  # Call to relevant give_*() based on `what` argument
+  if (what == "conditions" || what == "sample_size" || what == "time_points" ||
+      what == "ICC" || what == "reliability") {
+    give_powRICLPM_conditions(object = from)
   } else if (what == "estimation_problems") {
-    give_estimation_problems(object = from)
+    give_powRICLPM_estimation_problems(object = from)
   } else if (what == "results") {
-    give_results(object = from, parameter = parameter)
+      give_powRICLPM_results(object = from, parameter = parameter)
   } else if (what == "names") {
-    give_names(object = from)
+      give_powRICLPM_parameter_names(object = from)
   } else if (what == "uncertainty") {
-    give_uncertainty(object = from)
-  } else {
-    stop(rlang::format_error_bullets(c(
-      "`what` must be 'conditions', 'estimation_problems', 'results', or 'names':",
-      x = paste0("Your `what` is ", what, ".")
-    )))
+      give_powRICLPM_MCSE_parameter(object = from, parameter = parameter)
   }
 }
 
-#' Extract condition information from \code{powRICLPM} object
-#'
-#' \code{give_conditions()} extracts the sample size, number of time points, and ICC from each experimental condition, returns it in a data frame with the conditions in rows.
-#'
-#' @param object A \code{powRICLPM} object.
-#'
-#' @noRd
-give_conditions <- function(object) {
-  # Combine sample sizes and simulated power across conditions
-  d <- purrr::map_dfr(object$conditions, function(condition) {
-    # Create data frame
-    data.frame(
-      sample_size = condition$sample_size,
-      time_points = condition$time_points,
-      ICC = condition$ICC
-    )
-  })
-  return(d)
-}
+give_powRICLPM_conditions <- function(object) {
 
-#' Extract estimation information from \code{powRICLPM} object
-#'
-#' \code{give_estimation_problems()} extracts the proportion of fatal estimation errors, solutions with inadmissible results, and converges problems from each experimental condition, returns it in a data frame with the conditions in rows.
-#'
-#' @param object A \code{powRICLPM} object.
-#'
-#' @noRd
-give_estimation_problems <- function(object) {
   # Combine sample sizes and simulated power across conditions
-  d <- purrr::map_dfr(object$conditions, function(condition) {
-    # Create data frame
+  d <- do.call(rbind, lapply(object$conditions, function(condition) {
     data.frame(
       sample_size = condition$sample_size,
       time_points = condition$time_points,
       ICC = condition$ICC,
-      errors = sum(condition$errors),
-      not_converged = sum(condition$not_converged),
-      inadmissible = sum(condition$inadmissible)
+      reliability = condition$reliability,
+      stringsAsFactors = FALSE
     )
-  })
+  }))
   return(d)
 }
 
-#' Extract results from \code{powRICLPM} object
-#'
-#' \code{give_results()} extracts the results (power analysis dependent variables) from each experimental condition, returns it in a data frame with the conditions in rows.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @inheritParams powRICLPM
-#'
-#' @noRd
-give_results <- function(object, parameter = NULL) {
-  check_give_results(object = object, parameter = parameter)
+give_powRICLPM_estimation_problems <- function(object) {
+
   # Combine sample sizes and simulated power across conditions
-  d <- purrr::map_dfr(object$conditions, function(condition) {
+  d <- do.call(rbind, lapply(object$conditions, function(condition) {
     data.frame(
       sample_size = condition$sample_size,
       time_points = condition$time_points,
       ICC = condition$ICC,
-      round(condition$estimates[condition$estimates$parameter == parameter, -1],
-        digits = 3
-      )
+      reliability = condition$reliability,
+      errors = condition$estimation_information$n_error,
+      not_converged = condition$estimation_information$n_nonconvergence,
+      inadmissible = condition$estimation_information$n_inadmissible,
+      stringsAsFactors = FALSE
     )
-  })
+  }))
   return(d)
 }
 
-#' Extract parameter names from \code{powRICLPM} object
-#'
-#' \code{give_names()} extracts and returns the parameter names of the condition with the least number of parameters.
-#'
-#' @param object A \code{powRICLPM} object.
-#'
-#' @noRd
-give_names <- function(object) {
-  condition_length <- purrr::map_int(object$conditions, function(condition) {
+give_powRICLPM_results <- function(object, parameter = NULL) {
+
+  # Combine simulation results across experimental conditions
+  d <- do.call(rbind, lapply(object$conditions, function(condition) {
+
+    # Extract and round estimates per condition
+    estimates <- condition$estimates[condition$estimates$parameter == parameter, -1]
+    estimates <- round(estimates, digits = 3)
+
+    # Combine extracted info in data frame
+    data.frame(
+      sample_size = condition$sample_size,
+      time_points = condition$time_points,
+      ICC = condition$ICC,
+      reliability = condition$reliability,
+      estimates
+    )
+  }))
+  return(d)
+}
+
+give_powRICLPM_parameter_names <- function(object) {
+
+  # Determine length of parameter vector per condition
+  condition_lengths <- sapply(object$conditions, function(condition) {
     length(condition$estimates$parameter)
   })
-  object$conditions[[which.min(condition_length)]]$estimates$parameter
+
+  # Find index of condition with minimum length
+  min_length_index <- which.min(condition_lengths)
+
+  # Extract parameter vector from condition with minimum length
+  out <- object$conditions[[min_length_index]]$estimates$parameter
+  return(out)
 }
 
 
+give_powRICLPM_MCSE_parameter <- function(object, parameter) {
 
-#' Extract uncertainty of power estimates
-#'
-#' \code{give_uncertainty()} extracts and returns the 95% bootstrap intervals around the power estimates, across all experimental conditions.
-#'
-#' @param object A \code{powRICLPM} object.
-#' @inheritParams powRICLPM
-#'
-#' @noRd
-give_uncertainty <- function(object, parameter) {
-  d <- purrr::map_dfr(object$conditions, function(condition) {
+  # Combine data frames across conditions
+  d <- do.call(rbind, lapply(object$conditions, function(condition) {
+
+    # Extract rows from uncertainty where parameter matches
+    uncertainty_filtered <- condition$MCSEs[which(condition$estimates$parameter == parameter), ]
+
+    # Create data frame
     data.frame(
       sample_size = condition$sample_size,
       time_points = condition$time_points,
       ICC = condition$ICC,
-      condition$uncertainty[which(condition$estimates$parameter == parameter), ]
+      reliability = condition$reliability,
+      uncertainty_filtered,
+      stringsAsFactors = FALSE
     )
-  })
+  }))
   return(d)
 }

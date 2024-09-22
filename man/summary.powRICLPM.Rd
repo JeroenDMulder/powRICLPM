@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.R
 \name{summary.powRICLPM}
 \alias{summary.powRICLPM}
-\title{Summarize setup and results from \code{powRICLPM} object}
+\title{Summarize Results from \code{powRICLPM} Object}
 \usage{
 \method{summary}{powRICLPM}(
   object,
@@ -10,34 +10,37 @@
   parameter = NULL,
   sample_size = NULL,
   time_points = NULL,
-  ICC = NULL
+  ICC = NULL,
+  reliability = NULL
 )
 }
 \arguments{
 \item{object}{A \code{powRICLPM} object.}
 
-\item{...}{(don't use) Additional arguments not affecting the summary produced.}
+\item{...}{(don't use)}
 
-\item{parameter}{Character string of length denoting the parameter to visualize the results for.}
+\item{parameter}{Character string of length 1 denoting the parameter to visualize the results for.}
 
 \item{sample_size}{(optional) An \code{integer}, denoting the sample size of the experimental condition of interest.}
 
 \item{time_points}{(optional) An \code{integer}, denoting the number of time points of the experimental condition of interest.}
 
 \item{ICC}{(optional) A \code{double}, denoting the proportion of variance at the between-unit level of the experimental condition of interest.}
+
+\item{reliability}{(optional) An \code{integer}, denoting the reliability of the indicators of the experimental condition of interest.}
 }
 \value{
 No return value, called for side effects.
 }
 \description{
-S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes and outputs the setup and results of the \code{powRICLPM} analysis. Depending on the arguments that are set, \code{summary.powRICLPM} provides a different summary (see "Details").
+S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes the setup and results of the \code{powRICLPM} analysis. Depending on the arguments that are set, \code{summary.powRICLPM} provides a different summary (see "Details").
 }
 \details{
 \code{summary.powRICLPM} provides a different summary of the \code{powRICLPM} object, depending on the additional arguments that are set:
 \itemize{
-  \item When \code{sample_size = ...}, \code{time_points = ...}, and \code{ICC = ...} are set: Estimation information and results for all parameters of the experimental condition denoted by \code{sample_size}, \code{time_points}, and \code{ICC}.
-  \item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
-  \item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to each conditions, such the number of replications, etc.).
+\item When \code{sample_size = ...}, \code{time_points = ...}, \code{ICC = ...}, and \code{reliability} are set: Estimation information and results for all parameters across experimental conditions.
+\item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
+\item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to all conditions, such the number of replications, etc.).
 }
 }
 \examples{
@@ -52,6 +55,6 @@ summary(out_preliminary)
 summary(out_preliminary, parameter = "wB2~wA1")
 
 # Performance measures for all parameters, for specific experimental condition
-summary(out_preliminary, sample_size = 600, time_points = 4, ICC = .4)
+summary(out_preliminary, sample_size = 700, time_points = 4, ICC = .3, reliability = 1)
 
 }
