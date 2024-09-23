@@ -116,10 +116,13 @@ test_that("power analysis using Mplus works", {
     software = "Mplus"
   )
 
-  path <- file.path(tempdir(), "Condition1.inp") |>
-    normalizePath(mustWork = FALSE)
+  if (.Platform$OS.type %in% c("windows", "mac")) {
+    path <- file.path(tempdir(), "Condition1.inp") |>
+      normalizePath(mustWork = FALSE)
 
-  expect_true(file.exists(path))
+    expect_true(file.exists(path))
+  }
+
 })
 
 test_that("power analysis for the STARTS model using Mplus works", {
