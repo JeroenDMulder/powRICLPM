@@ -123,7 +123,7 @@ print.powRICLPM.Mplus <- function(x, save_path) {
   }))
   df_conditions <- cbind(condition = 1:length(x), df_conditions)
 
-  cli::cli_alert_info("You can inspect the results in the {.file .out} files located in {.path {save_path}}.\n
+  cli::cli_alert_info("Mplus input files for power analysis have been saved to {.path {save_path}}.\n
                       The conditions numbers correspond to the following conditions:")
 
   # Format condition table

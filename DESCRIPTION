@@ -29,7 +29,6 @@ Imports:
     lifecycle,
     progressr,
     rlang,
-    MplusAutomation,
     ggplot2,
     future
 Suggests: 

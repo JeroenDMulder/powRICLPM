@@ -9,6 +9,9 @@ template:
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
 
+project:
+  render: ['*qmd']
+
 home:
   title: Power Analysis for the RI-CLPM and STARTS Model
   links:

@@ -58,7 +58,12 @@ Unfortunately, `powRICLPM` currently only performs power analyses for the bivari
 One of the issues that needs to be tackled when going to a more-variate version of the model, is that it becomes increasingly difficult to specify population parameter values that *combined* allow you to simulate data from it. This is related the first limitation that is mentioned in @mulder_power_2023, see Section 6.1. 
 :::
 
+---
+
 ## Post hoc power analysis
+
+---
+
 ::: {onclick="showHide('posthoc')" style="cursor: pointer; font-weight:bold"}
 How can I do posthoc power analysis using `powRICLPM`? 
 :::
@@ -66,6 +71,8 @@ How can I do posthoc power analysis using `powRICLPM`?
 ::: {#posthoc style="display:none"}
 ...
 :::
+
+---
 
 ## References
 

@@ -7,9 +7,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-This vignette details how you can automatically create Mplus model syntax for performing a power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the Mplus software package. This might be preferred by some researchers as Monte Carlo simulations are much faster in Mplus than in R, or for reasons of convention. A disadvantage of using Mplus is that power analysis cannot be performed across multiple experimental conditions simultaneously, it requires additional effort to understand all of the output one gets, and that it is a paid option.
+This vignette details how you can automatically create Mplus model syntax for performing a power analysis for the RI-CLPM and STARTS modl using the Mplus software package. This might be preferred by some researchers as Monte Carlo simulations are much faster in Mplus than in R, or for reasons of convention. A disadvantage of using Mplus is that power analysis cannot be performed across multiple experimental conditions simultaneously, it requires additional effort to understand all of the output one gets, and that it is a paid option.
 
-Using `powRICLPM_Mplus()`, you can create Mplus model syntax for multiple experimental conditions simultaneously (although you would then still need run each script separately in Mplus itself). The function works similarly to `powRICLPM()` in that it implements the procedure for computing population parameter values as proposed by @mulder_power_2023. As such, let's use the same illustrating example as explained in the Vignette [Get started](https://jeroendmulder.github.io/powRICLPM/articles/start.html). 
+In the `powRICLPM()` function, set the `software = ...` argument to `"Mplus"`. This creates Mplus model syntax for multiple experimental conditions simultaneously, and saves them the folder specified in the `save_path = "..."` argument. After the Mplus input-files (.inp) have been created, you can edit them, run them one-by-one in Mplus, or run them simultaneously from R using the `runModels()` function from the MplusAutomation R package. 
+
+Let us use the same illustrating example as explained in the Vignette [Get started](https://jeroendmulder.github.io/powRICLPM/articles/start.html). 
 
 ## Steps 1 and 2: Experimental conditions and population parameter values  
 For our example, we will investigate the power to detect a small standardized cross-lagged effect of $0.2$ for sample sizes from 100 to 1000 (with incremental steps of 50) for an RI-CLPM with 3, 4 and 5 repeated measures. In total, this results in $19 \times 3 = 57$ experimental conditions. Moreover, following the example in the [Get started](https://jeroendmulder.github.io/powRICLPM/articles/start.html) Vignette, our population parameter values are:
@@ -22,7 +24,7 @@ RI_cor <- 0.3
 ```
 
 ## Steps 3-5: Perform the power analysis
-To create Mplus model syntax, use the `powRICLPM_Mplus()` function. You must provide:
+To create Mplus model syntax, use the `powRICLPM()` function, and set `software = "Mplus"`. You must provide:
 
 - the range of sample sizes to simulate the power for using the `search_lower`, `search_upper`, and `search_step` arguments,
 - the number of repeated measures using the `time_points` argument, 
@@ -34,22 +36,31 @@ To create Mplus model syntax, use the `powRICLPM_Mplus()` function. You must pro
 For our example, we would specify:
 
 ```{r analysis, eval = F}
-powRICLPM_Mplus(search_lower = 100,
-                search_upper = 1000,
-                search_step = 50,
-                time_points = c(3, 4, 5),
-                ICC = 0.5,
-                RI_cor = 0.3,
-                Phi = Phi,
-                within_cor = 0.3,
-                reps = 10000,
-                seed = 123456,
-                save_path = "./saved")
+powRICLPM_(
+  search_lower = 100,
+  search_upper = 1000,
+  search_step = 50,
+  time_points = c(3, 4, 5),
+  ICC = 0.5,
+  RI_cor = 0.3,
+  Phi = Phi,
+  within_cor = 0.3,
+  reps = 10000,
+  seed = 123456,
+  save_path = "./saved"
+  software = "Mplus"
+)
 ```
 
-Optionally, you can specify the `constraints` argument to extend the basic power analysis setup. This option is further described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
+Optionally, you can extend this power analysis as described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
 
-The `powRICLPM_Mplus()` creates an Mplus input file (or multiple files when multiple experimental conditions are specified) and writes it to the specified directory. The file contains the Mplus model syntax needed to run a power analysis for the RI-CLPM in Mplus. More information about Monte Carlo simulations in Mplus can be found at [http://statmodel.com/download/usersguide/Chapter12.pdf](http://statmodel.com/download/usersguide/Chapter12.pdf).
+::: {.callout-warning}
+Note that it is not possible to generate skewed or kurtosed data in Mplus via the `powRICLPM` package. Furthermore, bounded estimation is not available in Mplus. Therefore, the `skewness`, `kurtosis`, and `bounds` will be ignored when `software = "Mplus"`. 
+:::
+
+The `powRICLPM()` creates an Mplus input file (or multiple files when multiple experimental conditions are specified) and writes it to the specified directory. The file contains the Mplus model syntax needed to run a power analysis for the RI-CLPM in Mplus. More information about Monte Carlo simulations in Mplus can be found at [http://statmodel.com/download/usersguide/Chapter12.pdf](http://statmodel.com/download/usersguide/Chapter12.pdf).
 
 ## Step 6: Summarize results
 To get output, run each Mplus model syntax file in Mplus. Each time, an output file is created summarizing the results of the Mplus power analysis. A good source for interpreting this output in the context of a MONTECARLO study is @muthen_monte-carlo_2002.
+
+## References

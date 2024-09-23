@@ -35,7 +35,7 @@
 #'
 #' Parameter estimates from non-converged model solutions are discarded from the results. When \code{bounds = FALSE}, inadmissible parameter estimates from converged solutions (e.g., a negative random intercept variance) are discarded. When \code{bounds = TRUE}, inadmissible parameter estimates are retained following advice by De Jonckere and Rosseel (2022). The results include the minimum estimates for all parameters across replications to diagnose which parameter(s) might be the cause of the inadmissible solution.}
 #'
-#' \subsection{Using Mplus}{When \code{software = "Mplus"} and Mplus is installed on the local computer, data will be generated and analyzed using Mplus. The advantage is this will speed up the power analysis considerably. Upon completion of analyses, each experimental condition will have a dedicated .out file with Mplus results. \code{powRICLPM()} reports back to the user where these files can be found, and which .out file corresponds to which experimental condition.}
+#' \subsection{Using Mplus}{When \code{software = "Mplus"}, Mplus input files will be generated and saved into \code{save_path}. Note that it is not possible to generate skewed or kurtosed data in Mplus via the `powRICLPM` package. Furthermore, bounded estimation is not available in Mplus. Therefore, the `skewness`, `kurtosis`, and `bounds` will be ignored when `software = "Mplus"`. }
 #'
 #' \subsection{Naming Conventions Observed and Latent Variables}{The observed variables in the RI-CLPM are given default names, namely capital letters in alphabetical order, with numbers denoting the measurement occasion. For example, for a bivariate RICLPM with 3 time points, we observe \code{A1}, \code{A2}, \code{A3}, \code{B1}, \code{B2}, and \code{B3}. Their within-components are denoted by \code{wA1}, \code{wA2}, ..., \code{wB3}, respectively. The between-components have \code{RI_} prepended to the variable name, resulting in \code{RI_A} and \code{RI_B}.
 #'
@@ -115,7 +115,6 @@
 #'
 #' @importFrom future.apply future_lapply
 #' @importFrom future plan multisession sequential
-#' @importFrom MplusAutomation runModels
 #' @export
 powRICLPM <- function(
     target_power = 0.8,
@@ -268,11 +267,7 @@ powRICLPM <- function(
     # Inform user that simulations in Mplus have started
     cli::cli_h2("\nPerforming Simulations Using Mplus")
 
-    # Run Mplus analyses
-    runModels(save_path)
-
     # Inform user of results
-    cli::cli_alert_success("Simulations complete.")
     print.powRICLPM.Mplus(conditions, save_path)
 
     invisible()
