@@ -1,4 +1,4 @@
-# powRICLPM 0.1.2
+# powRICLPM 0.2.0
 
 ## Breaking changes
 * The function `powRICLPM_Mplus` has been superseded by `powRICLPM()` where users can now set the argument `software = "Mplus"` to use Mplus for their power analysis. The old function has been removed in this version.
