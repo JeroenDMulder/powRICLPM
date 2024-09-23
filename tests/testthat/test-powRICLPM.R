@@ -116,7 +116,10 @@ test_that("power analysis using Mplus works", {
     software = "Mplus"
   )
 
-  expect_true(file.exists(file.path(tempdir(), paste0("Condition1.inp"))))
+  path <- file.path(tempdir(), "Condition1.inp") |>
+    normalizePath(mustWork = FALSE)
+
+  expect_true(file.exists(path))
 })
 
 test_that("power analysis for the STARTS model using Mplus works", {
