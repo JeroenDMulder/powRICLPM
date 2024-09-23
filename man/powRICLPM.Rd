@@ -20,6 +20,7 @@ powRICLPM(
   kurtosis = 0,
   estimate_ME = FALSE,
   significance_criterion = 0.05,
+  alpha = NULL,
   reps = 20,
   bootstrap_reps = NULL,
   seed = NA,
@@ -60,6 +61,8 @@ powRICLPM(
 \item{estimate_ME}{(optional) A \code{logical}, denoting if measurement error variance should be estimated in the RI-CLPM (see "Details").}
 
 \item{significance_criterion}{(optional) A \code{double}, denoting the significance criterion.}
+
+\item{alpha}{(don't use) Deprecated, use \code{significance_criterion} instead.}
 
 \item{reps}{A positive \code{integer}, denoting the number of Monte Carlo replications to be used during simulations.}
 

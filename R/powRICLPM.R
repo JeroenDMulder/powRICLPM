@@ -18,6 +18,7 @@
 #' @param kurtosis (optional) A \code{numeric} value, denoting the excess kurtosis values (i.e., compared to the kurtosis of a normal distribution) for the observed variables (see \code{\link[lavaan]{simulateData}}).
 #' @param estimate_ME (optional) A \code{logical}, denoting if measurement error variance should be estimated in the RI-CLPM (see "Details").
 #' @param significance_criterion (optional) A \code{double}, denoting the significance criterion.
+#' @param alpha (don't use) Deprecated, use `significance_criterion` instead.
 #' @param reps A positive \code{integer}, denoting the number of Monte Carlo replications to be used during simulations.
 #' @param bootstrap_reps (superseded) Uncertainty regarding simulation estimates is now computed analytically based on Morris et al. (2017). This argument is not used anymore.
 #' @param seed An \code{integer} of length 1. If multiple cores are used, a seed will be used to generate a full L'Ecuyer-CMRG seed for all cores.
@@ -132,6 +133,7 @@ powRICLPM <- function(
     kurtosis = 0,
     estimate_ME = FALSE,
     significance_criterion = 0.05,
+    alpha = NULL,
     reps = 20,
     bootstrap_reps = NULL,
     seed = NA,
@@ -149,6 +151,11 @@ powRICLPM <- function(
 
   # Inform user that input checking is starting
   cli::cli_h2("Checking Argument Input")
+
+  # Input checker (deprecated)
+  if (! is.null(alpha)) {
+    significance_criterion <- icheck_alpha(alpha)
+  }
 
   # Input checkers (icheck) I
   icheck_target(target_power)

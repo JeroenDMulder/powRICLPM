@@ -548,7 +548,10 @@ icheck_software <- function(
 }
 
 
-
+icheck_alpha <- function(x) {
+  cli::cli_warn(c("`alpha` is deprecated and will be removed in a future version. Please use 'significance_criterion' instead."))
+  return(x)
+}
 
 
 
