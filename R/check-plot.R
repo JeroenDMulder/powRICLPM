@@ -40,7 +40,7 @@ icheck_plot_parameter <- function(parameter, object, arg = rlang::caller_arg(par
   })
   parameter_names <- object$conditions[[which.min(condition_lengths)]]$estimates$parameter
 
-  if (!(parameter %in% parameter_names)) {
+  if (!any(parameter == parameter_names)) {
     cli::cli_abort(
       c(
         x = "Your {.arg {arg}} is not available across all experimental conditions.",
@@ -66,7 +66,7 @@ icheck_y <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) 
       )
     )
   }
-  if (!x %in% c("power", "coverage", "accuracy", "MSE", "bias", "average", "SD", "SEAvg")) {
+  if (!any(x == c("power", "coverage", "accuracy", "MSE", "bias", "average", "SD", "SEAvg"))) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must be 'power', 'coverage', 'accuracy', 'MSE', 'bias', 'average', 'SD', or 'SEAvg':",
@@ -86,7 +86,7 @@ icheck_plot_options <- function(x, arg = rlang::caller_arg(x), call = rlang::cal
       )
     )
   }
-  if (!x %in% c("time_points", "ICC", "reliability")) {
+  if (!any(x == c("time_points", "ICC", "reliability"))) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must be 'time_points', 'ICC', or 'reliability':",

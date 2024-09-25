@@ -67,19 +67,21 @@ run_condition_monteCarlo <- function(
       data = datasets[[1]],
       estimator = estimator,
       bounds = bounds,
-      warn = FALSE,
-      check.start = FALSE,
-      check.lv.names = FALSE,
-      h1 = FALSE,
-      baseline = FALSE,
-      check.post = TRUE,
-      store.vcov = FALSE
+      warn = FALSE, # Suppress lavaan-specific warnings
+      check.start = FALSE, # Don't check consistency starting values
+      check.lv.names = FALSE, # Don't check if latent variable are also observed
+      h1 = FALSE, # Don't compute unrestricted model
+      baseline = FALSE, # Don't compute baseline model
+      check.post = TRUE, # Check admissibility of results
+      store.vcov = FALSE, # Don't store variance-covariance matrix of model parameters
+      fixed.x = FALSE # Treat exogenous variable as endogenous
     )
   )
 
   # Extract slot options
   lav_model <- fit@Model
   lav_options <- fit@Options
+  lav_options$optim.attempts <- 1L
   lav_parTable <- fit@ParTable
 
   # Fit model to datasets

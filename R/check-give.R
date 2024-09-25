@@ -25,7 +25,7 @@ icheck_what_give <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
     )
   }
 
-  if (!x %in% c("conditions", "estimation_problems", "results", "names")) {
+  if (!any(x == c("conditions", "estimation_problems", "results", "names"))) {
     cli::cli_abort(
       c(
         "{.arg {arg}} is not an accepted input. Please change it to `conditions`, `estimation_problems`, `results`, or `names`.",

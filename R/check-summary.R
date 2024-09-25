@@ -24,7 +24,7 @@ icheck_sample_size_summary <- function(sample_size, object, arg = rlang::caller_
 
   sample_sizes <- lapply(object$conditions, function(x) {x$sample_size})
 
-  if (!sample_size %in% sample_sizes) {
+  if (!any(sample_size == sample_sizes)) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that sample size:",
@@ -63,7 +63,7 @@ icheck_parameter_summary <- function(x, object, parameter, arg = rlang::caller_a
   number_of_parameters <- lapply(object$conditions, function(x) {length(x$estimates$parameter)})
   names_parameters <- object$conditions[[which.min(number_of_parameters)]]$estimates$parameter
 
-  if (!x %in% names_parameters) {
+  if (!any(x == names_parameters)) {
     cli::cli_abort(
       c(
         "Your {.arg {arg}} is not available across all experimental conditions.",
@@ -90,7 +90,7 @@ icheck_time_points_summary <- function(time_points, object, arg = rlang::caller_
 
   time_points_object <- lapply(object$conditions, function(x) {x$time_points})
 
-  if (!time_points %in% time_points_object) {
+  if (!any(time_points == time_points_object)) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that number of time points:",
@@ -117,7 +117,7 @@ icheck_ICC_summary <- function(ICC, object, arg = rlang::caller_arg(ICC), call =
 
   ICCs <- lapply(object$conditions, function(x) {x$ICC})
 
-  if (!ICC %in% ICCs) {
+  if (!any(ICC == ICCs)) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that ICC:",
@@ -145,7 +145,7 @@ icheck_reliability_summary <- function(reliability, object, arg = rlang::caller_
 
   reliabilities <- lapply(object$conditions, function(x) {x$reliability})
 
-  if (!reliability %in% reliabilities) {
+  if (!any(reliability == reliabilities)) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must refer to an experimental condition in the {.cls {class(object)}} object with that reliability:",

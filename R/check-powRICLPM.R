@@ -348,7 +348,7 @@ icheck_constraints <- function(x, ME, arg = rlang::caller_arg(x), call = rlang::
       )
     )
   }
-  if (!x %in% c("none", "lagged", "residuals", "within", "stationarity", "ME")) {
+  if (!any(x == c("none", "lagged", "residuals", "within", "stationarity", "ME"))) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must be 'none', 'lagged', 'residuals', 'within', 'stationarity', or 'ME':",
@@ -384,7 +384,7 @@ icheck_estimator <- function(x, skewness, kurtosis, arg = rlang::caller_arg(x), 
       return("ML")
     }
   }
-  if (!x %in% c("ML", "MLR", "MLM", "MLMVS", "MLMV", "MLF")) {
+  if (!any(x == c("ML", "MLR", "MLM", "MLMVS", "MLMV", "MLF"))) {
     cli::cli_abort(
       c(
         "{.arg {arg}} must be 'ML', 'MLR', 'MLM', 'MLMVS', 'MLMV', or 'MLF':",
@@ -528,7 +528,7 @@ icheck_software <- function(
     x, skewness, kurtosis,
     skew = rlang::caller_arg(skewness), kurt = rlang::caller_arg(kurtosis)
   ) {
-  if (!(x %in% c("lavaan", "Mplus"))) {
+  if (!any(x == c("lavaan", "Mplus"))) {
     cli::cli_abort(
       c(
         "The `software` argument does not specify a valid option:",

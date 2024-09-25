@@ -5,7 +5,7 @@
 \alias{powRICLPM-package}
 \title{powRICLPM: Perform Power Analysis for the RI-CLPM and STARTS Model}
 \description{
-Perform user-friendly power analyses for the random intercept cross-lagged panel model (RI-CLPM) and the bivariate stable trait autoregressive trait state (STARTS) model. The strategy as proposed by Mulder (2023) \doi{10.1080/10705511.2022.2122467} is implemented. Extensions include the use of parameter constraints over time, bounded estimation, generation of skewed and kurtosed data, and the option to setup the power analysis for Mplus.
+Perform user-friendly power analyses for the random intercept cross-lagged panel model (RI-CLPM) and the bivariate stable trait autoregressive trait state (STARTS) model. The strategy as proposed by Mulder (2023) \doi{10.1080/10705511.2022.2122467} is implemented. Extensions include the use of parameter constraints over time, bounded estimation, generation of data with skewness and kurtosis, and the option to setup the power analysis for Mplus.
 }
 \seealso{
 Useful links:

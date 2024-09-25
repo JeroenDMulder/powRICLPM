@@ -44,8 +44,7 @@ print.powRICLPM <- function(x, ...) {
 #' Print Summary Call powRICLPM
 #'
 #' @noRd
-
-print.summary.powRICLPM <- function(x, powRICLPM_version) {
+print.summary.powRICLPM <- function(x, ..., powRICLPM_version) {
   cat("powRICLPM (", as.character(powRICLPM_version), ") simulated power for ", nrow(x), " experimental conditions.", sep = "")
   cat("\n")
   print(
@@ -95,7 +94,7 @@ print.summary.powRICLPM.condition <- function(x, ...) {
 #' Print Summary Parameter Call powRICLPM
 #'
 #' @noRd
-print.summary.powRICLPM.parameter <- function(x, parameter) {
+print.summary.powRICLPM.parameter <- function(x, ..., parameter) {
   print(
     knitr::kable(
       x,
@@ -109,7 +108,7 @@ print.summary.powRICLPM.parameter <- function(x, parameter) {
 #' Print Mplus Call powRICLPM
 #'
 #' @noRd
-print.powRICLPM.Mplus <- function(x, save_path) {
+print.powRICLPM.Mplus <- function(x, ..., save_path) {
 
   # Collect condition table
   df_conditions <- do.call(rbind, lapply(x, function(condition) {

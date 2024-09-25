@@ -29,19 +29,42 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 
 
 
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
 
 <style type="text/css">body {
 background-color: #fff;
@@ -241,35 +264,36 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <p>The basic power analysis as described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
 started</a> can be extended to using bounded estimation, estimation with
-constraints over time, and the inclusion of measurement error variances.
-These extensions are described below.</p>
+constraints over time, and the inclusion of measurement error variances
+in the generated data and estimation model. These extensions are
+described below.</p>
 <div id="bounded-estimation-with-lavaan" class="section level2">
 <h2>Bounded estimation with <code>lavaan</code></h2>
 <p>To prevent non-convergence for small sample sizes (say, less than
 100), bounds can be imposed on the parameter space during estimation of
-the model using <code>bounds = TRUE</code> <a href="https://doi.org/10.1080/10705511.2021.1982716">(De Jonckere &amp;
-Rosseel, 2022)</a>. This can aid the optimization algorithm to find
-unique solutions and prevents it from searching in the completely wrong
-direction for one, or multiple parameters. Sensible lower bounds involve
-those on the (residual) variances of latent variables (e.g., the random
-intercept variances), as negative variances are theoretically not
-possible. Upper bound for variances are determined based on the observed
-variances for variable. In the context of the RI-CLPM, the factor
-loadings are (usually) fixed, and hence these parameters are not
-estimated. The lagged effects are theoretically infinite, and hence
-there are no sensible bounds we can place à priori on these
-parameters.</p>
+the model using <code>bounds = TRUE</code> <span class="citation">(De
+Jonckere and Rosseel 2022)</span>. This can aid the optimization
+algorithm to find unique solutions and prevents it from searching in the
+completely wrong direction for one, or multiple parameters. Sensible
+lower bounds involve those on the (residual) variances of latent
+variables (e.g., the random intercept variances), as negative variances
+are theoretically not possible. Upper bound for variances are determined
+based on the observed variances for variable. In the context of the
+RI-CLPM, the factor loadings are (usually) fixed, and hence these
+parameters are not estimated. The lagged effects are theoretically
+infinite, and hence there are no sensible bounds we can place à priori
+on these parameters.</p>
 </div>
 <div id="constraints-over-time" class="section level2">
 <h2>Constraints over time</h2>
-<p><code>powRICLPM</code> offers users the option to impose various
+<p><code>powRICLPM()</code> offers users the option to impose various
 constraints over time on the estimation model through the
 <code>constraints</code> argument. This has statistical advantages as
 constraints over time reduce model complexity, thereby potentially
 reducing convergence issues and increasing power. Moreover, some
 researchers are interested in so called ‘stationarity’ constraints for
-theoretical reasons. Disadvantages of such constraints are that they
-assume certain parameters over time do not change. This might not be an
+theoretical reasons. A disadvantage of such constraints is that they
+assume certain parameters to be time-invariant. This might not be an
 assumption researchers are willing to make, especially in developmental
 contexts where you expect lagged effects might change over time (e.g.,
 the variable <code>wA</code> gets more important in driving
@@ -279,9 +303,9 @@ within-components (residual) variances and covariances are freely
 estimated over time.</p>
 <p>Constraint options include:</p>
 <ul>
-<li><code>constraints = &quot;lagged&quot;</code>: All autoregressive and
-cross-lagged effects are constrained to be equal over time.</li>
-<li><code>constraints = &quot;residuals</code>: The within-unit residual
+<li><code>constraints = &quot;lagged&quot;</code>: Autoregressive and cross-lagged
+effects are constrained to be equal over time.</li>
+<li><code>constraints = &quot;residuals</code>: Within-unit residual
 variances and covariance (from wave 2 onward) are constrained to be
 equal over time.</li>
 <li><code>constraints = &quot;within&quot;</code>: Both lagged effects and
@@ -294,28 +318,60 @@ within-components themselves are all 1. This implies that the variances
 at the first wave are fixed to 1, and that the residual variances are a
 function of the lagged effects, and correlation between
 within-components at the same wave. These constraints are deduced in the
-supplementary materials of <a href="https://jeroendmulder.github.io/RI-CLPM/faq.html#Standardization">Mulder
-and Hamaker (see the FAQ “How can I constrain the <em>standardized</em>
-parameters to be invariant over time?”)</a>.</li>
+supplementary materials of <span class="citation">Mulder and Hamaker
+(2021)</span>, see the FAQ <a href="https://jeroendmulder.github.io/RI-CLPM/faq.html#Standardization">“How
+can I constrain the <em>standardized</em> parameters to be invariant
+over time?”</a>.</li>
 <li><code>constraints = &quot;ME&quot;</code>: Constraints are imposed on the
-measurement error variances across time. This constraint is only
-possible when <code>est_ME = TRUE</code>.</li>
+measurement error variances across time (separately for each variable).
+This constraint is only possible when
+<code>estimate_ME = TRUE</code>.</li>
 </ul>
 </div>
 <div id="measurement-error" class="section level2">
 <h2>Measurement error</h2>
 <p>While it is generally advisable to include measurement error when
 analyzing psychological data, the RI-CLPM does not include it. Adding
-measurement error to the model would result in the bivariate Trait State
-Error (TSE) model by <a href="https://doi.org/10.1037/10409-008">Kenny
-and Zautra (1995)</a>, and requires at least 4 waves of data to be
-identified. Users can add measurement error variances to the estimation
-model by setting the <code>est_ME</code> argument to
-<code>est_ME = TRUE</code>. Measurement error can be added to the
+measurement error to the model would result in the bivariate stable
+trait autoregressive trait state (STARTS) model by <span class="citation">Kenny and Zautra (2001)</span>, and requires at least 4
+waves of data to be identified. Users can add measurement error
+variances to the estimation model by specifying
+<code>estimate_ME = TRUE</code>. Measurement error can be added to the
 simulated data using the <code>reliability</code> argument.</p>
-<p>Note, however, that this model (the bivariate TSE) has been shown to
-be prone to empirical under-identification, often requiring upwards of 8
-waves of data and sample sizes larger than 500.</p>
+<p>Note, however, that the STARTS model has been shown to be prone to
+empirical under-identification, often requiring upwards of 8 waves of
+data and sample sizes larger than 500.</p>
+</div>
+<div id="skewed-and-kurtosed-data" class="section level2">
+<h2>Skewed and Kurtosed data</h2>
+<ul>
+<li><code>skewness</code> and <code>kurtosis</code>: An integer (vector)
+that determines the skewness and kurtosis for the simulated observed
+variables, respectively. Suppose we have reason to believe the <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> variables are positively skewed, and
+have heavy tails (i.e., a higher kurtosis) we can include the arguments
+<code>skewness = 1</code> and <code>kurtosis = 0.5</code> (default:
+0).</li>
+</ul>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-dejonckere_using_2022" class="csl-entry">
+De Jonckere, Julie, and Yves Rosseel. 2022. <span>“<span class="nocase">Using bounded estimation to avoid nonconvergence in small
+sample structural equation modeling</span>.”</span> <em>Structural
+Equation Modeling</em> 29 (3): 412–27. <a href="https://doi.org/10.1080/10705511.2021.1982716">https://doi.org/10.1080/10705511.2021.1982716</a>.
+</div>
+<div id="ref-kenny_trait-state_2001" class="csl-entry">
+Kenny, David A., and Alex Zautra. 2001. <span>“<span class="nocase">Trait–state models for longitudinal data</span>.”</span>
+In <em>New Methods for the Analysis of Change</em>, 243–63. Washington:
+American Psychological Association. <a href="https://doi.org/10.1037/10409-008">https://doi.org/10.1037/10409-008</a>.
+</div>
+<div id="ref-mulder_three_2021" class="csl-entry">
+Mulder, Jeroen D., and Ellen L. Hamaker. 2021. <span>“<span class="nocase">Three extensions of the random intercept cross-lagged
+panel model</span>.”</span> <em>Structural Equation Modeling: A
+Multidisciplinary Journal</em> 28 (4): 638–48. <a href="https://doi.org/10.1080/10705511.2020.1784738">https://doi.org/10.1080/10705511.2020.1784738</a>.
+</div>
+</div>
 </div>
 
 

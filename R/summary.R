@@ -119,7 +119,7 @@ summary.powRICLPM <- function(
     replications_df <- give_powRICLPM_estimation_problems(object)
     colnames(replications_df) <- c("Sample size", "Time points", "ICC", "Reliability", "Error", "Not converged", "Inadmissible")
     version <- utils::packageVersion("powRICLPM")
-    print.summary.powRICLPM(replications_df, version)
+    print.summary.powRICLPM(replications_df, powRICLPM_version = version)
   }
 }
 

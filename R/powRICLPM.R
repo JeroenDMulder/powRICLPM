@@ -144,10 +144,11 @@ powRICLPM <- function(
     software = "lavaan"
   ) {
 
+  # Get call
+  call_powRICLPM <- match.call()
+
   # Start time
   time_start <- proc.time()
-
-  #
 
   # Inform user that input checking is starting
   cli::cli_h2("Checking Argument Input")
@@ -263,7 +264,8 @@ powRICLPM <- function(
         estimator = estimator,
         save_path = save_path,
         time_taken = time_taken,
-        version = utils::packageVersion("powRICLPM")
+        version = utils::packageVersion("powRICLPM"),
+        call = call_powRICLPM
       )
     )
 
@@ -275,7 +277,7 @@ powRICLPM <- function(
     cli::cli_h2("\nPerforming Simulations Using Mplus")
 
     # Inform user of results
-    print.powRICLPM.Mplus(conditions, save_path)
+    print.powRICLPM.Mplus(conditions, save_path = save_path)
 
     invisible()
   }

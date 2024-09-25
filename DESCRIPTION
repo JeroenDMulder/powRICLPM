@@ -13,7 +13,7 @@ Description: Perform user-friendly power analyses for the random
     autoregressive trait state (STARTS) model. The strategy as proposed by 
     Mulder (2023) <doi:10.1080/10705511.2022.2122467> is implemented. Extensions 
     include the use of parameter constraints over time, bounded estimation,
-    generation of skewed and kurtosed data, and the option to setup the power 
+    generation of data with skewness and kurtosis, and the option to setup the power 
     analysis for Mplus. 
 License: MIT + file LICENSE
 URL: https://jeroendmulder.github.io/powRICLPM/

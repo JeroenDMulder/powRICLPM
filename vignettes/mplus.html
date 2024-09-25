@@ -29,27 +29,27 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -63,55 +63,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -144,6 +143,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
 
 <style type="text/css">body {
 background-color: #fff;
@@ -342,21 +364,24 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <p>This vignette details how you can automatically create Mplus model
-syntax for performing a power analysis for a bivariate random intercept
-cross-lagged panel model (RI-CLPM) using the Mplus software package.
-This might be preferred by some researchers as Monte Carlo simulations
-are much faster in Mplus than in R, or for reasons of convention. A
-disadvantage of using Mplus is that power analysis cannot be performed
-across multiple experimental conditions simultaneously, it requires
-additional effort to understand all of the output one gets, and that it
-is a paid option.</p>
-<p>Using <code>powRICLPM_Mplus()</code>, you can create Mplus model
-syntax for multiple experimental conditions simultaneously (although you
-would then still need run each script separately in Mplus itself). The
-function works similarly to <code>powRICLPM()</code> in that it
-implements the procedure for computing population parameter values as
-proposed by Mulder and Hamaker (under review). As such, let’s use the
-same illustrating example as explained in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
+syntax for performing a power analysis for the RI-CLPM and STARTS modl
+using the Mplus software package. This might be preferred by some
+researchers as Monte Carlo simulations are much faster in Mplus than in
+R, or for reasons of convention. A disadvantage of using Mplus is that
+power analysis cannot be performed across multiple experimental
+conditions simultaneously, it requires additional effort to understand
+all of the output one gets, and that it is a paid option.</p>
+<p>In the <code>powRICLPM()</code> function, set the
+<code>software = ...</code> argument to <code>&quot;Mplus&quot;</code>. This
+creates Mplus model syntax for multiple experimental conditions
+simultaneously, and saves them the folder specified in the
+<code>save_path = &quot;...&quot;</code> argument. After the Mplus input-files
+(.inp) have been created, you can edit them, run them one-by-one in
+Mplus, or run them simultaneously from R using the
+<code>runModels()</code> function from the MplusAutomation R
+package.</p>
+<p>Let us use the same illustrating example as explained in the Vignette
+<a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Get
 started</a>.</p>
 <div id="steps-1-and-2-experimental-conditions-and-population-parameter-values" class="section level2">
 <h2>Steps 1 and 2: Experimental conditions and population parameter
@@ -366,16 +391,17 @@ standardized cross-lagged effect of <span class="math inline">\(0.2\)</span> for
 (with incremental steps of 50) for an RI-CLPM with 3, 4 and 5 repeated
 measures. In total, this results in <span class="math inline">\(19
 \times 3 = 57\)</span> experimental conditions. Moreover, following the
-example in the <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
+example in the <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Get
 started</a> Vignette, our population parameter values are:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Phi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(.<span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> T) <span class="co"># The .2 refers to our standardized cross-lagged effect of interest</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ICC <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>RI_cor <span class="ot">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>Phi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(.<span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> T) </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># The .2 refers to our standardized cross-lagged effect of interest</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>ICC <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>RI_cor <span class="ot">&lt;-</span> <span class="fl">0.3</span></span></code></pre></div>
 </div>
 <div id="steps-3-5-perform-the-power-analysis" class="section level2">
 <h2>Steps 3-5: Perform the power analysis</h2>
-<p>To create Mplus model syntax, use the <code>powRICLPM_Mplus()</code>
-function. You must provide:</p>
+<p>To create Mplus model syntax, use the <code>powRICLPM()</code>
+function, and set <code>software = &quot;Mplus&quot;</code>. You must provide:</p>
 <ul>
 <li>the range of sample sizes to simulate the power for using the
 <code>search_lower</code>, <code>search_upper</code>, and
@@ -392,30 +418,52 @@ number generator, and</li>
 the Mplus input file to.</li>
 </ul>
 <p>For our example, we would specify:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">powRICLPM_Mplus</span>(<span class="at">search_lower =</span> <span class="dv">100</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">search_upper =</span> <span class="dv">1000</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">search_step =</span> <span class="dv">50</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">time_points =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">ICC =</span> <span class="fl">0.5</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">RI_cor =</span> <span class="fl">0.3</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">Phi =</span> Phi,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">within_cor =</span> <span class="fl">0.3</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">reps =</span> <span class="dv">10000</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">seed =</span> <span class="dv">123456</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">save_path =</span> <span class="st">&quot;./saved&quot;</span>)</span></code></pre></div>
-<p>The <code>powRICLPM_Mplus()</code> creates an Mplus input file (or
-multiple files when multiple experimental conditions are specified) and
-writes it to the specified directory. The file contains the Mplus model
-syntax needed to run a power analysis for the RI-CLPM in Mplus. More
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">powRICLPM_</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">search_lower =</span> <span class="dv">100</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">search_upper =</span> <span class="dv">1000</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">search_step =</span> <span class="dv">50</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">time_points =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">ICC =</span> <span class="fl">0.5</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">RI_cor =</span> <span class="fl">0.3</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">Phi =</span> Phi,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="at">within_cor =</span> <span class="fl">0.3</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">reps =</span> <span class="dv">10000</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">123456</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="at">save_path =</span> <span class="st">&quot;./saved&quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  <span class="at">software =</span> <span class="st">&quot;Mplus&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>)</span></code></pre></div>
+<p>Optionally, you can extend this power analysis as described in the
+Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
+<div class="callout-warning">
+<p>Note that it is not possible to generate skewed or kurtosed data in
+Mplus via the <code>powRICLPM</code> package. Furthermore, bounded
+estimation is not available in Mplus. Therefore, the
+<code>skewness</code>, <code>kurtosis</code>, and <code>bounds</code>
+will be ignored when <code>software = &quot;Mplus&quot;</code>.</p>
+</div>
+<p>The <code>powRICLPM()</code> creates an Mplus input file (or multiple
+files when multiple experimental conditions are specified) and writes it
+to the specified directory. The file contains the Mplus model syntax
+needed to run a power analysis for the RI-CLPM in Mplus. More
 information about Monte Carlo simulations in Mplus can be found at <a href="http://statmodel.com/download/usersguide/Chapter12.pdf">http://statmodel.com/download/usersguide/Chapter12.pdf</a>.</p>
 </div>
 <div id="step-6-summarize-results" class="section level2">
 <h2>Step 6: Summarize results</h2>
 <p>To get output, run each Mplus model syntax file in Mplus. Each time,
-a .out (a text file) is created summarizing the results of the Mplus
-power analysis. A good source for interpreting this output in the
-context of a MONTECARLO study is <a href="https://doi.org/10.1207/S15328007SEM0904_8">Muthén and Muthén
-(2002)</a>.</p>
+an output file is created summarizing the results of the Mplus power
+analysis. A good source for interpreting this output in the context of a
+MONTECARLO study is <span class="citation">Muthén and Muthén
+(2002)</span>.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-muthen_monte-carlo_2002" class="csl-entry">
+Muthén, Linda K., and Bengt O. Muthén. 2002. <span>“<span class="nocase">How to use a Monte Carlo study to decide on sample size
+and determine power</span>.”</span> <em>Structural Equation
+Modeling</em> 9 (4): 599–620. <a href="https://doi.org/10.1207/S15328007SEM0904_8">https://doi.org/10.1207/S15328007SEM0904_8</a>.
+</div>
+</div>
 </div>
 
 
