@@ -28,7 +28,7 @@ development:
 navbar:
   left:
     - text: "Get started"
-      href: articles/powRICLPM.html
+      href: articles/introduction.html
     - text: "Articles"
       menu:
         - text: "Extensions"

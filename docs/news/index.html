@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,7 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/powRICLPM.html">Get started</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/introduction.html">Get started</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/extensions.html">Extensions</a></li>
@@ -41,15 +41,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.2" id="powriclpm-012">powRICLPM 0.1.2<a class="anchor" aria-label="anchor" href="#powriclpm-012"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.0" id="powriclpm-020">powRICLPM 0.2.0<a class="anchor" aria-label="anchor" href="#powriclpm-020"></a></h2><p class="text-muted">CRAN release: 2024-09-25</p>
 <div class="section level3">
-<h3 id="breaking-changes-0-1-2">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-2"></a></h3>
+<h3 id="breaking-changes-0-2-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-2-0"></a></h3>
 <ul><li>The function <code>powRICLPM_Mplus</code> has been superseded by <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> where users can now set the argument <code>software = "Mplus"</code> to use Mplus for their power analysis. The old function has been removed in this version.</li>
 <li>The <code>bootstrap_reps</code> argument of <code>powRICLPM</code> is now deprecated. Instead, Monte Carlo standard errors are now based on Morris et al. (2017), and available for all performance measures.</li>
 <li>The argument <code>alpha</code> has been superseded by the <code>significance_criterion</code> argument.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-improvements-and-fixes-0-1-2">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-0-1-2"></a></h3>
+<h3 id="minor-improvements-and-fixes-0-2-0">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-0-2-0"></a></h3>
 <ul><li>The <code>reliability</code> argument can now take in a vector of reliabilities to simulate performance metrics under various levels of item reliability.</li>
 <li>The <code>powRICLPM</code> package now does not import the packages <code>dplyr</code> and <code>purrr</code> anymore.</li>
 <li>The <code>cli</code> package is now used for error handling.</li>

@@ -1,21 +1,21 @@
 ---
-title: "Introduction"
+title: "Get Started"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{Get Started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 This vignette details how you can set up and execute a basic power analysis for a bivariate random intercept cross-lagged panel model (RI-CLPM) using the `powRICLPM` package. Throughout, an illustrating example will be used in which we wish to detect a small cross-lagged effect $\beta_{2}$ (defined here as the effect of $a_{1}^{*}$ to $b_{2}^{*}$, where $a_{1}^{*}$ and $b_{2}^{*}$ denote the latent within-unit components of $a_{1}$ and $b_{2}$, respectively) of 0.2 (standardized). For the design of our power analysis we follow the steps in the strategy as described in @mulder_power_2023. Various extensions are available for this basic power analysis, and are described in the Vignette [Extensions](https://jeroendmulder.github.io/powRICLPM/articles/extensions.html). 
 
-## Step 1: Determine experimental conditions
+# Step 1: Determine experimental conditions
 Before performing the power analysis, you must first determine the *experimental conditions* of interest. Experimental conditions (or: simulation conditions) are defined by characteristics of the study design that can impact statistical power. This includes, among others, characteristics like the *sample size* and the *number of repeated measures*. Decide on the number of repeated measures that will be used in the simulations, as well as the range of sample sizes over which you want to simulate the power. 
 
 For this example, we take a sample size range from 100 to 1000 first, increasing with steps of 100. Let the numbers of repeated measures range from 3 to 5. If these experimental conditions do not lead to the desired amount of power for detecting the small cross-lagged effect, the ranges can be extended later. 
 
-## Step 2: Choose population parameter values
+# Step 2: Choose population parameter values
 Next, determine population parameter values for generating data from the RI-CLPM. This requires the specification of:
 
 - `Phi`: Standardized autoregressive and cross-lagged effects for the within-unit components of the model. These values are collected in a matrix, *with columns representing predictors and rows representing outcomes*.
@@ -44,7 +44,7 @@ library(powRICLPM)
 check_Phi(Phi)
 ```
 
-## Steps 3-5: Perform the power analysis
+# Steps 3-5: Perform the power analysis
 Steps 3 to 5 are automated by the `powRICLPM()` function. As input, you must provide:
 
 - the desired power level using the `target_power` argument, 
@@ -80,12 +80,12 @@ output <- powRICLPM(
 )
 ```
 
-### Parallel processing using `furrr`
+## Parallel processing using `future`
 Performing a Monte Carlo power analysis with a large number of replications, and across multiple experimental conditions can be time-consuming. To speed up the process, it is recommended to perform the power analysis *across simulation conditions* in parallel (i.e., on multiple cores). To this end, the `powRICLPM()` function has implemented `future`’s parallel processing capabilities. 
 
 Load the `future` package, and use its `plan()` function to change the power analysis execution from *sequential* (i.e., single-core, the default), to *multisession* (i.e., multicore). Use the `workers` argument to specify how many cores you want to use. Next, run the `powRICLPM` analysis, and the power analysis will run on the specified number of cores. This can result in a significant reduction of computing time. For more information on other parallel execution strategies using futures, see `?future::plan()`. 
 
-### Progress bar using `progressr`
+## Progress bar using `progressr`
 It can be useful to get an approximation of the progress of the `powRICLPM` analysis while running the code, especially when running the analysis in parallel. `powRICLPM()` has implemented progress notifications using the `progressr` package. Simply put, there are two options through which you can get progress notifications: 
 
 - You can subscribe to progress updates from a specific expression by wrapping this expression with `with_progress({...})`.
@@ -93,7 +93,7 @@ It can be useful to get an approximation of the progress of the `powRICLPM` anal
 
 Implementing the `with_progress({...})` option, as well as parallel execution of the `powRICLPM` analysis, results in the below code for the example:
 
-```{r furrr-setup, eval = F}
+```{r future-setup, eval = F}
 # Load `future` and `progressr` packages
 library(future)
 library(progressr)
@@ -126,7 +126,7 @@ plan(sequential)
 
 For more information about progress notification options using `progressr` for end-users, including auditory and email updates, see [https://progressr.futureverse.org](https://progressr.futureverse.org). 
 
-## Step 6: Summarize results
+# Step 6: Summarize results
 The `powRICLPM()` function creates a `powRICLPM` object: A list with results, upon which we can call `print()`, `summary()`, `give()`, and `plot()` functions to print, summarize, extract results, and visualize the results, respectively.
 
 `print()` outputs a textual summary of the power analysis design contained within the object it was called upon. It does not output any performance metrics computed by the power analysis. 

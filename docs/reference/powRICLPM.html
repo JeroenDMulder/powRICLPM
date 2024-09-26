@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,7 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/powRICLPM.html">Get started</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/introduction.html">Get started</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/extensions.html">Extensions</a></li>
@@ -63,6 +63,7 @@
 <span>  kurtosis <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  estimate_ME <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  significance_criterion <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  reps <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  bootstrap_reps <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -138,6 +139,10 @@
 <dd><p>(optional) A <code>double</code>, denoting the significance criterion.</p></dd>
 
 
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
+<dd><p>(don't use) Deprecated, use <code>significance_criterion</code> instead.</p></dd>
+
+
 <dt id="arg-reps">reps<a class="anchor" aria-label="anchor" href="#arg-reps"></a></dt>
 <dd><p>A positive <code>integer</code>, denoting the number of Monte Carlo replications to be used during simulations.</p></dd>
 
@@ -190,7 +195,7 @@
 
 <div class="section">
 <h3 id="using-mplus">Using Mplus<a class="anchor" aria-label="anchor" href="#using-mplus"></a></h3>
-<p>When <code>software = "Mplus"</code> and Mplus is installed on the local computer, data will be generated and analyzed using Mplus. The advantage is this will speed up the power analysis considerably. Upon completion of analyses, each experimental condition will have a dedicated .out file with Mplus results. <code>powRICLPM()</code> reports back to the user where these files can be found, and which .out file corresponds to which experimental condition.</p>
+<p>When <code>software = "Mplus"</code>, Mplus input files will be generated and saved into <code>save_path</code>. Note that it is not possible to generate skewed or kurtosed data in Mplus via the <code>powRICLPM</code> package. Furthermore, bounded estimation is not available in Mplus. Therefore, the <code>skewness</code>, <code>kurtosis</code>, and <code>bounds</code> will be ignored when <code>software = "Mplus"</code>.</p>
 </div>
 
 <div class="section">

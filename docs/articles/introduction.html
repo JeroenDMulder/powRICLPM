@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Introduction • powRICLPM</title>
+<title>Get Started • powRICLPM</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get Started">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/powRICLPM.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/introduction.html">Get started</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
@@ -59,7 +59,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Introduction</h1>
+      <h1>Get Started</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/JeroenDMulder/powRICLPM/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
@@ -89,9 +89,9 @@ and
 respectively) of 0.2 (standardized). For the design of our power
 analysis we follow the steps in the strategy as described in <span class="citation">Mulder (2023)</span>. Various extensions are available
 for this basic power analysis, and are described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensions.html">Extensions</a>.</p>
-<div class="section level3">
-<h3 id="step-1-determine-experimental-conditions">Step 1: Determine experimental conditions<a class="anchor" aria-label="anchor" href="#step-1-determine-experimental-conditions"></a>
-</h3>
+<div class="section level2">
+<h2 id="step-1-determine-experimental-conditions">Step 1: Determine experimental conditions<a class="anchor" aria-label="anchor" href="#step-1-determine-experimental-conditions"></a>
+</h2>
 <p>Before performing the power analysis, you must first determine the
 <em>experimental conditions</em> of interest. Experimental conditions
 (or: simulation conditions) are defined by characteristics of the study
@@ -106,9 +106,9 @@ from 3 to 5. If these experimental conditions do not lead to the desired
 amount of power for detecting the small cross-lagged effect, the ranges
 can be extended later.</p>
 </div>
-<div class="section level3">
-<h3 id="step-2-choose-population-parameter-values">Step 2: Choose population parameter values<a class="anchor" aria-label="anchor" href="#step-2-choose-population-parameter-values"></a>
-</h3>
+<div class="section level2">
+<h2 id="step-2-choose-population-parameter-values">Step 2: Choose population parameter values<a class="anchor" aria-label="anchor" href="#step-2-choose-population-parameter-values"></a>
+</h2>
 <p>Next, determine population parameter values for generating data from
 the RI-CLPM. This requires the specification of:</p>
 <ul>
@@ -149,9 +149,9 @@ interpreted.</p>
 <span><span class="co">## <span style="color: #00BBBB;">•</span> Cross-lagged effect of A -&gt; B: 0.2</span></span>
 <span><span class="co">## <span style="color: #00BBBB;">•</span> Cross-lagged effect of B -&gt; A: 0.1</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="steps-3-5-perform-the-power-analysis">Steps 3-5: Perform the power analysis<a class="anchor" aria-label="anchor" href="#steps-3-5-perform-the-power-analysis"></a>
-</h3>
+<div class="section level2">
+<h2 id="steps-3-5-perform-the-power-analysis">Steps 3-5: Perform the power analysis<a class="anchor" aria-label="anchor" href="#steps-3-5-perform-the-power-analysis"></a>
+</h2>
 <p>Steps 3 to 5 are automated by the <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> function.
 As input, you must provide:</p>
 <ul>
@@ -199,9 +199,9 @@ the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/extensi
 <span>  within_cor <span class="op">=</span> <span class="fl">0.3</span>,</span>
 <span>  reps <span class="op">=</span> <span class="va">n_reps</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="section level4">
-<h4 id="parallel-processing-using-furrr">Parallel processing using <code>furrr</code><a class="anchor" aria-label="anchor" href="#parallel-processing-using-furrr"></a>
-</h4>
+<div class="section level3">
+<h3 id="parallel-processing-using-future">Parallel processing using <code>future</code><a class="anchor" aria-label="anchor" href="#parallel-processing-using-future"></a>
+</h3>
 <p>Performing a Monte Carlo power analysis with a large number of
 replications, and across multiple experimental conditions can be
 time-consuming. To speed up the process, it is recommended to perform
@@ -219,9 +219,9 @@ can result in a significant reduction of computing time. For more
 information on other parallel execution strategies using futures, see
 <code>?future::plan()</code>.</p>
 </div>
-<div class="section level4">
-<h4 id="progress-bar-using-progressr">Progress bar using <code>progressr</code><a class="anchor" aria-label="anchor" href="#progress-bar-using-progressr"></a>
-</h4>
+<div class="section level3">
+<h3 id="progress-bar-using-progressr">Progress bar using <code>progressr</code><a class="anchor" aria-label="anchor" href="#progress-bar-using-progressr"></a>
+</h3>
 <p>It can be useful to get an approximation of the progress of the
 <code>powRICLPM</code> analysis while running the code, especially when
 running the analysis in parallel. <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> has
@@ -271,9 +271,9 @@ the below code for the example:</p>
 updates, see <a href="https://progressr.futureverse.org" class="external-link">https://progressr.futureverse.org</a>.</p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="step-6-summarize-results">Step 6: Summarize results<a class="anchor" aria-label="anchor" href="#step-6-summarize-results"></a>
-</h3>
+<div class="section level2">
+<h2 id="step-6-summarize-results">Step 6: Summarize results<a class="anchor" aria-label="anchor" href="#step-6-summarize-results"></a>
+</h2>
 <p>The <code><a href="../reference/powRICLPM.html">powRICLPM()</a></code> function creates a
 <code>powRICLPM</code> object: A list with results, upon which we can
 call <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>, <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, <code><a href="../reference/give.html">give()</a></code>,
