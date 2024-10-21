@@ -1,5 +1,9 @@
 # powRICLPM (development version)
 
+## Minor improvements and fixes
+* Fixed a bug in which some of the column names of the summary table from summary.powRICLPM(x, parameter = "...") was misaligned due to a missing column name. 
+* Added additional documentation to summary.powRICLPM() about the interpretation of information in the summary table. 
+
 # powRICLPM 0.2.0
 
 ## Breaking changes

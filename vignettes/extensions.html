@@ -262,11 +262,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>The basic power analysis as described in the Vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
-started</a> can be extended to using bounded estimation, estimation with
-constraints over time, and the inclusion of measurement error variances
-in the generated data and estimation model. These extensions are
-described below.</p>
+<p>The basic power analysis as described in the vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/start.html">Getting
+Started</a> can be extended to using bounded estimation, estimation with
+constraints over time, inclusion of measurement error in the generated
+data and estimation model (i.e., the STARTS model), and generating data
+with skewness and kurtosis. These extensions are described below.</p>
 <div id="bounded-estimation-with-lavaan" class="section level2">
 <h2>Bounded estimation with <code>lavaan</code></h2>
 <p>To prevent non-convergence for small sample sizes (say, less than
@@ -283,6 +283,13 @@ RI-CLPM, the factor loadings are (usually) fixed, and hence these
 parameters are not estimated. The lagged effects are theoretically
 infinite, and hence there are no sensible bounds we can place à priori
 on these parameters.</p>
+<p>The use of bounded estimation is theoretically appealing for models
+that are known to have convergence issues, such as the stable trait
+autoregressive trait state (STARTS) model. The Special Topics vignette
+<a href="https://jeroendmulder.github.io/powRICLPM/articles/measurement_error.html">Measurement
+Error</a> uses the powRICLPM package to explore the impact of unmodeled
+measurement error in the RI-CLPM, and the use of bounded estimation to
+aid the convergence of the STARTS model.</p>
 </div>
 <div id="constraints-over-time" class="section level2">
 <h2>Constraints over time</h2>
@@ -332,26 +339,33 @@ This constraint is only possible when
 <h2>Measurement error</h2>
 <p>While it is generally advisable to include measurement error when
 analyzing psychological data, the RI-CLPM does not include it. Adding
-measurement error to the model would result in the bivariate stable
-trait autoregressive trait state (STARTS) model by <span class="citation">Kenny and Zautra (2001)</span>, and requires at least 4
-waves of data to be identified. Users can add measurement error
-variances to the estimation model by specifying
+measurement error to the model would result in the bivariate STARTS
+model by <span class="citation">Kenny and Zautra (2001)</span>, and
+requires at least 4 waves of data to be identified. Users can add
+measurement error variances to the estimation model by specifying
 <code>estimate_ME = TRUE</code>. Measurement error can be added to the
 simulated data using the <code>reliability</code> argument.</p>
 <p>Note, however, that the STARTS model has been shown to be prone to
 empirical under-identification, often requiring upwards of 8 waves of
-data and sample sizes larger than 500.</p>
+data and sample sizes larger than 500. The Special Topics vignette <a href="https://jeroendmulder.github.io/powRICLPM/articles/measurement_error.html">Measurement
+Error</a> uses the powRICLPM package to explore the impact of unmodeled
+measurement error in the RI-CLPM, and the use of bounded estimation to
+aid the convergence of the STARTS model.</p>
 </div>
-<div id="skewed-and-kurtosed-data" class="section level2">
-<h2>Skewed and Kurtosed data</h2>
-<ul>
-<li><code>skewness</code> and <code>kurtosis</code>: An integer (vector)
-that determines the skewness and kurtosis for the simulated observed
-variables, respectively. Suppose we have reason to believe the <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> variables are positively skewed, and
+<div id="data-with-skewness-and-kurtosis" class="section level2">
+<h2>Data with skewness and kurtosis</h2>
+<p>Asymmetry in the empirical distributions of psychometric measurements
+is rather common <span class="citation">(Micceri 1989)</span>, and this
+can impact the power of SEM models that assume normally distributed
+variables. The powRICLPM package allows researchers to investigate power
+under asymmetrically distributed data by setting values for the
+<code>skewness</code> and <code>kurtosis</code> arguments (default: 0).
+For example, suppose we have reason to believe the <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> variables are positively skewed, and
 have heavy tails (i.e., a higher kurtosis) we can include the arguments
-<code>skewness = 1</code> and <code>kurtosis = 0.5</code> (default:
-0).</li>
-</ul>
+<code>skewness = 1</code> and <code>kurtosis = 0.5</code>. When the
+<code>skewness</code> and <code>kurtosis</code> arguments are set to
+values other than 0, the powRICLPM package defaults to using robust
+maximum likelihood (<code>estimator = &quot;MLR&quot;</code>).</p>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
@@ -365,6 +379,11 @@ Equation Modeling</em> 29 (3): 412–27. <a href="https://doi.org/10.1080/107055
 Kenny, David A., and Alex Zautra. 2001. <span>“<span class="nocase">Trait–state models for longitudinal data</span>.”</span>
 In <em>New Methods for the Analysis of Change</em>, 243–63. Washington:
 American Psychological Association. <a href="https://doi.org/10.1037/10409-008">https://doi.org/10.1037/10409-008</a>.
+</div>
+<div id="ref-micceri_unicorn_1989" class="csl-entry">
+Micceri, Theodore. 1989. <span>“<span class="nocase">The unicorn, the
+normal curve, and other improbable creatures</span>.”</span>
+<em>Psychological Bulletin</em> 105 (1): 156–66.
 </div>
 <div id="ref-mulder_three_2021" class="csl-entry">
 Mulder, Jeroen D., and Ellen L. Hamaker. 2021. <span>“<span class="nocase">Three extensions of the random intercept cross-lagged

@@ -42,12 +42,27 @@ S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes the se
 \item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
 \item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to all conditions, such the number of replications, etc.).
 }
+\subsection{Interpretation Output}{When requesting information for a specific parameter by setting the \code{parameter = "..."} argument, a summary table is printed where each row refers to a different experimental condition. The following information is contained in the columns:
+\itemize{
+\item \code{Sample size}, \code{Time points}, \code{ICC}, \code{Reliability}: The experimental condition that the row refers to.
+\item \code{Population}: The true value of the parameter.
+\item \code{Avg}: The average (across replications) parameter estimate.
+\item \code{Bias}: The difference between the population value and the average parameter estimate.
+\item \code{Min}: The lowest (across replications) parameter estimate.
+\item \code{SD}: The standard deviation of the parameter estimate over replications.
+\item \code{SEAvg}: The average (across replications) standard error of the parameter estimate.
+\item \code{MSE}: The parameter mean square error, combining a parameter's bias and efficiency.
+\item \code{Accuracy}: The average (across replications) width of the confidence interval.
+\item \code{Cover}: The coverage rate, representing the proportion of times (across replications) the true parameter estimate fell in the confidence interval.
+\item \code{Power}: The proportion of times (across replications) the confidence interval did not contain zero.
+\item \code{Error}: The number of replications that failed to run (i.e., \code{lavaan()} produced an error).
+\item \code{Not converged}: The number of replications that did not converge to a solution.
+\item \code{Inadmissible}: The number of replications that converged to an inadmissible solution (e.g., a variance estimated to be lower than zero).
+}
+}
 }
 \examples{
-\dontshow{
-load(system.file("extdata", "out_preliminary.RData", package = "powRICLPM"))
-}
-
+\dontshow{load(system.file("extdata", "out_preliminary.RData", package = "powRICLPM"))}
 # Get setup of powRICLPM analysis and convergence issues
 summary(out_preliminary)
 

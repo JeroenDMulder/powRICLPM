@@ -70,7 +70,7 @@ icheck_y <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) 
     cli::cli_abort(
       c(
         "{.arg {arg}} must be 'power', 'coverage', 'accuracy', 'MSE', 'bias', 'average', 'SD', or 'SEAvg':",
-        x = paste0("Your {.arg {arg}} is", x, ".")
+        x = paste0("Your {.arg {arg}} is '", x, "'.")
       )
     )
   }

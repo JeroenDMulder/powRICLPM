@@ -24,7 +24,7 @@
 #' @param seed An \code{integer} of length 1. If multiple cores are used, a seed will be used to generate a full L'Ecuyer-CMRG seed for all cores.
 #' @param constraints (optional) A \code{character} string, specifying the type of constraints that should be imposed on the estimation model (see "Details").
 #' @param bounds (optional) A \code{logical}, denoting if bounded estimation should be used for the latent variable variances in the model (see "Details").
-#' @param estimator (options) A \code{character} string of length 1, denoting the estimator to be used (default: \code{ML}, see "Details").
+#' @param estimator (optional) A \code{character} string of length 1, denoting the estimator to be used (default: \code{ML}, see "Details").
 #' @param save_path A \code{character} string of length 1, naming the directory to save (data) files to (used for validation purposes of this package). Variables are saved in alphabetical and numerical order.
 #' @param software A \code{character} string of length, naming which software to use for simulations; either "lavaan" or "Mplus" (see "Details").
 #'
@@ -318,6 +318,6 @@ powRICLPM <- function(
 #'   )
 #' }
 powRICLPM_Mplus <- function(...) {
-  .Deprecated(msg = "The function 'powRICLPM_Mplus' is deprecated and is removed since version 0.1.2. Please use 'powRICLPM()' instead, and set the `software` argument to 'Mplus'.")
+  .Deprecated(msg = "The function 'powRICLPM_Mplus' is deprecated and is removed since version 0.2.0. Please use 'powRICLPM()' instead, and set the `software` argument to 'Mplus'.")
 }
 

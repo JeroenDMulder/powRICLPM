@@ -161,6 +161,7 @@ run_condition_monteCarlo <- function(
     parameter = paste0(lav_parTable$lhs, lav_parTable$op, lav_parTable$rhs)[index_free],
     population_value = population_values,
     average = NA,
+    bias = NA,
     minimum = NA,
     EmpSE = NA,
     SEAvg = NA,

@@ -36,7 +36,7 @@ To create Mplus model syntax, use the `powRICLPM()` function, and set `software 
 For our example, we would specify:
 
 ```{r analysis, eval = F}
-powRICLPM_(
+powRICLPM(
   search_lower = 100,
   search_upper = 1000,
   search_step = 50,
