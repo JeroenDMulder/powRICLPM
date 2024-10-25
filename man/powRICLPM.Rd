@@ -129,7 +129,7 @@ library(future)
 library(progressr)
 future::plan(multisession, workers = 6)
 
-\donttest{
+\dontrun{
 # Run analysis (`reps` is small, because this is an example)
 with_progress({
   out_preliminary <- powRICLPM(

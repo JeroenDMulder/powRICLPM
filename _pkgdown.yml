@@ -45,9 +45,25 @@ navbar:
       href: news/index.html
     - text: "FAQ"
       href: articles/FAQ.html
+    - text: "Reference"
+      href: reference/index.html
   right:
     - icon: fa-brands fa-github
       href: https://github.com/jeroendmulder/powRICLPM
+
+reference:
+  - title: "Check `powRICLPM()` Input"
+    contents:
+      - check_Phi
+  - title: "Run Power Analysis"
+    contents:
+      - powRICLPM
+  - title: "Summarize Results"
+    contents:
+      - plot.powRICLPM
+      - summary.powRICLPM
+      - print.powRICLPM
+      - give
 
 footer:
   structure:

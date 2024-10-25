@@ -20,7 +20,7 @@
 #'   \item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
 #'   \item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to all conditions, such the number of replications, etc.).
 #' }
-#' \subsection{Interpretation Output}{When requesting information for a specific parameter by setting the \code{parameter = "..."} argument, a summary table is printed where each row refers to a different experimental condition. The following information is contained in the columns:
+#' \subsection{Interpretation Output}{Depending on the arguments that you set, \code{summary()} prints a table with different analysis outcomes in the columns and where each row refers to a different experimental condition. The following information is available:
 #'  \itemize{
 #'   \item \code{Sample size}, \code{Time points}, \code{ICC}, \code{Reliability}: The experimental condition that the row refers to.
 #'   \item \code{Population}: The true value of the parameter.
@@ -85,7 +85,7 @@ summary.powRICLPM <- function(
     ## Simulation results
     results <- condition$estimates[, -1]
     results <- round(results, digits = 3)
-    colnames(results) <- c("Population", "Avg", "Min", "SD", "SE Avg", "MSE", "Accuracy", "Cover", "Power")
+    colnames(results) <- c("Population", "Avg", "Bias", "Min", "SD", "SE Avg", "MSE", "Accuracy", "Cover", "Power")
     rownames(results) <- condition$estimates$parameter
 
     ## Summary of analysis
@@ -117,6 +117,7 @@ summary.powRICLPM <- function(
     )
 
     print.summary.powRICLPM.condition(summary_list)
+    invisible(results)
 
   } else if (!is.null(parameter)) {
 
@@ -126,7 +127,7 @@ summary.powRICLPM <- function(
     parameter_summary <- merge(parameter_df, replications_df, by = c("sample_size","time_points", "ICC", "reliability"))
     colnames(parameter_summary) <- c("Sample size", "Time points", "ICC", "Reliability", "Population", "Avg","Bias", "Min", "SD", "SE Avg", "MSE", "Accuracy", "Cover", "Power", "Error", "Not converged", "Inadmissible")
     print.summary.powRICLPM.parameter(parameter_summary, parameter = parameter)
-    return(parameter_summary)
+    invisible(parameter_summary)
 
   } else {
 

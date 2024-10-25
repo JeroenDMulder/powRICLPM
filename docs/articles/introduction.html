@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,7 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/FAQ.html">FAQ</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/jeroendmulder/powRICLPM"><span class="fa fa-brands fa-github"></span></a></li>
@@ -292,9 +293,11 @@ inadmissible results). Second, by specifying the
 function will print the results specifically for that parameter across
 all experimental conditions. Third, if you specify a specific
 experimental condition using <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>’s
-<code>sample_size</code>, <code>time_points</code>, and <code>ICC</code>
-arguments, performance measures are outputted for all parameters in that
-experimental condition.</p>
+<code>sample_size</code>, <code>time_points</code>, <code>ICC</code> and
+<code>reliability</code> arguments, performance measures are outputted
+for all parameters in that experimental condition.</p>
+<p>The interpretation of the various performance measures available is
+explained in the function documentation <a href="https://jeroendmulder.github.io/powRICLPM/reference/summary.powRICLPM.html"><code>?summary.powRICLPM()</code></a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summary of study design</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>

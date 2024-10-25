@@ -131,7 +131,9 @@ The `powRICLPM()` function creates a `powRICLPM` object: A list with results, up
 
 `print()` outputs a textual summary of the power analysis design contained within the object it was called upon. It does not output any performance metrics computed by the power analysis. 
 
-`summary()` can be used in one of four ways. First, summary can be used simply like `print()` to get information about the design of the power analysis (the different experimental conditions), as well as the number of problems the occurred per condition (e.g., non-convergence, fatal estimation errors, or inadmissible results). Second, by specifying the `parameter = "..."` argument in `summary()`, the function will print the results specifically for that parameter across all experimental conditions. Third, if you specify a specific experimental condition using `summary()`'s `sample_size`, `time_points`, and `ICC` arguments, performance measures are outputted for all parameters in that experimental condition. 
+`summary()` can be used in one of four ways. First, summary can be used simply like `print()` to get information about the design of the power analysis (the different experimental conditions), as well as the number of problems the occurred per condition (e.g., non-convergence, fatal estimation errors, or inadmissible results). Second, by specifying the `parameter = "..."` argument in `summary()`, the function will print the results specifically for that parameter across all experimental conditions. Third, if you specify a specific experimental condition using `summary()`'s `sample_size`, `time_points`, `ICC` and `reliability` arguments, performance measures are outputted for all parameters in that experimental condition. 
+
+The interpretation of the various performance measures available is explained in the function documentation [`?summary.powRICLPM()`](https://jeroendmulder.github.io/powRICLPM/reference/summary.powRICLPM.html). 
 
 ```{r summary, eval = F}
 # Summary of study design

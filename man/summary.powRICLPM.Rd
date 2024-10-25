@@ -42,7 +42,7 @@ S3 method for class \code{powRICLPM}. \code{summary.powRICLPM} summarizes the se
 \item When \code{parameter = "..."} is set: Estimation information and results for a specific parameter across all experimental conditions.
 \item No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to all conditions, such the number of replications, etc.).
 }
-\subsection{Interpretation Output}{When requesting information for a specific parameter by setting the \code{parameter = "..."} argument, a summary table is printed where each row refers to a different experimental condition. The following information is contained in the columns:
+\subsection{Interpretation Output}{Depending on the arguments that you set, \code{summary()} prints a table with different analysis outcomes in the columns and where each row refers to a different experimental condition. The following information is available:
 \itemize{
 \item \code{Sample size}, \code{Time points}, \code{ICC}, \code{Reliability}: The experimental condition that the row refers to.
 \item \code{Population}: The true value of the parameter.

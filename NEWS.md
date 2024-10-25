@@ -1,8 +1,10 @@
 # powRICLPM (development version)
 
 ## Minor improvements and fixes
-* Fixed a bug in which some of the column names of the summary table from summary.powRICLPM(x, parameter = "...") was misaligned due to a missing column name. 
-* Added additional documentation to summary.powRICLPM() about the interpretation of information in the summary table. 
+* Fixed a bug in version 0.2.0, in which some of the column names of the summary tables from `summary.powRICLPM.parameter()` and `summary.powRICLM.condition()` were misaligned due to a missing column name. 
+* Fixed a bug in version 0.2.0, in which population values were not correctly parsed when setting the `constraints = ...` argument of `powRICLPM()` to anything other than `constraints = "none"` (the default). This resulted in incorrect estimates of bias, mean square error (`MSE`), and coverage (`Cover`). Estimates of power, minimum estimate (`Min`), empirical standard deviation (`SD`), average standard error (`SE Avg`) and accuracy were unaffected and thus remained valid.
+* Added additional documentation to `summary.powRICLPM()` about the interpretation of information in the summary table. 
+
 
 # powRICLPM 0.2.0
 

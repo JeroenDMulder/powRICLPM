@@ -1,4 +1,4 @@
-test_that("basic power analysis using lavaan works", {
+test_that("basic power analysis using lavaan runs", {
   out1 <- powRICLPM(
     target_power = 0.8,
     sample_size = 1000,
@@ -26,6 +26,13 @@ test_that("basic power analysis using lavaan works", {
   expect_type(out1$conditions[[1]]$estimates, "list")
   expect_type(out1$conditions[[1]]$MCSEs, "list")
   expect_type(out1$conditions[[1]]$estimation_information, "list")
+
+  test_summary_condition <- summary(out1, sample_size = 1000, time_points = 3, ICC = 0.5, reliability = 1)
+
+  expect_equal(
+    test_summary_condition$Population,
+    c(1.000, 1.000, 0.300, 0.400, 0.150, 0.200, 0.300, 0.400, 0.150, 0.200, 0.300, 1.000, 1.000, 0.300, 0.781, 0.781, 0.834, 0.834, 0.130, 0.130)
+  )
 })
 
 test_that("basic power analysis with multiple experimental conditions works", {
@@ -55,6 +62,28 @@ test_that("basic power analysis with multiple experimental conditions works", {
   )
 
 })
+
+test_that("power analysis with constraints works", {
+  out1 <- powRICLPM(
+    target_power = 0.8,
+    sample_size = 1000,
+    time_points = 3,
+    ICC = 0.5,
+    RI_cor = 0.3,
+    Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
+    within_cor = 0.3,
+    reps = 2,
+    seed = 123456,
+    constraints = "within"
+  )
+  test_summary_condition <- summary(out1, sample_size = 1000, time_points = 3, ICC = 0.5, reliability = 1)
+
+  expect_equal(
+    test_summary_condition$Population,
+    c(1.000, 1.000, 0.300, 0.400, 0.150, 0.200, 0.300, 0.400, 0.150, 0.200, 0.300, 1.000, 1.000, 0.300, 0.781, 0.781, 0.834, 0.834, 0.130, 0.130)
+  )
+})
+
 
 test_that("power analysis for the STARTS model works", {
   expect_warning({

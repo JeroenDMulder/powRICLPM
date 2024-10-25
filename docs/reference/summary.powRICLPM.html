@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">powRICLPM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/FAQ.html">FAQ</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/jeroendmulder/powRICLPM"><span class="fa fa-brands fa-github"></span></a></li>
       </ul></div>
 
@@ -100,12 +101,29 @@
     <p><code>summary.powRICLPM</code> provides a different summary of the <code>powRICLPM</code> object, depending on the additional arguments that are set:</p><ul><li><p>When <code>sample_size = ...</code>, <code>time_points = ...</code>, <code>ICC = ...</code>, and <code>reliability</code> are set: Estimation information and results for all parameters across experimental conditions.</p></li>
 <li><p>When <code>parameter = "..."</code> is set: Estimation information and results for a specific parameter across all experimental conditions.</p></li>
 <li><p>No additional arguments: Characteristics of the different experimental conditions are summarized, as well as session info (information that applies to all conditions, such the number of replications, etc.).</p></li>
+</ul><div class="section">
+<h3 id="interpretation-output">Interpretation Output<a class="anchor" aria-label="anchor" href="#interpretation-output"></a></h3>
+<p>Depending on the arguments that you set, <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> prints a table with different analysis outcomes in the columns and where each row refers to a different experimental condition. The following information is available:</p><ul><li><p><code>Sample size</code>, <code>Time points</code>, <code>ICC</code>, <code>Reliability</code>: The experimental condition that the row refers to.</p></li>
+<li><p><code>Population</code>: The true value of the parameter.</p></li>
+<li><p><code>Avg</code>: The average (across replications) parameter estimate.</p></li>
+<li><p><code>Bias</code>: The difference between the population value and the average parameter estimate.</p></li>
+<li><p><code>Min</code>: The lowest (across replications) parameter estimate.</p></li>
+<li><p><code>SD</code>: The standard deviation of the parameter estimate over replications.</p></li>
+<li><p><code>SEAvg</code>: The average (across replications) standard error of the parameter estimate.</p></li>
+<li><p><code>MSE</code>: The parameter mean square error, combining a parameter's bias and efficiency.</p></li>
+<li><p><code>Accuracy</code>: The average (across replications) width of the confidence interval.</p></li>
+<li><p><code>Cover</code>: The coverage rate, representing the proportion of times (across replications) the true parameter estimate fell in the confidence interval.</p></li>
+<li><p><code>Power</code>: The proportion of times (across replications) the confidence interval did not contain zero.</p></li>
+<li><p><code>Error</code>: The number of replications that failed to run (i.e., <code>lavaan()</code> produced an error).</p></li>
+<li><p><code>Not converged</code>: The number of replications that did not converge to a solution.</p></li>
+<li><p><code>Inadmissible</code>: The number of replications that converged to an inadmissible solution (e.g., a variance estimated to be lower than zero).</p></li>
 </ul></div>
+
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Get setup of powRICLPM analysis and convergence issues</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get setup of powRICLPM analysis and convergence issues</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">out_preliminary</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> powRICLPM (0.2.0) simulated power for 16 experimental conditions.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

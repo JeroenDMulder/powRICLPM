@@ -37,3 +37,4 @@
 # save_path = NULL
 # software = "lavaan"
 # options_furrr = NULL
+# Psi <- powRICLPM:::compute_Psi(Phi, within_cor)

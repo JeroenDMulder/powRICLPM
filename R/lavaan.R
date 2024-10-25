@@ -181,17 +181,19 @@ pop_within <- function(condition, name_within, name_obs) {
 }
 
 est_within <- function(condition, name_within, name_obs) {
-  lhs <- c(name_within)
   op <- "=~"
   if (condition[["constraints"]] == "stationarity") {
-    pv <- "NA"
+    lhs <- c(name_within, name_within)
+    pv <- c(rep("NA", times = length(name_within)), rep("start(1)", times = length(name_within)))
     free <- TRUE
+    rhs <- c(name_obs, name_obs)
   } else {
+    lhs <- c(name_within)
     pv <- "1"
     free <- FALSE
+    rhs <- c(name_obs)
   }
   con <- "*"
-  rhs <- c(name_obs)
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
     stringsAsFactors = FALSE
   ))
@@ -210,18 +212,26 @@ pop_lagged <- function(condition, name_within) {
 }
 
 est_lagged <- function(condition, name_within) {
-  lhs <- rep(c(t(name_within))[-(1:2)], each = 2)
   op <- "~"
   con <- "*"
   if (condition[["constraints"]] == "lagged" ||
       condition[["constraints"]] == "within" ||
       condition[["constraints"]] == "stationarity") {
-    pv <- c("a", "b", "c", "d") # Labels for constraints
+    lhs <- rep(rep(c(t(name_within))[-(1:2)], each = 2), times = 2)
+    pv <- c(
+      rep(c("a", "b", "c", "d"), times = condition[["time_points"]] - 1), # Labels for constraints
+      rep(c(paste0("start(", t(condition[["Phi"]][[1]]), ")")), times = condition[["time_points"]] - 1) # Starting values
+    )
+    rhs <- rep(
+      c(apply(name_within[-condition[["time_points"]], ], 1, rep, times = 2)),
+      times = 2
+    )
   } else {
+    lhs <- rep(c(t(name_within))[-(1:2)], each = 2)
     pv <- paste0("start(", c(t(condition[["Phi"]][[1]])), ")")
+    rhs <- c(apply(name_within[-condition[["time_points"]], ], 1, rep, times = 2))
   }
   free <- TRUE
-  rhs <- c(apply(name_within[-condition[["time_points"]], ], 1, rep, times = 2))
   return(cbind.data.frame(lhs, op, pv, con, rhs, free,
     stringsAsFactors = FALSE
   ))
@@ -267,13 +277,15 @@ pop_within_cov1 <- function(condition, name_within) {
 }
 
 est_within_cov1 <- function(condition, name_within) {
-  lhs <- name_within[1, 1]
-  rhs <- name_within[1, 2]
   op <- "~~"
   con <- "*"
   if (condition[["constraints"]] == "stationarity") { # Label
-    pv <- "cor1"
+    lhs <- c(name_within[1, 1], name_within[1, 1])
+    rhs <- c(name_within[1, 2], name_within[1, 2])
+    pv <- c("cor1", paste0("start(", condition[["within_cor"]], ")"))
   } else { # Freely estimate
+    lhs <- name_within[1, 1]
+    rhs <- name_within[1, 2]
     pv <- paste0("start(", c(condition[["within_cor"]]), ")")
   }
   free <- TRUE
@@ -294,18 +306,24 @@ pop_within_var2 <- function(condition, name_within) {
 }
 
 est_within_var2 <- function(condition, name_within) {
-  lhs <- rhs <- c(name_within[-1, ])
   op <- "~~"
   con <- "*"
   if (condition[["constraints"]] == "residuals" ||
       condition[["constraints"]] == "within") { # Constrain over time
-    pv <- rep(c("rvarA", "rvarB"), each = (condition[["time_points"]] - 1))
+    lhs <- rhs <- c(name_within[-1, ], name_within[-1, ])
+    pv <- c(
+      rep(c("rvarA", "rvarB"), each = (condition[["time_points"]] - 1)),
+      paste0("start(", rep(diag(condition[["Psi"]][[1]]), each = (condition[["time_points"]] - 1)), ")")
+    )
   } else if (condition[["constraints"]] == "stationarity") {
+    lhs <- rhs <- c(name_within[-1, ], name_within[-1, ])
     pv <- c(
       paste0("rvarA", 2:condition[["time_points"]]),
-      paste0("rvarB", 2:condition[["time_points"]])
+      paste0("rvarB", 2:condition[["time_points"]]),
+      paste0("start(", rep(diag(condition[["Psi"]][[1]]), each = (condition[["time_points"]] - 1)), ")")
     )
   } else { # Freely estimate
+    lhs <- rhs <- c(name_within[-1, ])
     pv <- paste0("start(", rep(diag(condition[["Psi"]][[1]]), each = (condition[["time_points"]] - 1)), ")")
   }
   free <- TRUE
@@ -327,16 +345,26 @@ pop_within_cov2 <- function(condition, name_within) {
 }
 
 est_within_cov2 <- function(condition, name_within) {
-  lhs <- name_within[-1, 1]
-  rhs <- name_within[-1, 2]
   op <- "~~"
   con <- "*"
   if (condition[["constraints"]] == "residuals" ||
       condition[["constraints"]] == "within") { # Constrain over time
-    pv <- "rcov"
+    lhs <- c(name_within[-1, 1], name_within[-1, 1])
+    rhs <- c(name_within[-1, 2], name_within[-1, 2])
+    pv <- c(
+      rep("rcov", times = condition[["time_points"]] - 1),
+      rep(paste0("start(", c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])]), ")"), times = condition[["time_points"]] - 1)
+    )
   } else if (condition[["constraints"]] == "stationarity") { # Label
-    pv <- paste0("rcov", 2:condition[["time_points"]])
+    lhs <- c(name_within[-1, 1], name_within[-1, 1])
+    rhs <- c(name_within[-1, 2], name_within[-1, 2])
+    pv <- c(
+      paste0("rcov", 2:condition[["time_points"]]),
+      rep(paste0("start(", c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])]), ")"), times = condition[["time_points"]] - 1)
+    )
   } else { # Freely estimate
+    lhs <- name_within[-1, 1]
+    rhs <- name_within[-1, 2]
     pv <- paste0("start(", c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])]), ")")
   }
   free <- TRUE
@@ -357,14 +385,18 @@ pop_ME <- function(condition, name_obs) {
 }
 
 create_estimate_ME <- function(condition, name_obs) {
-  lhs <- rhs <- c(name_obs)
   op <- "~~"
   con <- "*"
   if (condition[["constraints"]] == "stationarity" ||
       condition[["constraints"]] == "ME") {
-    pv <- rep(c("MEvarA", "MEvarB"), each = condition[["time_points"]])
+    lhs <- rhs <- c(name_obs, name_obs)
+    pv <- c(
+      rep(c("MEvarA", "MEvarB"), each = condition[["time_points"]]),
+      rep(paste0("start(", condition[["ME_var"]], ")"), times = 2*condition[["time_points"]])
+    )
     free <- TRUE
   } else { # Freely estimate ME
+    lhs <- rhs <- c(name_obs)
     pv <- paste0("start(", condition[["ME_var"]], ")")
     free <- TRUE
   }
