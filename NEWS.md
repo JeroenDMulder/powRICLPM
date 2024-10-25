@@ -1,4 +1,4 @@
-# powRICLPM (development version)
+# powRICLPM 0.2.1
 
 ## Minor improvements and fixes
 * Fixed a bug in version 0.2.0, in which some of the column names of the summary tables from `summary.powRICLPM.parameter()` and `summary.powRICLM.condition()` were misaligned due to a missing column name. 
