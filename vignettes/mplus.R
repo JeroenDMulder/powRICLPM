@@ -5,7 +5,7 @@
 #  RI_cor <- 0.3
 
 ## ----analysis, eval = F-------------------------------------------------------
-#  powRICLPM_(
+#  powRICLPM(
 #    search_lower = 100,
 #    search_upper = 1000,
 #    search_step = 50,
