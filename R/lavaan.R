@@ -356,12 +356,9 @@ est_within_cov2 <- function(condition, name_within) {
       rep(paste0("start(", c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])]), ")"), times = condition[["time_points"]] - 1)
     )
   } else if (condition[["constraints"]] == "stationarity") { # Label
-    lhs <- c(name_within[-1, 1], name_within[-1, 1])
-    rhs <- c(name_within[-1, 2], name_within[-1, 2])
-    pv <- c(
-      paste0("rcov", 2:condition[["time_points"]]),
-      rep(paste0("start(", c(condition[["Psi"]][[1]][lower.tri(condition[["Psi"]][[1]])]), ")"), times = condition[["time_points"]] - 1)
-    )
+    lhs <- c(name_within[-1, 1])
+    rhs <- c(name_within[-1, 2])
+    pv <- paste0("rcov", 2:condition[["time_points"]])
   } else { # Freely estimate
     lhs <- name_within[-1, 1]
     rhs <- name_within[-1, 2]

@@ -64,7 +64,7 @@ test_that("basic power analysis with multiple experimental conditions works", {
 })
 
 test_that("power analysis with constraints works", {
-  out1 <- powRICLPM(
+  out_within <- powRICLPM(
     target_power = 0.8,
     sample_size = 1000,
     time_points = 3,
@@ -76,11 +76,32 @@ test_that("power analysis with constraints works", {
     seed = 123456,
     constraints = "within"
   )
-  test_summary_condition <- summary(out1, sample_size = 1000, time_points = 3, ICC = 0.5, reliability = 1)
+  test_summary_condition <- summary(out_within, sample_size = 1000, time_points = 3, ICC = 0.5, reliability = 1)
 
   expect_equal(
     test_summary_condition$Population,
     c(1.000, 1.000, 0.300, 0.400, 0.150, 0.200, 0.300, 0.400, 0.150, 0.200, 0.300, 1.000, 1.000, 0.300, 0.781, 0.781, 0.834, 0.834, 0.130, 0.130)
+  )
+
+  out_stationarity <- powRICLPM(
+    target_power = 0.8,
+    sample_size = 1000,
+    time_points = 3,
+    ICC = 0.5,
+    RI_cor = 0.3,
+    Phi = matrix(c(0.4, 0.15, 0.2, 0.3), ncol = 2, byrow = TRUE),
+    within_cor = 0.3,
+    reps = 2,
+    seed = 123456,
+    constraints = "stationarity"
+  )
+
+  test_summary_condition_stationarity <- summary(out_stationarity, sample_size = 1000, time_points = 4, ICC = 0.5, reliability = 1)
+
+  # No starting values, and hence zero population values for residual covariances (to aid convergence)
+  expect_equal(
+    test_summary_condition_stationarity$Population,
+    c(1.000, 1.000, 0.300, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 0.400, 0.150, 0.200, 0.300, 0.400, 0.150, 0.200, 0.300, 0.400, 0.150, 0.200, 0.300, 0.300, 0.781, 0.781, 0.781, 0.834, 0.834, 0.834, 0.000, 0.000, 0.000)
   )
 })
 

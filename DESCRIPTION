@@ -1,7 +1,7 @@
 Package: powRICLPM
 Title: Perform Power Analysis for the RI-CLPM and STARTS Model
 Version: 0.2.1
-Date: 2024-09-20
+Date: 2024-10-26
 Authors@R: c(
     person("Jeroen", "Mulder", , "j.d.mulder@uu.nl", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-5553-0856")),
